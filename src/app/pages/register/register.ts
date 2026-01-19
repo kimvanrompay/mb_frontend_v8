@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,8 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -72,12 +73,15 @@ export class RegisterComponent {
     }
 
     this.isLoading = true;
+    this.cdr.detectChanges(); // Force update loading state
 
     this.authService.register(this.registerForm.value).subscribe({
       next: () => {
-        this.isLoading = false;
         this.errorMessage = '';
         this.errors = [];
+        this.isLoading = false;
+        this.cdr.detectChanges(); // Force UI update
+
         this.notificationService.success(
           'Your account has been created successfully! Welcome to Meribas. Redirecting to dashboard...',
           'Registration Successful'
@@ -88,7 +92,6 @@ export class RegisterComponent {
         }, 1000);
       },
       error: (error) => {
-        this.isLoading = false;
         const authError = this.authService.handleAuthError(error, 'register');
 
         // Set inline error message
@@ -96,6 +99,12 @@ export class RegisterComponent {
 
         // Parse errors array if available
         this.errors = this.parseErrors(error);
+
+        // Reset loading state FIRST
+        this.isLoading = false;
+
+        // Force change detection to update UI immediately
+        this.cdr.detectChanges();
 
         // Show error notification with appropriate type
         if (authError.type === 'network') {

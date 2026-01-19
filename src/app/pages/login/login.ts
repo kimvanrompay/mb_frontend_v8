@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -47,12 +48,15 @@ export class LoginComponent {
     }
 
     this.isLoading = true;
+    this.cdr.detectChanges(); // Force update loading state
 
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.isLoading = false;
         this.errorMessage = '';
         this.errors = [];
+        this.isLoading = false;
+        this.cdr.detectChanges(); // Force UI update
+
         this.notificationService.success(
           'You have successfully logged in. Redirecting to dashboard...',
           'Login Successful'
@@ -63,7 +67,6 @@ export class LoginComponent {
         }, 500);
       },
       error: (error) => {
-        this.isLoading = false;
         const authError = this.authService.handleAuthError(error, 'login');
 
         // Set inline error message
@@ -71,6 +74,12 @@ export class LoginComponent {
 
         // Parse errors array if available
         this.errors = this.parseErrors(error);
+
+        // Reset loading state FIRST
+        this.isLoading = false;
+
+        // Force change detection to update UI immediately
+        this.cdr.detectChanges();
 
         // Show error notification with appropriate type
         if (authError.type === 'network') {
