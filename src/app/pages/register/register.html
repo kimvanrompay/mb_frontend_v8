@@ -1,0 +1,74 @@
+<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img src="/meribas-logo.png" alt="Meribas" class="mx-auto h-12 w-auto" />
+        <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create your account</h2>
+        <p class="mt-2 text-center text-sm text-gray-600">Start your 3 day free trial</p>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="mb-4 rounded-md bg-red-50 p-4">
+            <p class="text-sm text-red-800">{{ errorMessage }}</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div>
+                <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
+                <div class="mt-2">
+                    <input id="email" type="email" formControlName="email" required autocomplete="email"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        [class.outline-red-500]="email?.invalid && email?.touched" />
+                    <p *ngIf="email?.invalid && email?.touched" class="mt-1 text-sm text-red-600">
+                        <span *ngIf="email?.errors?.['required']">Email is required</span>
+                        <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
+                <div class="mt-2">
+                    <input id="password" type="password" formControlName="password" required autocomplete="new-password"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        [class.outline-red-500]="password?.invalid && password?.touched" />
+                    <p *ngIf="password?.invalid && password?.touched" class="mt-1 text-sm text-red-600">
+                        <span *ngIf="password?.errors?.['required']">Password is required</span>
+                        <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900">Confirm
+                    Password</label>
+                <div class="mt-2">
+                    <input id="password_confirmation" type="password" formControlName="password_confirmation" required
+                        autocomplete="new-password"
+                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                        [class.outline-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
+                    <p *ngIf="password_confirmation?.invalid && password_confirmation?.touched"
+                        class="mt-1 text-sm text-red-600">
+                        <span *ngIf="password_confirmation?.errors?.['required']">Please confirm your password</span>
+                    </p>
+                    <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
+                        class="mt-1 text-sm text-red-600">
+                        Passwords do not match
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" [disabled]="isLoading || registerForm.invalid"
+                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span *ngIf="!isLoading">Start free trial</span>
+                    <span *ngIf="isLoading">Creating account...</span>
+                </button>
+            </div>
+        </form>
+
+        <p class="mt-10 text-center text-sm/6 text-gray-500">
+            Already have an account?
+            <a routerLink="/login" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign in</a>
+        </p>
+    </div>
+</div>
