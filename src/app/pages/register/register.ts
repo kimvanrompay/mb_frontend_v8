@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractContro
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth';
+import { NotificationService } from '../../services/notification';
 
 @Component({
   selector: 'app-register',
@@ -13,12 +14,12 @@ import { AuthService } from '../../services/auth';
 export class RegisterComponent {
   registerForm: FormGroup;
   isLoading = false;
-  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -39,23 +40,76 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    if (this.registerForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
+    // Clear previous notifications
+    this.notificationService.clear();
 
-      this.authService.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
-        },
-        error: (error) => {
-          this.isLoading = false;
-          this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
-        },
-        complete: () => {
-          this.isLoading = false;
-        }
-      });
+    // Validate form
+    if (this.registerForm.invalid) {
+      this.markFormGroupTouched(this.registerForm);
+
+      // Check for password mismatch specifically
+      if (this.registerForm.errors?.['passwordMismatch']) {
+        this.notificationService.error(
+          'The passwords you entered do not match. Please make sure both password fields are identical.',
+          'Password Mismatch'
+        );
+      } else {
+        this.notificationService.error(
+          'Please fill in all required fields correctly.',
+          'Form Validation Error'
+        );
+      }
+      return;
     }
+
+    this.isLoading = true;
+
+    this.authService.register(this.registerForm.value).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.notificationService.success(
+          'Your account has been created successfully! Welcome to Meribas. Redirecting to dashboard...',
+          'Registration Successful'
+        );
+        // Small delay to show success message before redirect
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 1000);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        const authError = this.authService.handleAuthError(error, 'register');
+
+        // Show error notification with appropriate type
+        if (authError.type === 'network') {
+          this.notificationService.error(authError.message, authError.title);
+        } else if (authError.type === 'validation') {
+          // For validation errors like "email already exists"
+          this.notificationService.warning(authError.message, authError.title);
+        } else if (authError.type === 'auth') {
+          this.notificationService.error(authError.message, authError.title);
+        } else {
+          this.notificationService.error(authError.message, authError.title);
+        }
+
+        // Log error for debugging (remove in production)
+        console.error('Registration error:', error, authError);
+      }
+    });
+  }
+
+  /**
+   * Mark all fields in a form group as touched to trigger validation messages
+   */
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      control?.markAsTouched();
+
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 
   get email() {
