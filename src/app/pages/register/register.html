@@ -1,90 +1,128 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img src="/meribas-logo.png" alt="Meribas" class="mx-auto h-12 w-auto" />
-        <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Create your account</h2>
-        <p class="mt-2 text-center text-sm text-gray-600">Start your 3 day free trial</p>
-    </div>
+<div class="min-h-screen bg-white flex flex-col">
+    <!-- Main Content -->
+    <div class="flex-1 flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-md">
+            <!-- Logo -->
+            <div class="text-center mb-12">
+                <img src="/meribas-logo.png" alt="Meribas" class="mx-auto h-12 w-auto mb-8" />
+                <h1 class="text-4xl font-bold text-black mb-2">Sign up for Meribas Free</h1>
+                <p class="text-lg text-gray-600">Just need a few things to get you going…</p>
+            </div>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <!-- Inline Error Alert -->
-        <div *ngIf="errorMessage" class="rounded-md bg-red-50 p-4 mb-6">
-            <div class="flex">
-                <div class="shrink-0">
-                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 text-red-400">
-                        <path
-                            d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
-                            clip-rule="evenodd" fill-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium text-red-800">{{ errorMessage }}</h3>
-                    <div *ngIf="errors.length > 0" class="mt-2 text-sm text-red-700">
-                        <ul role="list" class="list-disc space-y-1 pl-5">
-                            <li *ngFor="let error of errors">{{ error }}</li>
-                        </ul>
+            <!-- Inline Error Alert -->
+            <div *ngIf="errorMessage" class="rounded-md border border-black bg-white p-4 mb-6">
+                <div class="flex">
+                    <div class="shrink-0">
+                        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 text-black">
+                            <path
+                                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
+                                clip-rule="evenodd" fill-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-semibold text-black">{{ errorMessage }}</h3>
+                        <div *ngIf="errors.length > 0" class="mt-2 text-sm text-gray-700">
+                            <ul role="list" class="list-disc space-y-1 pl-5">
+                                <li *ngFor="let error of errors">{{ error }}</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
-            <div>
-                <label for="email" class="block text-sm/6 font-medium text-gray-900">Email address</label>
-                <div class="mt-2">
+            <!-- Form -->
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-base font-semibold text-black mb-2">
+                        Your email address
+                    </label>
                     <input id="email" type="email" formControlName="email" required autocomplete="email"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        [class.outline-red-500]="email?.invalid && email?.touched" />
-                    <p *ngIf="email?.invalid && email?.touched" class="mt-1 text-sm text-red-600">
+                        placeholder="you@example.com"
+                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                        [class.border-red-500]="email?.invalid && email?.touched" />
+                    <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-black">
                         <span *ngIf="email?.errors?.['required']">Email is required</span>
                         <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
                     </p>
                 </div>
-            </div>
 
-            <div>
-                <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
-                <div class="mt-2">
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-base font-semibold text-black mb-2">
+                        Choose a password
+                    </label>
                     <input id="password" type="password" formControlName="password" required autocomplete="new-password"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        [class.outline-red-500]="password?.invalid && password?.touched" />
-                    <p *ngIf="password?.invalid && password?.touched" class="mt-1 text-sm text-red-600">
+                        placeholder="At least 6 characters"
+                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                        [class.border-red-500]="password?.invalid && password?.touched" />
+                    <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-black">
                         <span *ngIf="password?.errors?.['required']">Password is required</span>
                         <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
                     </p>
                 </div>
-            </div>
 
-            <div>
-                <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900">Confirm
-                    Password</label>
-                <div class="mt-2">
+                <!-- Password Confirmation Field -->
+                <div>
+                    <label for="password_confirmation" class="block text-base font-semibold text-black mb-2">
+                        Confirm your password
+                    </label>
                     <input id="password_confirmation" type="password" formControlName="password_confirmation" required
-                        autocomplete="new-password"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        [class.outline-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
+                        autocomplete="new-password" placeholder="Type it again"
+                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                        [class.border-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
                     <p *ngIf="password_confirmation?.invalid && password_confirmation?.touched"
-                        class="mt-1 text-sm text-red-600">
+                        class="mt-2 text-sm text-black">
                         <span *ngIf="password_confirmation?.errors?.['required']">Please confirm your password</span>
                     </p>
                     <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
-                        class="mt-1 text-sm text-red-600">
+                        class="mt-2 text-sm text-black">
                         Passwords do not match
                     </p>
                 </div>
-            </div>
 
-            <div>
-                <button type="submit" [disabled]="isLoading || registerForm.invalid"
-                    class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span *ngIf="!isLoading">Start free trial</span>
-                    <span *ngIf="isLoading">Creating account...</span>
-                </button>
-            </div>
-        </form>
+                <!-- Terms Agreement Checkbox -->
+                <div class="pt-2">
+                    <label class="flex items-start cursor-pointer group">
+                        <input type="checkbox" formControlName="termsAgreed"
+                            class="mt-1 h-5 w-5 rounded border-2 border-black text-black focus:ring-2 focus:ring-black focus:ring-offset-2 cursor-pointer" />
+                        <span class="ml-3 text-base text-black">
+                            I agree to the Meribas
+                            <a href="#" class="underline hover:no-underline">Terms of Service</a>
+                            and
+                            <a href="#" class="underline hover:no-underline">Privacy Policy</a>.
+                        </span>
+                    </label>
+                    <p *ngIf="termsAgreed?.invalid && termsAgreed?.touched" class="mt-2 text-sm text-black ml-8">
+                        You must agree to the terms to continue
+                    </p>
+                </div>
 
-        <p class="mt-10 text-center text-sm/6 text-gray-500">
-            Already have an account?
-            <a routerLink="/login" class="font-semibold text-indigo-600 hover:text-indigo-500">Sign in</a>
-        </p>
+                <!-- Submit Button -->
+                <div class="pt-4">
+                    <button type="submit" [disabled]="isLoading || registerForm.invalid"
+                        class="w-full px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                        <span *ngIf="!isLoading">Last step: create your account →</span>
+                        <span *ngIf="isLoading">Creating account...</span>
+                    </button>
+                </div>
+
+                <!-- Sign In Link -->
+                <div class="text-center pt-2">
+                    <p class="text-base text-gray-600">
+                        Already have an account?
+                        <a routerLink="/login" class="text-black underline hover:no-underline font-semibold">Sign in</a>
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center border-t border-gray-200">
+        <p class="text-base text-gray-600">
+            Questions? Need a hand?
+            <a href="#" class="text-black underline hover:no-underline font-semibold">Support can help</a>.
+        </p>
+    </footer>
 </div>

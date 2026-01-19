@@ -26,7 +26,8 @@ export class RegisterComponent {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      password_confirmation: ['', [Validators.required]]
+      password_confirmation: ['', [Validators.required]],
+      termsAgreed: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -175,7 +176,13 @@ export class RegisterComponent {
     return this.registerForm.get('password');
   }
 
+}
+
   get password_confirmation() {
-    return this.registerForm.get('password_confirmation');
-  }
+  return this.registerForm.get('password_confirmation');
+}
+
+  get termsAgreed() {
+  return this.registerForm.get('termsAgreed');
+}
 }
