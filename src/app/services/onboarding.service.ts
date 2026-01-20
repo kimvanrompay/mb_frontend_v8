@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
     RecruiterQuestionsResponse,
@@ -23,9 +23,19 @@ export class OnboardingService {
      * @param locale Language code (en, nl, fr, de, es)
      */
     getRecruiterQuestions(locale: Locale = 'en'): Observable<RecruiterQuestionsResponse> {
+        // Add cache-busting headers to prevent 304 responses
+        const headers = new HttpHeaders({
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        });
+
         return this.http.get<RecruiterQuestionsResponse>(
             `${this.API_URL}/onboarding/recruiter_questions`,
-            { params: { locale } }
+            {
+                params: { locale },
+                headers: headers
+            }
         );
     }
 
@@ -48,65 +58,57 @@ export class OnboardingService {
     validateAnswers(answers: Answer[]): { valid: boolean; errors: string[] } {
         const errors: string[] = [];
 
-        // Check all 27 questions are answered
+        // Check total number of answers
         if (answers.length !== 27) {
             errors.push(`All 27 questions must be answered. Currently answered: ${answers.length}`);
-            return { valid: false, errors };
         }
 
-        // Check for duplicate question IDs
-        const questionIds = answers.map(a => a.question_id);
-        const uniqueIds = new Set(questionIds);
-        if (uniqueIds.size !== questionIds.length) {
-            errors.push('Duplicate question answers found');
-        }
-
-        // Validate each answer
-        answers.forEach((answer, index) => {
-            const { question_id, value } = answer;
-
-            // Validate question ID (1-27)
-            if (question_id < 1 || question_id > 27 || !Number.isInteger(question_id)) {
-                errors.push(`Invalid question ID at answer ${index + 1}: ${question_id}`);
+        // Check each answer
+        answers.forEach(answer => {
+            if (!answer.question_id) {
+                errors.push('All answers must have a question_id');
             }
-
-            // Validate value (1-5)
-            if (value < 1 || value > 5 || !Number.isInteger(value)) {
-                errors.push(`Invalid answer value for question ${question_id}: ${value}. Must be between 1-5`);
+            if (answer.value < 1 || answer.value > 5) {
+                errors.push(`Answer value must be between 1 and 5. Got: ${answer.value}`);
             }
         });
 
-        // Check all question IDs 1-27 are present
-        const expectedIds = Array.from({ length: 27 }, (_, i) => i + 1);
-        const missingIds = expectedIds.filter(id => !questionIds.includes(id));
-        if (missingIds.length > 0) {
-            errors.push(`Missing answers for questions: ${missingIds.join(', ')}`);
+        // Check for duplicate question IDs
+        const questionIds = answers.map(a => a.question_id);
+        const duplicates = questionIds.filter((id, index) => questionIds.indexOf(id) !== index);
+        if (duplicates.length > 0) {
+            errors.push(`Duplicate answers found for questions: ${duplicates.join(', ')}`);
         }
 
-        return { valid: errors.length === 0, errors };
+        return {
+            valid: errors.length === 0,
+            errors
+        };
     }
 
     /**
-     * Check if all questions have been answered
+     * Check if all required questions have been answered
      * @param answers Current answers array
+     * @returns True if all 27 questions are answered
      */
     isComplete(answers: Answer[]): boolean {
-        return answers.length === 27 &&
-            new Set(answers.map(a => a.question_id)).size === 27;
+        return answers.length === 27;
     }
 
     /**
-     * Get current progress percentage
+     * Get progress percentage
      * @param answers Current answers array
+     * @returns Progress percentage (0-100)
      */
     getProgress(answers: Answer[]): number {
         return Math.round((answers.length / 27) * 100);
     }
 
     /**
-     * Get answer for a specific question
+     * Get an answer for a specific question
      * @param answers Current answers array
      * @param questionId Question ID to find
+     * @returns Answer value or null if not found
      */
     getAnswerForQuestion(answers: Answer[], questionId: number): AnswerValue | null {
         const answer = answers.find(a => a.question_id === questionId);
