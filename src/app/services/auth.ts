@@ -3,23 +3,25 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
-export interface LoginRequest {
+export interface User {
+  id: string;
   email: string;
-  password: string;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  password_confirmation: string;
+  first_name: string;
+  last_name: string;
+  full_name: string;
+  role: 'user' | 'admin' | 'owner';
+  active: boolean;
+  tenant: {
+    id: string;
+    name: string;
+    subdomain: string;
+  };
 }
 
 export interface AuthResponse {
   token: string;
-  user: {
-    id: number;
-    email: string;
-  };
+  user: User;
+  message?: string;
 }
 
 export interface AuthError {
@@ -39,26 +41,56 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasToken());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
+  // Current user state
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
-  login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, credentials)
+  /**
+   * Load current user data from /me endpoint
+   */
+  loadMe(): Observable<{ user: User }> {
+    if (!this.hasToken()) {
+      return throwError(() => new Error('No token available'));
+    }
+
+    return this.http.get<{ user: User }>(`${this.API_URL}/auth/me`)
       .pipe(
         tap(response => {
-          this.setToken(response.token);
+          this.currentUserSubject.next(response.user);
           this.isAuthenticatedSubject.next(true);
         })
       );
   }
 
-  register(userData: RegisterRequest): Observable<AuthResponse> {
+  /**
+   * Get current user synchronously (from cache)
+   */
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
+  }
+
+  login(credentials: any): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/auth/login`, credentials)
+      .pipe(
+        tap(response => {
+          this.setToken(response.token);
+          this.currentUserSubject.next(response.user);
+          this.isAuthenticatedSubject.next(true);
+        })
+      );
+  }
+
+  register(userData: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.API_URL}/auth/register`, userData)
       .pipe(
         tap(response => {
           this.setToken(response.token);
+          this.currentUserSubject.next(response.user);
           this.isAuthenticatedSubject.next(true);
         })
       );
@@ -66,6 +98,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
+    this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
     this.router.navigate(['/login']);
   }
