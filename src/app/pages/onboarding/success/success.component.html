@@ -1,0 +1,87 @@
+<div class="onboarding-container">
+    <div class="flex-1 flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-3xl glass-card rounded-2xl p-12 text-center">
+            <!-- Success Icon -->
+            <div class="mb-8 animate-bounce-in">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-emerald-100 mb-6">
+                    <svg class="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold text-black mb-2">
+                    🎉 Assessment Complete!
+                </h1>
+                <p class="text-xl text-gray-600">
+                    You've successfully created your personality profile
+                </p>
+            </div>
+
+            <!-- Profile Code Display -->
+            <div class="mb-10">
+                <p class="text-sm text-gray-600 uppercase tracking-wider mb-3">Your Unique Profile Code</p>
+                <div
+                    class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-emerald-700 to-emerald-500 rounded-2xl shadow-xl mb-4">
+                    <span class="text-4xl font-mono font-bold text-white tracking-widest letter-spacing-lg">
+                        {{ profileCode }}
+                    </span>
+                </div>
+                <p class="text-sm text-gray-600 max-w-lg mx-auto">
+                    This 9-letter code represents your unique personality blend, ranked from highest to lowest priority.
+                </p>
+            </div>
+
+            <!-- Top 3 Types -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-black mb-6">Your Top 3 Personality Types</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div *ngFor="let type of topThreeTypes; let i = index"
+                        class="relative p-6 bg-white/60 rounded-2xl border-2 border-black/10 hover:border-black/30 transition-all hover:scale-105">
+                        <!-- Rank Badge -->
+                        <div
+                            class="absolute -top-3 -left-3 w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-lg shadow-lg">
+                            {{ i + 1 }}
+                        </div>
+
+                        <!-- Type Info -->
+                        <div class="text-5xl mb-3">{{ type.emoji }}</div>
+                        <h3 class="text-lg font-bold text-black mb-2">{{ type.name }}</h3>
+                        <p class="text-sm text-gray-600">{{ type.description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- What's Next -->
+            <div class="mb-8 p-6 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-2xl border border-emerald-200">
+                <h3 class="text-xl font-semibold text-black mb-3">What's Next?</h3>
+                <div class="flex flex-col md:flex-row gap-4 text-left text-gray-700">
+                    <div class="flex-1">
+                        <div class="text-2xl mb-2">📊</div>
+                        <h4 class="font-semibold mb-1">Personalized Dashboard</h4>
+                        <p class="text-sm">Your Meribas experience is now tailored to your personality</p>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-2xl mb-2">💡</div>
+                        <h4 class="font-semibold mb-1">Smart Insights</h4>
+                        <p class="text-sm">Get recommendations based on your unique profile</p>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-2xl mb-2">🎯</div>
+                        <h4 class="font-semibold mb-1">Growth Tools</h4>
+                        <p class="text-sm">Access resources matched to your personality type</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <button (click)="continueToDashboard()"
+                class="px-10 py-4 text-xl font-semibold text-white bg-black rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Continue to Dashboard →
+            </button>
+
+            <!-- Footer Note -->
+            <p class="mt-6 text-sm text-gray-500">
+                You can view and update your personality profile anytime in settings
+            </p>
+        </div>
+    </div>
+</div>

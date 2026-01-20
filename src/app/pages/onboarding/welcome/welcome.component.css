@@ -1,0 +1,83 @@
+/* Reuse animated dark green gradient background */
+@keyframes cloudyMotion {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+.onboarding-container {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(135deg,
+            rgba(6, 78, 59, 0.85),
+            rgba(4, 120, 87, 0.75),
+            rgba(5, 46, 37, 0.9),
+            rgba(6, 95, 70, 0.8),
+            rgba(16, 185, 129, 0.7));
+    background-size: 400% 400%;
+    animation: cloudyMotion 20s ease infinite;
+}
+
+.onboarding-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(100px);
+    pointer-events: none;
+}
+
+.glass-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 32px 0 rgba(6, 78, 59, 0.2),
+        0 0 80px 0 rgba(16, 185, 129, 0.15),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.glass-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.1),
+            transparent);
+    background-size: 200% 100%;
+    animation: shimmer 8s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: inherit;
+}

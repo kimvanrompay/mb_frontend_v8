@@ -1,0 +1,201 @@
+<div class="onboarding-container">
+    <div class="flex-1 flex flex-col items-center px-6 py-8">
+        <!-- Header -->
+        <div class="w-full max-w-6xl mb-8">
+            <div class="glass-card rounded-2xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-black">Rank Your Personality Types</h1>
+                        <p class="text-gray-600 mt-1">Select types in order of how much they resonate with you</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm text-gray-600">Progress</div>
+                        <div class="text-2xl font-bold text-black">{{ rankedTypes.length }}/9</div>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <div class="bg-black h-full transition-all duration-500 ease-out" [style.width.%]="progressPercent">
+                    </div>
+                </div>
+
+                <!-- Current Step -->
+                <div *ngIf="!isComplete" class="mt-4 text-center">
+                    <p class="text-lg font-semibold text-black">
+                        Step {{ currentStep }} of 9: Select your
+                        <span class="text-emerald-700">{{ getRankLabel(currentStep) }}</span>
+                        priority type
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="w-full max-w-6xl mb-6">
+            <div class="glass-card rounded-xl p-4 border-2 border-red-500 bg-red-50/90">
+                <div class="flex items-start">
+                    <svg class="w-6 h-6 text-red-600 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <p class="text-red-800 font-medium">{{ errorMessage }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ranked Types (Review Section) -->
+        <div *ngIf="rankedTypes.length > 0" class="w-full max-w-6xl mb-8">
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-black mb-4">Your Rankings</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div *ngFor="let type of rankedTypes"
+                        class="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-black/10 hover:bg-white/80 transition-colors">
+                        <div class="flex items-center">
+                            <div class="text-3xl mr-3">{{ type.emoji }}</div>
+                            <div>
+                                <div class="text-sm font-semibold text-black">{{ getRankLabel(getRank(type.id)) }}
+                                    Priority</div>
+                                <div class="text-sm text-gray-700">{{ type.name }}</div>
+                            </div>
+                        </div>
+                        <button (click)="unrankType(type.id)" class="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                            title="Remove ranking">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unranked Types (Selection Grid) -->
+        <div *ngIf="unrankedTypes.length > 0" class="w-full max-w-6xl">
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-black mb-6">Available Types</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div *ngFor="let type of unrankedTypes"
+                        class="type-card glass-card rounded-xl p-6 cursor-pointer hover:scale-105 transition-all duration-300"
+                        (click)="selectType(type)">
+                        <!-- Emoji Icon -->
+                        <div class="text-6xl text-center mb-4">{{ type.emoji }}</div>
+
+                        <!-- Type Name -->
+                        <h3 class="text-xl font-bold text-black text-center mb-2">{{ type.name }}</h3>
+
+                        <!-- Short Description -->
+                        <p class="text-sm text-gray-600 text-center mb-4 line-clamp-2">{{ type.description }}</p>
+
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2">
+                            <button (click)="viewDetails(type); $event.stopPropagation()"
+                                class="flex-1 px-4 py-2 text-sm font-medium text-black border-2 border-black rounded-lg hover:bg-black hover:text-white transition-colors">
+                                Learn More
+                            </button>
+                            <button
+                                class="flex-1 px-4 py-2 text-sm font-semibold text-white bg-black rounded-lg hover:bg-gray-800 transition-colors">
+                                Select
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="w-full max-w-6xl mt-8 flex gap-4">
+            <button *ngIf="rankedTypes.length > 0" (click)="goBack()"
+                class="px-6 py-3 text-lg font-semibold text-black bg-white border-2 border-black rounded-xl hover:bg-gray-100 transition-colors">
+                ← Back
+            </button>
+            <button *ngIf="isComplete" (click)="submitAssessment()" [disabled]="isSubmitting"
+                class="flex-1 px-8 py-3 text-lg font-semibold text-white bg-black rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl">
+                <span *ngIf="!isSubmitting">Submit Assessment →</span>
+                <span *ngIf="isSubmitting">Submitting...</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div *ngIf="showDetailModal && selectedType"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6 z-50"
+        (click)="closeModal()">
+        <div class="glass-card rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            (click)="$event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex justify-between items-start mb-6">
+                <div class="flex items-center">
+                    <div class="text-6xl mr-4">{{ selectedType.emoji }}</div>
+                    <div>
+                        <h2 class="text-3xl font-bold text-black">{{ selectedType.name }}</h2>
+                        <p class="text-gray-600 mt-1">Type {{ selectedType.id }}</p>
+                    </div>
+                </div>
+                <button (click)="closeModal()" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-6">
+                <p class="text-lg text-gray-700">{{ selectedType.description }}</p>
+            </div>
+
+            <!-- Core Motivation -->
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-black mb-3">Core Motivation</h3>
+                <ul class="space-y-2">
+                    <li *ngFor="let motivation of selectedType.coreMotivation" class="flex items-start">
+                        <svg class="w-5 h-5 text-emerald-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">{{ motivation }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Key Traits -->
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold text-black mb-3">Key Traits</h3>
+                <ul class="space-y-2">
+                    <li *ngFor="let trait of selectedType.keyTraits" class="flex items-start">
+                        <svg class="w-5 h-5 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-700">{{ trait }}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- At Their Best -->
+            <div class="mb-8 p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                <h3 class="text-lg font-semibold text-emerald-900 mb-2">At Their Best</h3>
+                <p class="text-emerald-800">{{ selectedType.atTheirBest }}</p>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-4">
+                <button (click)="closeModal()"
+                    class="flex-1 px-6 py-3 text-lg font-semibold text-black bg-white border-2 border-black rounded-xl hover:bg-gray-100 transition-colors">
+                    Close
+                </button>
+                <button *ngIf="!isRanked(selectedType.id)" (click)="selectFromModal()"
+                    class="flex-1 px-6 py-3 text-lg font-semibold text-white bg-black rounded-xl hover:bg-gray-800 transition-colors">
+                    Select as {{ getRankLabel(currentStep) }} →
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

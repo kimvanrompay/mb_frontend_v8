@@ -1,0 +1,60 @@
+<div class="onboarding-container">
+    <div class="flex-1 flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-2xl glass-card rounded-2xl p-12 text-center">
+            <!-- Icon/Illustration -->
+            <div class="mb-8">
+                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-black/5 mb-6">
+                    <svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold text-black mb-4">
+                    Welcome to Your Personality Profile!
+                </h1>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-10 space-y-4">
+                <p class="text-xl text-gray-700 leading-relaxed">
+                    Discover your unique personality blend by ranking 9 Enneagram types in order of how much they
+                    resonate with you.
+                </p>
+                <p class="text-lg text-gray-600">
+                    This personalized assessment will help us tailor your Meribas experience to your natural strengths
+                    and preferences.
+                </p>
+            </div>
+
+            <!-- Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
+                    <div class="text-4xl mb-3">⏱️</div>
+                    <h3 class="font-semibold text-black mb-2">Quick & Easy</h3>
+                    <p class="text-sm text-gray-600">Takes just 3-5 minutes to complete</p>
+                </div>
+                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
+                    <div class="text-4xl mb-3">🎯</div>
+                    <h3 class="font-semibold text-black mb-2">Personalized</h3>
+                    <p class="text-sm text-gray-600">Get insights tailored to you</p>
+                </div>
+                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
+                    <div class="text-4xl mb-3">🔒</div>
+                    <h3 class="font-semibold text-black mb-2">Private</h3>
+                    <p class="text-sm text-gray-600">Your results are confidential</p>
+                </div>
+            </div>
+
+            <!-- CTA Button -->
+            <button (click)="startAssessment()"
+                class="px-8 py-4 text-xl font-semibold text-white bg-black rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
+                Start Assessment →
+            </button>
+
+            <!-- Skip Option -->
+            <p class="mt-6 text-sm text-gray-500">
+                You can always complete this later in your settings
+            </p>
+        </div>
+    </div>
+</div>
