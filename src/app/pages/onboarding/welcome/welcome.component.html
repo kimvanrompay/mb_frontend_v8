@@ -1,78 +1,56 @@
-<div class="onboarding-container">
-    <div class="flex-1 flex items-center justify-center px-6 py-12">
-        <div class="w-full max-w-2xl glass-card rounded-2xl p-12 text-center">
-            <!-- Icon/Illustration -->
-            <div class="mb-8">
-                <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-black/5 mb-6">
-                    <svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                </div>
-                <h1 class="text-5xl font-bold text-black mb-4">
-                    Welcome to Meribas! 👋
+<div class="fixed inset-0 bg-white flex items-center justify-center px-4">
+    <div class="w-full max-w-2xl">
+        <div class="text-center">
+            <!-- Typography-First Header -->
+            <div class="mb-12">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">
+                    Welcome to Meribas
+                </p>
+                <h1 class="text-5xl font-light text-black mb-4 leading-tight tracking-tight">
+                    Discover Your<br>
+                    <span class="font-semibold">Recruiter Type</span>
                 </h1>
-            </div>
-
-            <!-- Description -->
-            <div class="mb-10 space-y-4">
-                <p class="text-xl text-gray-700 leading-relaxed">
-                    Before we get started, let's discover your unique recruiter personality type.
-                </p>
-                <p class="text-lg text-gray-600">
-                    This quick assessment will help us personalize your Meribas experience and provide insights tailored to your recruiting style.
+                <p class="text-lg text-gray-600 max-w-xl mx-auto leading-relaxed">
+                    A brief personality assessment to personalize your recruiting experience
                 </p>
             </div>
 
-            <!-- Features -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
-                    <div class="text-4xl mb-3">⏱️</div>
-                    <h3 class="font-semibold text-black mb-2">5-7 Minutes</h3>
-                    <p class="text-sm text-gray-600">27 quick questions about your recruiting style</p>
+            <!-- Typography-Based Features -->
+            <div class="grid grid-cols-3 gap-8 mb-12 max-w-xl mx-auto">
+                <div>
+                    <div class="text-3xl font-bold text-black mb-1">5–7</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Minutes</div>
                 </div>
-                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
-                    <div class="text-4xl mb-3">🎯</div>
-                    <h3 class="font-semibold text-black mb-2">Personalized</h3>
-                    <p class="text-sm text-gray-600">Discover your recruiter type and strengths</p>
+                <div>
+                    <div class="text-3xl font-bold text-black mb-1">27</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Questions</div>
                 </div>
-                <div class="p-6 bg-white/50 rounded-xl border border-black/10">
-                    <div class="text-4xl mb-3">🔒</div>
-                    <h3 class="font-semibold text-black mb-2">Private</h3>
-                    <p class="text-sm text-gray-600">Your results are 100% confidential</p>
+                <div>
+                    <div class="text-3xl font-bold text-black mb-1">100%</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Private</div>
                 </div>
             </div>
 
-            <!-- What to Expect -->
-            <div class="mb-10 text-left bg-white/30 rounded-xl p-6 border border-black/5">
-                <h3 class="font-semibold text-black mb-4 text-lg">What to expect:</h3>
-                <ul class="space-y-3 text-gray-700">
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1">📝</span>
-                        <span>Rate 27 statements about how you approach recruiting</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1">💭</span>
-                        <span>Answer honestly - there are no right or wrong answers</span>
-                    </li>
-                    <li class="flex items-start">
-                        <span class="mr-3 mt-1">✨</span>
-                        <span>Get your recruiter personality type with personalized insights</span>
-                    </li>
-                </ul>
+            <!-- Simple List -->
+            <div class="mb-12 text-left max-w-md mx-auto">
+                <p class="text-sm font-medium text-gray-900 mb-3">What to expect:</p>
+                <div class="space-y-2 text-sm text-gray-600 leading-relaxed">
+                    <p>→ Rate statements about your recruiting approach</p>
+                    <p>→ Answer honestly—no right or wrong responses</p>
+                    <p>→ Receive your personalized recruiter profile</p>
+                </div>
             </div>
 
-            <!-- CTA Button -->
-            <button (click)="startAssessment()"
-                class="px-8 py-4 text-xl font-semibold text-white bg-black rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
-                Start Assessment →
-            </button>
-
-            <!-- Skip Option -->
-            <p class="mt-6 text-sm text-gray-500">
-                You can complete this later in your profile settings
-            </p>
+            <!-- Clean CTA -->
+            <div class="space-y-3">
+                <button (click)="startAssessment()"
+                    class="w-full max-w-sm mx-auto block px-8 py-4 text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors duration-200">
+                    Begin Assessment
+                </button>
+                <p class="text-xs text-gray-400">
+                    Complete later in settings
+                </p>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,27 @@
+/* Click outside directive simulation */
+:host {
+    display: block;
+}
+
+/* Smooth transitions for dropdowns */
+.absolute {
+    animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Focus ring styling */
+button:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
+}

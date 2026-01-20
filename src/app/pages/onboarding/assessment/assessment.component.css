@@ -1,10 +1,12 @@
-/* Answer Option Styles */
+/* Typography-First Styles */
+
+/* Answer Options */
 .answer-option {
-    transform: translateX(0);
+    transition: all 0.2s ease-out;
 }
 
 .answer-option:hover {
-    transform: translateX(4px);
+    background-color: #fafafa;
 }
 
 .answer-option.selected {
@@ -13,92 +15,38 @@
     color: #fff;
 }
 
-.answer-option.selected .text-black {
-    color: #fff !important;
+.answer-option.selected span {
+    color: #fff;
 }
 
-.answer-option.selected .border-gray-300 {
+.answer-option.selected .border-gray-200 {
     border-color: #fff;
 }
 
-.answer-option.selected .w-3 {
-    background-color: #fff;
-}
-
-/* Progress Dots */
+/* Progress Indicators */
 .progress-dot {
-    background-color: #E5E7EB;
-}
-
-.progress-dot.answered {
-    background-color: #000;
-}
-
-.progress-dot.current {
-    background-color: #000;
-    width: 2rem;
-}
-
-/* Keyboard Shortcut Styles */
-kbd {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-out;
 }
 
 /* Smooth Transitions */
-.answer-option,
-.progress-dot {
+button {
     transition: all 0.2s ease-out;
+}
+
+/* Keyboard Hint */
+kbd {
+    font-family: ui-monospace, monospace;
+}
+
+/* Focus States */
+button:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
 }
 
 /* Mobile Optimizations */
 @media (max-width: 640px) {
     .answer-option {
-        padding: 1rem 1.25rem;
-    }
-    
-    .answer-option:hover {
-        transform: none;
+        padding: 1rem;
     }
 }
-
-/* Focus States */
-.answer-option:focus {
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Loading Animation */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-.animate-pulse {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Fade In Animation */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.answer-option {
-    animation: fadeIn 0.3s ease-out;
-}
-
-.answer-option:nth-child(1) { animation-delay: 0.05s; }
-.answer-option:nth-child(2) { animation-delay: 0.1s; }
-.answer-option:nth-child(3) { animation-delay: 0.15s; }
-.answer-option:nth-child(4) { animation-delay: 0.2s; }
-.answer-option:nth-child(5) { animation-delay: 0.25s; }

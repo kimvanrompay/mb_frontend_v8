@@ -2,170 +2,119 @@
 <div *ngIf="isLoading" class="fixed inset-0 bg-white flex items-center justify-center">
     <div class="text-center">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
-        <p class="text-gray-600">Loading your results...</p>
+        <p class="text-sm text-gray-500 uppercase tracking-wide">Loading</p>
     </div>
 </div>
 
-<!-- Success Screen -->
-<div *ngIf="!isLoading && result" class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 px-4 sm:px-6 py-12">
-    <div class="max-w-4xl mx-auto">
+<!-- Success Screen - Typography First -->
+<div *ngIf="!isLoading && result" class="fixed inset-0 bg-white overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-2xl">
 
-        <!-- Celebration Header -->
-        <div class="text-center mb-12">
-            <div
-                class="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-black/5 mb-6 text-5xl sm:text-6xl">
-                {{ typeEmoji }}
-            </div>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-black mb-4">
-                Congratulations! 🎉
-            </h1>
-            <p class="text-xl sm:text-2xl text-gray-600">
-                You've completed the assessment
-            </p>
-        </div>
-
-        <!-- Main Result Card -->
-        <div class="glass-card rounded-2xl p-8 sm:p-12 mb-8">
-            <div class="text-center mb-8">
-                <div class="inline-block px-4 py-2 bg-black/5 rounded-full text-sm font-medium text-gray-600 mb-4">
-                    Your Recruiter Type
-                </div>
-                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-black mb-4">
-                    {{ result.type_name }}
-                </h2>
-                <p class="text-lg sm:text-xl text-gray-700 leading-relaxed max-w-2xl mx-auto">
+            <!-- Typography Header -->
+            <div class="text-center mb-16">
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
+                    Assessment Complete
+                </p>
+                <h1 class="text-5xl font-light text-black mb-4 leading-tight">
+                    You are
+                    <br><span class="font-semibold">{{ result.type_name }}</span>
+                </h1>
+                <p class="text-lg text-gray-600 max-w-lg mx-auto leading-relaxed">
                     {{ result.type_description }}
                 </p>
             </div>
 
-            <!-- Dominant Type Score -->
-            <div class="bg-white/50 rounded-xl p-6 border border-black/10 mb-8">
+            <!-- Score Display - Typography -->
+            <div class="mb-12">
                 <div class="flex items-center justify-between mb-3">
-                    <span class="font-semibold text-black">Dominant Type</span>
-                    <span class="text-2xl font-bold text-black">
-                        {{ result.all_scores[result.dominant_type] }}/15
+                    <span class="text-sm text-gray-500 uppercase tracking-wide">Your Score</span>
+                    <span class="text-2xl font-light text-black">
+                        {{ result.all_scores[result.dominant_type] }}<span class="text-gray-400">/15</span>
                     </span>
                 </div>
-                <div class="w-full bg-gray-200 rounded-full h-3">
-                    <div class="bg-black h-3 rounded-full transition-all duration-1000"
+                <div class="w-full h-px bg-gray-200">
+                    <div class="h-px bg-black transition-all duration-1000"
                         [style.width.%]="getScorePercentage(result.all_scores[result.dominant_type])"></div>
                 </div>
             </div>
 
-            <!-- Top 3 Types -->
-            <div class="mb-8">
-                <h3 class="text-lg font-semibold text-black mb-4">Your Top 3 Recruiter Types</h3>
+            <!-- Top 3 - Clean Typography -->
+            <div class="mb-12">
+                <p class="text-sm text-gray-500 uppercase tracking-wide mb-4">Top Three Types</p>
                 <div class="space-y-3">
                     <div *ngFor="let item of topThreeTypes; let i = index"
-                        class="bg-white/50 rounded-xl p-4 border border-black/10 flex items-center justify-between">
+                        class="flex items-center justify-between py-3 border-b border-gray-100">
                         <div class="flex items-center space-x-4">
-                            <div
-                                class="flex-shrink-0 w-10 h-10 rounded-full bg-black/5 flex items-center justify-center font-bold text-black">
-                                {{ i + 1 }}
-                            </div>
+                            <span class="text-lg font-light text-gray-400">{{ i + 1 }}</span>
                             <div>
-                                <div class="font-semibold text-black">{{ item.name }}</div>
-                                <div class="text-sm text-gray-600">Type {{ item.type }}</div>
+                                <div class="text-base font-medium text-black">{{ item.name }}</div>
+                                <div class="text-xs text-gray-500">Type {{ item.type }}</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-lg font-bold text-black">{{ item.score }}</div>
-                            <div class="text-xs text-gray-500">points</div>
-                        </div>
+                        <span class="text-base font-light text-black">{{ item.score }}</span>
                     </div>
                 </div>
             </div>
 
-            <!-- All Scores Breakdown -->
-            <details class="group">
+            <!-- All Scores - Minimal -->
+            <details class="group mb-12">
                 <summary
-                    class="cursor-pointer list-none flex items-center justify-between p-4 bg-white/30 rounded-xl hover:bg-white/50 transition">
-                    <span class="font-semibold text-black">View Full Score Breakdown</span>
-                    <svg class="w-5 h-5 text-gray-600 transition-transform group-open:rotate-180" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
+                    class="cursor-pointer list-none flex items-center justify-between py-3 border-t border-gray-200 text-sm text-gray-600 hover:text-black transition-colors">
+                    <span class="uppercase tracking-wide">View All Scores</span>
+                    <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </summary>
                 <div class="mt-4 space-y-2">
-                    <div *ngFor="let item of sortedScores"
-                        class="flex items-center justify-between p-3 bg-white/30 rounded-lg">
+                    <div *ngFor="let item of sortedScores" class="flex items-center justify-between py-2 text-sm">
+                        <span class="font-light text-gray-600">{{ item.name }}</span>
                         <div class="flex items-center space-x-3">
-                            <span class="text-lg">{{ typeEmojis[item.type] }}</span>
-                            <span class="text-sm font-medium text-gray-700">{{ item.name }}</span>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="w-32 bg-gray-200 rounded-full h-2">
-                                <div class="bg-gray-600 h-2 rounded-full transition-all"
+                            <div class="w-32 h-px bg-gray-200">
+                                <div class="h-px bg-gray-400 transition-all"
                                     [style.width.%]="getScorePercentage(item.score)"></div>
                             </div>
-                            <span class="text-sm font-medium text-gray-600 w-8 text-right">{{ item.score }}</span>
+                            <span class="font-light text-gray-900 w-6 text-right">{{ item.score }}</span>
                         </div>
                     </div>
                 </div>
             </details>
-        </div>
 
-        <!-- What This Means -->
-        <div class="bg-white rounded-2xl p-8 sm:p-10 mb-8 border border-gray-200">
-            <h3 class="text-2xl font-bold text-black mb-6">What This Means for You</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex items-start space-x-3">
-                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center">
-                        <span class="text-lg">💡</span>
+            <!-- Benefits - Typography Grid -->
+            <div class="mb-12 pb-12 border-t border-gray-200 pt-12">
+                <p class="text-sm text-gray-500 uppercase tracking-wide mb-6">What This Means</p>
+                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
+                    <div>
+                        <h4 class="text-sm font-medium text-black mb-1">Personalized Experience</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">Dashboard tailored to your type</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-black mb-1">Personalized Experience</h4>
-                        <p class="text-sm text-gray-600">
-                            Your Meribas dashboard will be tailored to your recruiter type
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center">
-                        <span class="text-lg">📊</span>
+                        <h4 class="text-sm font-medium text-black mb-1">Better Insights</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">Recommendations that match</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-black mb-1">Better Insights</h4>
-                        <p class="text-sm text-gray-600">
-                            Get recommendations that match your recruiting style
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center">
-                        <span class="text-lg">🎯</span>
+                        <h4 class="text-sm font-medium text-black mb-1">Optimized Workflow</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">Tools aligned with your style</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-black mb-1">Optimized Workflow</h4>
-                        <p class="text-sm text-gray-600">
-                            Tools and features aligned with how you work best
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-3">
-                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center">
-                        <span class="text-lg">🚀</span>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-black mb-1">Growth Path</h4>
-                        <p class="text-sm text-gray-600">
-                            Development suggestions based on your personality
-                        </p>
+                        <h4 class="text-sm font-medium text-black mb-1">Growth Path</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">Development suggestions</p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- CTA Button -->
-        <div class="text-center">
-            <button (click)="continueToDashboard()"
-                class="px-12 py-4 text-xl font-semibold text-white bg-black rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-black/20 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl">
-                Continue to Dashboard →
-            </button>
-            <p class="mt-4 text-sm text-gray-500">
-                You can view your results anytime in your profile
-            </p>
-        </div>
+            <!-- Clean CTA -->
+            <div class="text-center">
+                <button (click)="continueToDashboard()"
+                    class="px-12 py-4 text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors duration-200">
+                    Continue to Dashboard
+                </button>
+                <p class="mt-4 text-xs text-gray-400">
+                    View results anytime in your profile
+                </p>
+            </div>
 
+        </div>
     </div>
 </div>
