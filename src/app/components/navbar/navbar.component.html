@@ -1,15 +1,21 @@
-<header class="relative bg-gray-900 border-b border-gray-800">
+<header class="relative bg-white border-b border-gray-200">
     <!-- Top Layer: Logo, Search, Profile -->
     <div class="w-full px-4 sm:px-6">
         <div class="relative flex h-12 justify-between items-center">
 
-            <!-- Logo -->
+            <!-- Logo with Tenant Name -->
             <div class="relative z-10 flex items-center">
                 <a href="/dashboard" class="flex items-center space-x-2">
-                    <div class="w-7 h-7 bg-white rounded flex items-center justify-center">
-                        <span class="text-black font-bold text-xs">M</span>
-                    </div>
-                    <span class="text-lg font-semibold text-white hidden sm:block">Meribas</span>
+                    <!-- Boat Logo -->
+                    <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M12 2L4 9v3l8 4 8-4V9l-8-7zM4 12l8 4 8-4M12 16v6" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 22h18" />
+                    </svg>
+                    <!-- Tenant Name -->
+                    <span class="text-lg font-semibold text-black hidden sm:block">
+                        {{ user?.tenant?.name || 'Company' }}
+                    </span>
                 </a>
             </div>
 
@@ -17,7 +23,7 @@
             <div class="relative z-0 flex flex-1 items-center justify-center px-4 sm:absolute sm:inset-0">
                 <div class="grid w-full grid-cols-1 sm:max-w-xs">
                     <input type="search" name="search" placeholder="Search" aria-label="Search"
-                        class="col-start-1 row-start-1 block w-full rounded-md border-0 bg-white/5 py-1 pl-9 pr-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-white" />
+                        class="col-start-1 row-start-1 block w-full rounded-md border border-gray-200 bg-gray-50 py-1 pl-9 pr-3 text-sm text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent" />
                     <svg viewBox="0 0 20 20" fill="currentColor"
                         class="pointer-events-none col-start-1 row-start-1 ml-2.5 w-4 h-4 self-center text-gray-400">
                         <path
@@ -30,7 +36,7 @@
             <!-- Mobile Menu Button -->
             <div class="relative z-10 flex items-center lg:hidden">
                 <button (click)="toggleMobileMenu()" type="button"
-                    class="relative inline-flex items-center justify-center rounded-md p-1.5 text-gray-400 hover:bg-white/5 hover:text-gray-300 focus:outline-none focus:ring-1 focus:ring-white">
+                    class="relative inline-flex items-center justify-center rounded-md p-1.5 text-gray-600 hover:bg-gray-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-black">
                     <span class="sr-only">Open menu</span>
                     <svg *ngIf="!isMobileMenuOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="1.5" class="w-5 h-5">
@@ -49,7 +55,7 @@
 
                 <!-- Notifications -->
                 <button type="button"
-                    class="relative p-1 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-1 focus:ring-white rounded-full">
+                    class="relative p-1 text-gray-600 hover:text-black hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-black rounded-full">
                     <span class="sr-only">View notifications</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5">
                         <path
@@ -61,10 +67,9 @@
                 <!-- Profile Dropdown -->
                 <div class="relative">
                     <button (click)="toggleProfileMenu()" type="button"
-                        class="relative flex rounded-full focus:outline-none focus:ring-1 focus:ring-white">
+                        class="relative flex rounded-full focus:outline-none focus:ring-2 focus:ring-black">
                         <span class="sr-only">Open user menu</span>
-                        <div
-                            class="w-7 h-7 rounded-full bg-gray-700 flex items-center justify-center border border-gray-600">
+                        <div class="w-7 h-7 rounded-full bg-black flex items-center justify-center">
                             <span class="text-white text-xs font-semibold">{{ getUserInitials() }}</span>
                         </div>
                     </button>
@@ -92,62 +97,61 @@
         </div>
 
         <!-- Bottom Layer: Navigation Links -->
-        <nav aria-label="Global" class="hidden lg:flex lg:space-x-2 lg:py-2 border-t border-gray-800">
+        <nav aria-label="Global" class="hidden lg:flex lg:space-x-2 lg:py-2 border-t border-gray-200">
             <a href="/dashboard"
-                class="inline-flex items-center rounded-md bg-gray-800 px-2.5 py-1.5 text-xs font-medium text-white">
+                class="inline-flex items-center rounded-md bg-black px-2.5 py-1.5 text-xs font-medium text-white">
                 Dashboard
             </a>
             <a href="#"
-                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
+                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 hover:text-black transition-colors">
                 Candidates
             </a>
             <a href="#"
-                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
+                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 hover:text-black transition-colors">
                 Jobs
             </a>
             <a href="#"
-                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors">
+                class="inline-flex items-center rounded-md px-2.5 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100 hover:text-black transition-colors">
                 Reports
             </a>
         </nav>
     </div>
 
     <!-- Mobile Menu -->
-    <nav *ngIf="isMobileMenuOpen" aria-label="Global" class="lg:hidden">
+    <nav *ngIf="isMobileMenuOpen" aria-label="Global" class="lg:hidden bg-white border-t border-gray-200">
         <!-- Navigation Links -->
-        <div class="space-y-1 px-2 pb-2 pt-2 border-t border-gray-800">
-            <a href="/dashboard" class="block rounded-md bg-gray-800 px-3 py-1.5 text-sm font-medium text-white">
+        <div class="space-y-1 px-2 pb-2 pt-2">
+            <a href="/dashboard" class="block rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white">
                 Dashboard
             </a>
             <a href="#"
-                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                 Candidates
             </a>
             <a href="#"
-                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                 Jobs
             </a>
             <a href="#"
-                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                class="block rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                 Reports
             </a>
         </div>
 
         <!-- User Info -->
-        <div class="border-t border-gray-800 pb-2 pt-3">
+        <div class="border-t border-gray-200 pb-2 pt-3">
             <div class="flex items-center px-4">
                 <div class="shrink-0">
-                    <div
-                        class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center border border-gray-600">
+                    <div class="w-8 h-8 rounded-full bg-black flex items-center justify-center">
                         <span class="text-white text-sm font-semibold">{{ getUserInitials() }}</span>
                     </div>
                 </div>
                 <div class="ml-3">
-                    <div class="text-sm font-medium text-white">{{ user?.full_name || 'User' }}</div>
-                    <div class="text-xs font-medium text-gray-400">{{ user?.email }}</div>
+                    <div class="text-sm font-medium text-black">{{ user?.full_name || 'User' }}</div>
+                    <div class="text-xs font-medium text-gray-600">{{ user?.email }}</div>
                 </div>
                 <button type="button"
-                    class="relative ml-auto shrink-0 rounded-full p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-1 focus:ring-white">
+                    class="relative ml-auto shrink-0 rounded-full p-1 text-gray-600 hover:text-black hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black">
                     <span class="sr-only">View notifications</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-5 h-5">
                         <path
@@ -159,15 +163,15 @@
 
             <div class="mt-2 space-y-1 px-2">
                 <button (click)="navigateToProfile()"
-                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                     Your Profile
                 </button>
                 <button (click)="navigateToSettings()"
-                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                     Settings
                 </button>
                 <button (click)="logout()"
-                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white">
+                    class="block w-full text-left rounded-md px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-black">
                     Sign Out
                 </button>
             </div>
