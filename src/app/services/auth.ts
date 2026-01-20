@@ -15,6 +15,7 @@ export interface User {
   needs_onboarding: boolean;
   enneagram_priority_order: any;
   enneagram_priority_code: string | null;
+  trial_ends_at?: string;
   tenant: {
     id: string;
     name: string;
