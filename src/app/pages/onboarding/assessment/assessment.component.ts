@@ -56,7 +56,7 @@ export class AssessmentComponent implements OnInit {
         this.error = null;
 
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
-            next: (response) => {
+            next: (response: any) => {
                 this.questions = response.questions;
                 this.isLoading = false;
 
@@ -71,7 +71,7 @@ export class AssessmentComponent implements OnInit {
                     }
                 }
             },
-            error: (error) => {
+            error: (error: any) => {
                 this.isLoading = false;
                 this.error = 'Failed to load questions. Please try again.';
                 this.notificationService.error('Failed to load assessment questions', 'Error');
@@ -212,7 +212,7 @@ export class AssessmentComponent implements OnInit {
         };
 
         this.onboardingService.submitRecruiterAssessment(submission).subscribe({
-            next: (response) => {
+            next: (response: any) => {
                 this.isSubmitting = false;
                 // Clear saved answers
                 sessionStorage.removeItem('assessment_answers');
@@ -221,7 +221,7 @@ export class AssessmentComponent implements OnInit {
                     state: { result: response.result }
                 });
             },
-            error: (error) => {
+            error: (error: any) => {
                 this.isSubmitting = false;
                 this.notificationService.error(
                     error.error?.error || 'Failed to submit assessment',
