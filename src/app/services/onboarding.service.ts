@@ -14,7 +14,7 @@ import {
     providedIn: 'root'
 })
 export class OnboardingService {
-    private readonly API_URL = 'https://api.meribas.com/api/v1';
+    private readonly API_URL = 'https://api.meribas.app/api/v1';
 
     constructor(private http: HttpClient) { }
 
