@@ -10,6 +10,38 @@
                 <p class="text-lg text-gray-600">Just need a few things to get you going…</p>
             </div>
 
+            <!-- Step Indicator -->
+            <div class="flex items-center justify-center mb-8">
+                <div class="flex items-center">
+                    <!-- Step 1 -->
+                    <div class="flex items-center">
+                        <div
+                            [class]="currentStep === 1 ? 'flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-semibold' : 'flex items-center justify-center w-10 h-10 rounded-full border-2 border-black text-black font-semibold'">
+                            1
+                        </div>
+                        <span class="ml-2 text-sm font-semibold" [class.text-black]="currentStep === 1"
+                            [class.text-gray-400]="currentStep !== 1">
+                            Company
+                        </span>
+                    </div>
+
+                    <!-- Separator -->
+                    <div class="mx-4 w-12 h-0.5 bg-gray-300"></div>
+
+                    <!-- Step 2 -->
+                    <div class="flex items-center">
+                        <div
+                            [class]="currentStep === 2 ? 'flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-semibold' : 'flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 text-gray-400 font-semibold'">
+                            2
+                        </div>
+                        <span class="ml-2 text-sm font-semibold" [class.text-black]="currentStep === 2"
+                            [class.text-gray-400]="currentStep !== 2">
+                            Account
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Inline Error Alert -->
             <div *ngIf="errorMessage" class="rounded-md border border-black bg-white p-4 mb-6">
                 <div class="flex">
@@ -32,148 +64,171 @@
             </div>
 
             <!-- Form -->
-            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
-                <!-- Company Name -->
-                <div>
-                    <label for="tenant_name" class="block text-base font-semibold text-black mb-2">
-                        Company name
-                    </label>
-                    <input id="tenant_name" type="text" formControlName="tenant_name" required
-                        placeholder="Acme Corporation"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="tenant_name?.invalid && tenant_name?.touched" />
-                    <p *ngIf="tenant_name?.invalid && tenant_name?.touched" class="mt-2 text-sm text-black">
-                        Company name is required
-                    </p>
-                </div>
-
-                <!-- Subdomain -->
-                <div>
-                    <label for="tenant_subdomain" class="block text-base font-semibold text-black mb-2">
-                        Choose your workspace URL
-                    </label>
-                    <div class="flex items-center">
-                        <input id="tenant_subdomain" type="text" formControlName="tenant_subdomain" required
-                            placeholder="acme"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                            [class.border-red-500]="tenant_subdomain?.invalid && tenant_subdomain?.touched" />
-                        <span
-                            class="px-4 py-3 text-base text-gray-600 bg-gray-100 border-2 border-l-0 border-black rounded-r-md">
-                            .meribas.app
-                        </span>
+            <form [formGroup]="registerForm" class="space-y-5">
+                <!-- STEP 1: Company Information -->
+                <div *ngIf="currentStep === 1" class="space-y-5">
+                    <!-- Company Name -->
+                    <div>
+                        <label for="tenant_name" class="block text-base font-semibold text-black mb-2">
+                            Company name
+                        </label>
+                        <input id="tenant_name" type="text" formControlName="tenant_name" required
+                            placeholder="Acme Corporation"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="tenant_name?.invalid && tenant_name?.touched" />
+                        <p *ngIf="tenant_name?.invalid && tenant_name?.touched" class="mt-2 text-sm text-black">
+                            Company name is required
+                        </p>
                     </div>
-                    <p *ngIf="tenant_subdomain?.invalid && tenant_subdomain?.touched" class="mt-2 text-sm text-black">
-                        <span *ngIf="tenant_subdomain?.errors?.['required']">Subdomain is required</span>
-                        <span *ngIf="tenant_subdomain?.errors?.['pattern']">Use lowercase letters, numbers, and hyphens
-                            only</span>
-                        <span
-                            *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">Subdomain
-                            must be 3-30 characters</span>
-                    </p>
+
+                    <!-- Subdomain -->
+                    <div>
+                        <label for="tenant_subdomain" class="block text-base font-semibold text-black mb-2">
+                            Choose your workspace URL
+                        </label>
+                        <div class="flex items-center">
+                            <input id="tenant_subdomain" type="text" formControlName="tenant_subdomain" required
+                                placeholder="acme"
+                                class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                                [class.border-red-500]="tenant_subdomain?.invalid && tenant_subdomain?.touched" />
+                            <span
+                                class="px-4 py-3 text-base text-gray-600 bg-gray-100 border-2 border-l-0 border-black rounded-r-md">
+                                .meribas.app
+                            </span>
+                        </div>
+                        <p *ngIf="tenant_subdomain?.invalid && tenant_subdomain?.touched"
+                            class="mt-2 text-sm text-black">
+                            <span *ngIf="tenant_subdomain?.errors?.['required']">Subdomain is required</span>
+                            <span *ngIf="tenant_subdomain?.errors?.['pattern']">Use lowercase letters, numbers, and
+                                hyphens only</span>
+                            <span
+                                *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">Subdomain
+                                must be 3-30 characters</span>
+                        </p>
+                    </div>
+
+                    <!-- Next Button -->
+                    <div class="pt-4">
+                        <button type="button" (click)="nextStep()"
+                            class="w-full px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors">
+                            Next: Your account →
+                        </button>
+                    </div>
                 </div>
 
-                <!-- First Name -->
-                <div>
-                    <label for="first_name" class="block text-base font-semibold text-black mb-2">
-                        First name
-                    </label>
-                    <input id="first_name" type="text" formControlName="first_name" required placeholder="John"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="first_name?.invalid && first_name?.touched" />
-                    <p *ngIf="first_name?.invalid && first_name?.touched" class="mt-2 text-sm text-black">
-                        First name is required
-                    </p>
+                <!-- STEP 2: Personal Information -->
+                <div *ngIf="currentStep === 2" class="space-y-5">
+                    <!-- First Name -->
+                    <div>
+                        <label for="first_name" class="block text-base font-semibold text-black mb-2">
+                            First name
+                        </label>
+                        <input id="first_name" type="text" formControlName="first_name" required placeholder="John"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="first_name?.invalid && first_name?.touched" />
+                        <p *ngIf="first_name?.invalid && first_name?.touched" class="mt-2 text-sm text-black">
+                            First name is required
+                        </p>
+                    </div>
+
+                    <!-- Last Name -->
+                    <div>
+                        <label for="last_name" class="block text-base font-semibold text-black mb-2">
+                            Last name
+                        </label>
+                        <input id="last_name" type="text" formControlName="last_name" required placeholder="Doe"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="last_name?.invalid && last_name?.touched" />
+                        <p *ngIf="last_name?.invalid && last_name?.touched" class="mt-2 text-sm text-black">
+                            Last name is required
+                        </p>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="email" class="block text-base font-semibold text-black mb-2">
+                            Your email address
+                        </label>
+                        <input id="email" type="email" formControlName="email" required autocomplete="email"
+                            placeholder="you@example.com"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="email?.invalid && email?.touched" />
+                        <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-black">
+                            <span *ngIf="email?.errors?.['required']">Email is required</span>
+                            <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+                        </p>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div>
+                        <label for="password" class="block text-base font-semibold text-black mb-2">
+                            Choose a password
+                        </label>
+                        <input id="password" type="password" formControlName="password" required
+                            autocomplete="new-password" placeholder="At least 6 characters"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="password?.invalid && password?.touched" />
+                        <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-black">
+                            <span *ngIf="password?.errors?.['required']">Password is required</span>
+                            <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+                        </p>
+                    </div>
+
+                    <!-- Password Confirmation Field -->
+                    <div>
+                        <label for="password_confirmation" class="block text-base font-semibold text-black mb-2">
+                            Confirm your password
+                        </label>
+                        <input id="password_confirmation" type="password" formControlName="password_confirmation"
+                            required autocomplete="new-password" placeholder="Type it again"
+                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            [class.border-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
+                        <p *ngIf="password_confirmation?.invalid && password_confirmation?.touched"
+                            class="mt-2 text-sm text-black">
+                            <span *ngIf="password_confirmation?.errors?.['required']">Please confirm your
+                                password</span>
+                        </p>
+                        <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
+                            class="mt-2 text-sm text-black">
+                            Passwords do not match
+                        </p>
+                    </div>
+
+                    <!-- Terms Agreement Checkbox -->
+                    <div class="pt-2">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" formControlName="termsAgreed"
+                                class="mt-1 h-5 w-5 rounded border-2 border-black text-black focus:ring-2 focus:ring-black focus:ring-offset-2 cursor-pointer" />
+                            <span class="ml-3 text-base text-black">
+                                I agree to the Meribas
+                                <a href="#" class="underline hover:no-underline">Terms of Service</a>
+                                and
+                                <a href="#" class="underline hover:no-underline">Privacy Policy</a>.
+                            </span>
+                        </label>
+                        <p *ngIf="termsAgreed?.invalid && termsAgreed?.touched" class="mt-2 text-sm text-black ml-8">
+                            You must agree to the terms to continue
+                        </p>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="pt-4 flex gap-4">
+                        <!-- Back Button -->
+                        <button type="button" (click)="previousStep()"
+                            class="flex-1 px-6 py-3 text-lg font-semibold text-black bg-white border-2 border-black rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors">
+                            ← Back
+                        </button>
+
+                        <!-- Create Account Button -->
+                        <button type="submit" (click)="onSubmit()" [disabled]="isLoading || registerForm.invalid"
+                            class="flex-1 px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            <span *ngIf="!isLoading">Create account →</span>
+                            <span *ngIf="isLoading">Creating...</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Last Name -->
-                <div>
-                    <label for="last_name" class="block text-base font-semibold text-black mb-2">
-                        Last name
-                    </label>
-                    <input id="last_name" type="text" formControlName="last_name" required placeholder="Doe"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="last_name?.invalid && last_name?.touched" />
-                    <p *ngIf="last_name?.invalid && last_name?.touched" class="mt-2 text-sm text-black">
-                        Last name is required
-                    </p>
-                </div>
-
-                <!-- Email Field -->
-                <div>
-                    <label for="email" class="block text-base font-semibold text-black mb-2">
-                        Your email address
-                    </label>
-                    <input id="email" type="email" formControlName="email" required autocomplete="email"
-                        placeholder="you@example.com"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="email?.invalid && email?.touched" />
-                    <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-black">
-                        <span *ngIf="email?.errors?.['required']">Email is required</span>
-                        <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
-                    </p>
-                </div>
-
-                <!-- Password Field -->
-                <div>
-                    <label for="password" class="block text-base font-semibold text-black mb-2">
-                        Choose a password
-                    </label>
-                    <input id="password" type="password" formControlName="password" required autocomplete="new-password"
-                        placeholder="At least 6 characters"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="password?.invalid && password?.touched" />
-                    <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-black">
-                        <span *ngIf="password?.errors?.['required']">Password is required</span>
-                        <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
-                    </p>
-                </div>
-
-                <!-- Password Confirmation Field -->
-                <div>
-                    <label for="password_confirmation" class="block text-base font-semibold text-black mb-2">
-                        Confirm your password
-                    </label>
-                    <input id="password_confirmation" type="password" formControlName="password_confirmation" required
-                        autocomplete="new-password" placeholder="Type it again"
-                        class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                        [class.border-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
-                    <p *ngIf="password_confirmation?.invalid && password_confirmation?.touched"
-                        class="mt-2 text-sm text-black">
-                        <span *ngIf="password_confirmation?.errors?.['required']">Please confirm your password</span>
-                    </p>
-                    <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
-                        class="mt-2 text-sm text-black">
-                        Passwords do not match
-                    </p>
-                </div>
-
-                <!-- Terms Agreement Checkbox -->
-                <div class="pt-2">
-                    <label class="flex items-start cursor-pointer group">
-                        <input type="checkbox" formControlName="termsAgreed"
-                            class="mt-1 h-5 w-5 rounded border-2 border-black text-black focus:ring-2 focus:ring-black focus:ring-offset-2 cursor-pointer" />
-                        <span class="ml-3 text-base text-black">
-                            I agree to the Meribas
-                            <a href="#" class="underline hover:no-underline">Terms of Service</a>
-                            and
-                            <a href="#" class="underline hover:no-underline">Privacy Policy</a>.
-                        </span>
-                    </label>
-                    <p *ngIf="termsAgreed?.invalid && termsAgreed?.touched" class="mt-2 text-sm text-black ml-8">
-                        You must agree to the terms to continue
-                    </p>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="pt-4">
-                    <button type="submit" [disabled]="isLoading || registerForm.invalid"
-                        class="w-full px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                        <span *ngIf="!isLoading">Last step: create your account →</span>
-                        <span *ngIf="isLoading">Creating account...</span>
-                    </button>
-                </div>
-
-                <!-- Sign In Link -->
+                <!-- Sign In Link (shown on both steps) -->
                 <div class="text-center pt-2">
                     <p class="text-base text-gray-600">
                         Already have an account?

@@ -16,6 +16,7 @@ export class RegisterComponent {
   isLoading = false;
   errorMessage = '';
   errors: string[] = [];
+  currentStep = 1; // Track current step (1 or 2)
 
   constructor(
     private fb: FormBuilder,
@@ -131,6 +132,55 @@ export class RegisterComponent {
         console.error('Registration error:', error, authError);
       }
     });
+  }
+
+  /**
+   * Move to next step
+   */
+  nextStep(): void {
+    // Clear errors
+    this.errorMessage = '';
+    this.errors = [];
+    this.notificationService.clear();
+
+    // Validate step 1 fields
+    if (this.currentStep === 1) {
+      const step1Fields = ['tenant_name', 'tenant_subdomain'];
+      let isValid = true;
+
+      step1Fields.forEach(field => {
+        const control = this.registerForm.get(field);
+        control?.markAsTouched();
+        if (control?.invalid) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        this.errorMessage = 'Please complete all fields';
+        this.errors = ['Please fill in your company name and choose a workspace URL.'];
+        this.notificationService.error(
+          'Please fill in your company name and choose a workspace URL.',
+          'Please complete all fields'
+        );
+        return;
+      }
+
+      this.currentStep = 2;
+    }
+  }
+
+  /**
+   * Move to previous step
+   */
+  previousStep(): void {
+    this.errorMessage = '';
+    this.errors = [];
+    this.notificationService.clear();
+
+    if (this.currentStep > 1) {
+      this.currentStep = 1;
+    }
   }
 
   /**
