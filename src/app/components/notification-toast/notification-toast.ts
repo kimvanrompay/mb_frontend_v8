@@ -9,9 +9,11 @@ import { NotificationService, Notification } from '../../services/notification';
   styleUrl: './notification-toast.css',
 })
 export class NotificationToastComponent {
-  notifications$ = this.notificationService.notifications$;
+  notifications$;
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService) {
+    this.notifications$ = this.notificationService.notifications$;
+  }
 
   close(id: string): void {
     this.notificationService.remove(id);
