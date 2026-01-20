@@ -25,6 +25,15 @@ export class RegisterComponent {
     private cdr: ChangeDetectorRef
   ) {
     this.registerForm = this.fb.group({
+      tenant_name: ['', [Validators.required]],
+      tenant_subdomain: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.pattern(/^[a-z0-9-]+$/)
+      ]],
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', [Validators.required]],
@@ -177,6 +186,22 @@ export class RegisterComponent {
     return errors;
   }
 
+  get tenant_name() {
+    return this.registerForm.get('tenant_name');
+  }
+
+  get tenant_subdomain() {
+    return this.registerForm.get('tenant_subdomain');
+  }
+
+  get first_name() {
+    return this.registerForm.get('first_name');
+  }
+
+  get last_name() {
+    return this.registerForm.get('last_name');
+  }
+
   get email() {
     return this.registerForm.get('email');
   }
@@ -185,13 +210,11 @@ export class RegisterComponent {
     return this.registerForm.get('password');
   }
 
-}
-
   get password_confirmation() {
-  return this.registerForm.get('password_confirmation');
-}
+    return this.registerForm.get('password_confirmation');
+  }
 
   get termsAgreed() {
-  return this.registerForm.get('termsAgreed');
-}
+    return this.registerForm.get('termsAgreed');
+  }
 }
