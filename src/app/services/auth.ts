@@ -11,10 +11,17 @@ export interface User {
   full_name: string;
   role: 'user' | 'admin' | 'owner';
   active: boolean;
+  onboarding_completed: boolean;
+  needs_onboarding: boolean;
+  enneagram_priority_order: any;
+  enneagram_priority_code: string | null;
   tenant: {
     id: string;
     name: string;
     subdomain: string;
+    company_onboarding_completed: boolean;
+    needs_company_onboarding: boolean;
+    company_culture_type: string | null;
   };
 }
 

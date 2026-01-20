@@ -51,19 +51,25 @@ export class LoginComponent {
     this.cdr.detectChanges(); // Force update loading state
 
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
+      next: (response) => {
         this.errorMessage = '';
         this.errors = [];
         this.isLoading = false;
         this.cdr.detectChanges(); // Force UI update
 
         this.notificationService.success(
-          'You have successfully logged in. Redirecting to dashboard...',
+          'You have successfully logged in. Redirecting...',
           'Login Successful'
         );
+
         // Small delay to show success message before redirect
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          // Check if user needs onboarding
+          if (response.user.needs_onboarding) {
+            this.router.navigate(['/onboarding']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
         }, 500);
       },
       error: (error) => {
