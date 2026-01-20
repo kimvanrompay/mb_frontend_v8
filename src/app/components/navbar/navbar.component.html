@@ -8,7 +8,7 @@
                 <a href="/dashboard" class="flex items-center space-x-2">
                     <!-- Boat Logo -->
                     <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                        alt="Meribas" class="mx-auto h-8 w-auto mb-8" />
+                        alt="Meribas" class="h-7 w-auto" />
                     <!-- Tenant Name -->
                     <span class="text-lg font-semibold text-black hidden sm:block">
                         {{ user?.tenant?.name || 'Company' }}
@@ -64,7 +64,7 @@
                 <!-- Profile Dropdown -->
                 <div class="relative">
                     <button (click)="toggleProfileMenu()" type="button"
-                        class="relative flex rounded-full focus:outline-none focus:ring-2 focus:ring-black">
+                        class="relative p-1 flex rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black transition-colors">
                         <span class="sr-only">Open user menu</span>
                         <div class="w-7 h-7 rounded-full bg-black flex items-center justify-center">
                             <span class="text-white text-xs font-semibold">{{ getUserInitials() }}</span>
