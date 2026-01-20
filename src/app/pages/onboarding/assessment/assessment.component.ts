@@ -1,211 +1,273 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { OnboardingService } from '../../../services/onboarding.service';
+import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
-import { ENNEAGRAM_TYPES, EnneagramType, PriorityOrder } from '../../../models/enneagram.model';
+import {
+    RecruiterQuestion,
+    Answer,
+    AnswerValue,
+    Locale,
+    LIKERT_SCALE_LABELS
+} from '../../../models/recruiter-assessment.model';
 
 @Component({
-    selector: 'app-onboarding-assessment',
+    selector: 'app-assessment',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FormsModule],
     templateUrl: './assessment.component.html',
     styleUrl: './assessment.component.css'
 })
 export class AssessmentComponent implements OnInit {
-    allTypes: EnneagramType[] = ENNEAGRAM_TYPES;
-    priorityOrder: PriorityOrder = {};
-    currentStep = 1; // Which rank we're currently assigning (1-9)
-    selectedType: EnneagramType | null = null;
-    showDetailModal = false;
+    // Questions and state
+    questions: RecruiterQuestion[] = [];
+    currentQuestionIndex = 0;
+    answers: Answer[] = [];
+
+    // UI state
+    isLoading = false;
     isSubmitting = false;
-    errorMessage = '';
+    error: string | null = null;
+
+    // Locale
+    currentLocale: Locale = 'en';
+
+    // Likert scale options
+    scaleOptions: AnswerValue[] = [1, 2, 3, 4, 5];
 
     constructor(
-        private router: Router,
         private onboardingService: OnboardingService,
+        private authService: AuthService,
         private notificationService: NotificationService,
-        private cdr: ChangeDetectorRef
+        private router: Router
     ) { }
 
     ngOnInit(): void {
-        // Initialize empty priority order
-        this.allTypes.forEach(type => {
-            this.priorityOrder[type.id] = 0; // 0 means unranked
-        });
+        this.loadQuestions();
     }
 
     /**
-     * Get types that haven't been ranked yet
+     * Load questions from API
      */
-    get unrankedTypes(): EnneagramType[] {
-        return this.allTypes.filter(type => this.priorityOrder[type.id] === 0);
-    }
+    loadQuestions(): void {
+        this.isLoading = true;
+        this.error = null;
 
-    /**
-     * Get types that have been ranked, sorted by rank
-     */
-    get rankedTypes(): EnneagramType[] {
-        return this.allTypes
-            .filter(type => this.priorityOrder[type.id] > 0)
-            .sort((a, b) => this.priorityOrder[a.id] - this.priorityOrder[b.id]);
-    }
+        this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
+            next: (response) => {
+                this.questions = response.questions;
+                this.isLoading = false;
 
-    /**
-     * Check if a type has been ranked
-     */
-    isRanked(typeId: string): boolean {
-        return this.priorityOrder[typeId] > 0;
-    }
-
-    /**
-     * Get the rank for a type
-     */
-    getRank(typeId: string): number {
-        return this.priorityOrder[typeId];
-    }
-
-    /**
-     * Get rank label (1st, 2nd, 3rd, etc.)
-     */
-    getRankLabel(rank: number): string {
-        const labels: { [key: number]: string } = {
-            1: '1st', 2: '2nd', 3: '3rd', 4: '4th', 5: '5th',
-            6: '6th', 7: '7th', 8: '8th', 9: '9th'
-        };
-        return labels[rank] || `${rank}th`;
-    }
-
-    /**
-     * Select a type for the current rank
-     */
-    selectType(type: EnneagramType): void {
-        if (this.isRanked(type.id)) {
-            // Already ranked, do nothing
-            return;
-        }
-
-        // Assign current step as rank
-        this.priorityOrder[type.id] = this.currentStep;
-
-        // Move to next step if not done
-        if (this.currentStep < 9) {
-            this.currentStep++;
-        }
-
-        this.errorMessage = '';
-    }
-
-    /**
-     * Unrank a type (remove its ranking)
-     */
-    unrankType(typeId: string): void {
-        const removedRank = this.priorityOrder[typeId];
-        this.priorityOrder[typeId] = 0;
-
-        // Shift down all ranks higher than the removed one
-        Object.keys(this.priorityOrder).forEach(id => {
-            if (this.priorityOrder[id] > removedRank) {
-                this.priorityOrder[id]--;
+                // Restore any previously saved answers from session storage
+                const savedAnswers = sessionStorage.getItem('assessment_answers');
+                if (savedAnswers) {
+                    this.answers = JSON.parse(savedAnswers);
+                    // Resume from last unanswered question
+                    const lastIndex = this.answers.length;
+                    if (lastIndex < this.questions.length) {
+                        this.currentQuestionIndex = lastIndex;
+                    }
+                }
+            },
+            error: (error) => {
+                this.isLoading = false;
+                this.error = 'Failed to load questions. Please try again.';
+                this.notificationService.error('Failed to load assessment questions', 'Error');
+                console.error('Error loading questions:', error);
             }
         });
-
-        // Go back to the removed rank step
-        this.currentStep = removedRank;
-        this.errorMessage = '';
     }
 
     /**
-     * Show type details in modal
+     * Get the current question
      */
-    viewDetails(type: EnneagramType): void {
-        this.selectedType = type;
-        this.showDetailModal = true;
+    get currentQuestion(): RecruiterQuestion | null {
+        return this.questions[this.currentQuestionIndex] || null;
     }
 
     /**
-     * Close detail modal
+     * Get the question text in current locale
      */
-    closeModal(): void {
-        this.showDetailModal = false;
-        this.selectedType = null;
+    get currentQuestionText(): string {
+        if (!this.currentQuestion) return '';
+        return this.currentQuestion.content[this.currentLocale];
     }
 
     /**
-     * Select type from modal and close
+     * Get current answer for current question
      */
-    selectFromModal(): void {
-        if (this.selectedType) {
-            this.selectType(this.selectedType);
-            this.closeModal();
-        }
-    }
-
-    /**
-     * Check if all types are ranked
-     */
-    get isComplete(): boolean {
-        return this.unrankedTypes.length === 0;
+    get currentAnswer(): AnswerValue | null {
+        if (!this.currentQuestion) return null;
+        return this.onboardingService.getAnswerForQuestion(this.answers, this.currentQuestion.id);
     }
 
     /**
      * Get progress percentage
      */
-    get progressPercent(): number {
-        return Math.round((this.rankedTypes.length / 9) * 100);
+    get progress(): number {
+        return Math.round(((this.currentQuestionIndex + 1) / this.questions.length) * 100);
+    }
+
+    /**
+     * Get label for a scale value
+     */
+    getScaleLabel(value: AnswerValue): string {
+        return LIKERT_SCALE_LABELS[this.currentLocale][value];
+    }
+
+    /**
+     * Handle answer selection
+     */
+    selectAnswer(value: AnswerValue): void {
+        if (!this.currentQuestion) return;
+
+        const questionId = this.currentQuestion.id;
+
+        // Remove existing answer for this question if any
+        this.answers = this.answers.filter(a => a.question_id !== questionId);
+
+        // Add new answer
+        this.answers.push({ question_id: questionId, value });
+
+        // Save to session storage
+        sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
+
+        // Auto-advance to next question after brief delay
+        setTimeout(() => {
+            this.nextQuestion();
+        }, 300);
+    }
+
+    /**
+     * Go to next question
+     */
+    nextQuestion(): void {
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            this.currentQuestionIndex++;
+        } else if (this.isComplete()) {
+            this.submitAssessment();
+        }
+    }
+
+    /**
+     * Go to previous question
+     */
+    previousQuestion(): void {
+        if (this.currentQuestionIndex > 0) {
+            this.currentQuestionIndex--;
+        }
+    }
+
+    /**
+     * Jump to specific question
+     */
+    goToQuestion(index: number): void {
+        if (index >= 0 && index < this.questions.length) {
+            this.currentQuestionIndex = index;
+        }
+    }
+
+    /**
+     * Check if assessment is complete
+     */
+    isComplete(): boolean {
+        return this.onboardingService.isComplete(this.answers);
+    }
+
+    /**
+     * Check if a question has been answered
+     */
+    isQuestionAnswered(questionId: number): boolean {
+        return this.answers.some(a => a.question_id === questionId);
     }
 
     /**
      * Submit the assessment
      */
     submitAssessment(): void {
-        // Validate
-        const validation = this.onboardingService.validatePriorityOrder(this.priorityOrder);
+        // Validate answers
+        const validation = this.onboardingService.validateAnswers(this.answers);
         if (!validation.valid) {
-            this.errorMessage = validation.errors.join('. ');
-            this.notificationService.error(this.errorMessage, 'Validation Error');
+            this.notificationService.error(
+                validation.errors.join('. '),
+                'Incomplete Assessment'
+            );
+            return;
+        }
+
+        const user = this.authService.getCurrentUser();
+        if (!user?.email) {
+            this.notificationService.error('User email not found', 'Error');
             return;
         }
 
         this.isSubmitting = true;
-        this.errorMessage = '';
-        this.cdr.detectChanges();
 
-        this.onboardingService.submitAssessment(this.priorityOrder).subscribe({
+        const submission = {
+            locale: this.currentLocale,
+            user_email: user.email,
+            answers: this.answers
+        };
+
+        this.onboardingService.submitRecruiterAssessment(submission).subscribe({
             next: (response) => {
                 this.isSubmitting = false;
-                this.notificationService.success(
-                    'Your personality profile has been created!',
-                    'Assessment Complete'
-                );
-                // Navigate to success screen with the profile code
+                // Clear saved answers
+                sessionStorage.removeItem('assessment_answers');
+                // Navigate to success page with results
                 this.router.navigate(['/onboarding/success'], {
-                    state: { profileCode: response.user.enneagram_priority_code }
+                    state: { result: response.result }
                 });
             },
             error: (error) => {
                 this.isSubmitting = false;
-                this.cdr.detectChanges();
-
-                const errorMsg = error.error?.error || 'Failed to submit assessment. Please try again.';
-                this.errorMessage = errorMsg;
-                this.notificationService.error(errorMsg, 'Submission Failed');
-
-                console.error('Assessment submission error:', error);
+                this.notificationService.error(
+                    error.error?.error || 'Failed to submit assessment',
+                    'Submission Error'
+                );
+                console.error('Error submitting assessment:', error);
             }
         });
     }
 
     /**
-     * Go back to previous step
+     * Get answer value for a specific question (for progress indicator)
      */
-    goBack(): void {
-        if (this.currentStep > 1) {
-            // Find the last ranked type and unrank it
-            const lastRankedType = this.allTypes.find(t => this.priorityOrder[t.id] === this.currentStep - 1);
-            if (lastRankedType) {
-                this.unrankType(lastRankedType.id);
-            }
+    getAnswerValue(questionId: number): AnswerValue | null {
+        return this.onboardingService.getAnswerForQuestion(this.answers, questionId);
+    }
+
+    /**
+     * Handle keyboard shortcuts
+     * 1-5: Select answer
+     * Arrow Left: Previous question
+     * Arrow Right: Next question (if answered)
+     */
+    @HostListener('window:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent): void {
+        // Don't handle if user is typing in an input
+        if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+            return;
+        }
+
+        // Number keys 1-5 for answers
+        if (event.key >= '1' && event.key <= '5') {
+            event.preventDefault();
+            const value = parseInt(event.key) as AnswerValue;
+            this.selectAnswer(value);
+        }
+
+        // Arrow keys for navigation
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            this.previousQuestion();
+        }
+
+        if (event.key === 'ArrowRight' && this.currentAnswer !== null) {
+            event.preventDefault();
+            this.nextQuestion();
         }
     }
 }

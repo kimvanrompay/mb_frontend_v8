@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ENNEAGRAM_TYPES, EnneagramType } from '../../../models/enneagram.model';
+import { AuthService } from '../../../services/auth';
+import {
+    AssessmentResult,
+    TYPE_NAMES,
+    EnneagramType
+} from '../../../models/recruiter-assessment.model';
 
 @Component({
     selector: 'app-onboarding-success',
@@ -11,28 +16,96 @@ import { ENNEAGRAM_TYPES, EnneagramType } from '../../../models/enneagram.model'
     styleUrl: './success.component.css'
 })
 export class SuccessComponent implements OnInit {
-    profileCode: string = '';
-    topThreeTypes: EnneagramType[] = [];
+    result: AssessmentResult | null = null;
+    isLoading = true;
 
-    constructor(private router: Router) {
-        // Get profile code from navigation state
+    // Type emoji mapping
+    typeEmojis: Record<EnneagramType, string> = {
+        1: '⚖️',
+        2: '❤️',
+        3: '🎯',
+        4: '🎨',
+        5: '🔍',
+        6: '🛡️',
+        7: '✨',
+        8: '💪',
+        9: '🕊️'
+    };
+
+    constructor(
+        private router: Router,
+        private authService: AuthService
+    ) {
+        // Get result from navigation state
         const navigation = this.router.getCurrentNavigation();
-        this.profileCode = navigation?.extras?.state?.['profileCode'] || 'UNKNOWN';
-    }
+        const state = navigation?.extras?.state;
 
-    ngOnInit(): void {
-        // Parse profile code to get top 3 types
-        // Profile code format: "AHLPRCEI" where each letter is a type code in priority order
-        if (this.profileCode && this.profileCode !== 'UNKNOWN') {
-            const codeParts = this.profileCode.split('');
-            this.topThreeTypes = codeParts.slice(0, 3).map(code => {
-                const type = ENNEAGRAM_TYPES.find(t => t.code === code);
-                return type!;
-            }).filter(Boolean);
+        if (state && state['result']) {
+            this.result = state['result'];
         }
     }
 
+    ngOnInit(): void {
+        // If no result in state, redirect back to assessment
+        if (!this.result) {
+            this.router.navigate(['/onboarding/assessment']);
+            return;
+        }
+
+        this.isLoading = false;
+
+        // Reload user data to update onboarding status
+        this.authService.loadMe().subscribe({
+            next: () => {
+                console.log('User data refreshed after assessment completion');
+            },
+            error: (error) => {
+                console.error('Failed to refresh user data:', error);
+            }
+        });
+    }
+
+    /**
+     * Get emoji for dominant type
+     */
+    get typeEmoji(): string {
+        return this.result ? this.typeEmojis[this.result.dominant_type] : '✨';
+    }
+
+    /**
+     * Get sorted scores array for display
+     */
+    get sortedScores(): { type: EnneagramType; score: number; name: string }[] {
+        if (!this.result) return [];
+
+        return Object.entries(this.result.all_scores)
+            .map(([type, score]) => ({
+                type: parseInt(type) as EnneagramType,
+                score,
+                name: TYPE_NAMES[parseInt(type) as EnneagramType][this.result!.locale]
+            }))
+            .sort((a, b) => b.score - a.score);
+    }
+
+    /**
+     * Get top 3 types
+     */
+    get topThreeTypes(): { type: EnneagramType; score: number; name: string }[] {
+        return this.sortedScores.slice(0, 3);
+    }
+
+    /**
+     * Navigate to dashboard
+     */
     continueToDashboard(): void {
         this.router.navigate(['/dashboard']);
+    }
+
+    /**
+     * Get percentage of max score
+     */
+    getScorePercentage(score: number): number {
+        const maxScore = 15; // 3 questions × 5 max value
+        return Math.round((score / maxScore) * 100);
     }
 }

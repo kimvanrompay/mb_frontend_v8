@@ -2,107 +2,114 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {
-    OnboardingStatus,
+    RecruiterQuestionsResponse,
     AssessmentSubmission,
     AssessmentResponse,
-    PriorityOrder
-} from '../models/enneagram.model';
+    Locale,
+    Answer,
+    AnswerValue
+} from '../models/recruiter-assessment.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class OnboardingService {
-    private readonly API_URL = 'https://mb-backend-v8-8194836b1a8a.herokuapp.com/api/v1';
+    private readonly API_URL = 'https://api.meribas.com/api/v1';
 
     constructor(private http: HttpClient) { }
 
     /**
-     * Check if user needs onboarding and get current status
+     * Fetch all 27 assessment questions with multilingual content
+     * @param locale Language code (en, nl, fr, de, es)
      */
-    getOnboardingStatus(): Observable<OnboardingStatus> {
-        return this.http.get<OnboardingStatus>(`${this.API_URL}/onboarding/status`);
-    }
-
-    /**
-     * Submit completed Enneagram assessment
-     */
-    submitAssessment(priorityOrder: PriorityOrder): Observable<AssessmentResponse> {
-        const payload: AssessmentSubmission = { priority_order: priorityOrder };
-        return this.http.post<AssessmentResponse>(
-            `${this.API_URL}/onboarding/complete`,
-            payload
+    getRecruiterQuestions(locale: Locale = 'en'): Observable<RecruiterQuestionsResponse> {
+        return this.http.get<RecruiterQuestionsResponse>(
+            `${this.API_URL}/onboarding/recruiter_questions`,
+            { params: { locale } }
         );
     }
 
     /**
-     * Validate priority order before submission
-     * Returns validation result with any errors found
+     * Submit completed recruiter assessment
+     * @param submission Assessment submission with locale, email, and answers
      */
-    validatePriorityOrder(order: PriorityOrder): { valid: boolean; errors: string[] } {
-        const errors: string[] = [];
-        const ranks = Object.values(order);
-        const types = Object.keys(order);
+    submitRecruiterAssessment(submission: AssessmentSubmission): Observable<AssessmentResponse> {
+        return this.http.post<AssessmentResponse>(
+            `${this.API_URL}/onboarding/recruiter_assessment`,
+            submission
+        );
+    }
 
-        // Check all 9 types present
-        if (types.length !== 9) {
-            errors.push('All 9 personality types must be ranked');
+    /**
+     * Validate answers before submission
+     * @param answers Array of answers to validate
+     * @returns Validation result with any errors found
+     */
+    validateAnswers(answers: Answer[]): { valid: boolean; errors: string[] } {
+        const errors: string[] = [];
+
+        // Check all 27 questions are answered
+        if (answers.length !== 27) {
+            errors.push(`All 27 questions must be answered. Currently answered: ${answers.length}`);
             return { valid: false, errors };
         }
 
-        // Check all type IDs are valid (1-9)
-        const validTypes = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        for (const typeId of types) {
-            if (!validTypes.includes(typeId)) {
-                errors.push(`Invalid type ID: ${typeId}`);
-            }
+        // Check for duplicate question IDs
+        const questionIds = answers.map(a => a.question_id);
+        const uniqueIds = new Set(questionIds);
+        if (uniqueIds.size !== questionIds.length) {
+            errors.push('Duplicate question answers found');
         }
 
-        // Check all ranks are 1-9
-        for (const rank of ranks) {
-            if (rank < 1 || rank > 9 || !Number.isInteger(rank)) {
-                errors.push('All ranks must be integers between 1 and 9');
-                break;
-            }
-        }
+        // Validate each answer
+        answers.forEach((answer, index) => {
+            const { question_id, value } = answer;
 
-        // Check no duplicates
-        const uniqueRanks = new Set(ranks);
-        if (uniqueRanks.size !== ranks.length) {
-            const duplicates = ranks.filter((rank, index) => ranks.indexOf(rank) !== index);
-            errors.push(`Duplicate ranks found: ${[...new Set(duplicates)].join(', ')}`);
-        }
-
-        // Check all ranks 1-9 are used exactly once
-        const expectedRanks = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        const sortedRanks = [...ranks].sort((a, b) => a - b);
-        if (JSON.stringify(sortedRanks) !== JSON.stringify(expectedRanks)) {
-            const missing = expectedRanks.filter(r => !ranks.includes(r));
-            if (missing.length > 0) {
-                errors.push(`Missing ranks: ${missing.join(', ')}`);
+            // Validate question ID (1-27)
+            if (question_id < 1 || question_id > 27 || !Number.isInteger(question_id)) {
+                errors.push(`Invalid question ID at answer ${index + 1}: ${question_id}`);
             }
+
+            // Validate value (1-5)
+            if (value < 1 || value > 5 || !Number.isInteger(value)) {
+                errors.push(`Invalid answer value for question ${question_id}: ${value}. Must be between 1-5`);
+            }
+        });
+
+        // Check all question IDs 1-27 are present
+        const expectedIds = Array.from({ length: 27 }, (_, i) => i + 1);
+        const missingIds = expectedIds.filter(id => !questionIds.includes(id));
+        if (missingIds.length > 0) {
+            errors.push(`Missing answers for questions: ${missingIds.join(', ')}`);
         }
 
         return { valid: errors.length === 0, errors };
     }
 
     /**
-     * Check if all 9 types have been assigned a rank
+     * Check if all questions have been answered
+     * @param answers Current answers array
      */
-    isComplete(order: PriorityOrder): boolean {
-        return Object.keys(order).length === 9;
+    isComplete(answers: Answer[]): boolean {
+        return answers.length === 27 &&
+            new Set(answers.map(a => a.question_id)).size === 27;
     }
 
     /**
-     * Get the type ID that has a specific rank
+     * Get current progress percentage
+     * @param answers Current answers array
      */
-    getTypeByRank(order: PriorityOrder, rank: number): string | undefined {
-        return Object.keys(order).find(typeId => order[typeId] === rank);
+    getProgress(answers: Answer[]): number {
+        return Math.round((answers.length / 27) * 100);
     }
 
     /**
-     * Get the rank for a specific type
+     * Get answer for a specific question
+     * @param answers Current answers array
+     * @param questionId Question ID to find
      */
-    getRankByType(order: PriorityOrder, typeId: string): number | undefined {
-        return order[typeId];
+    getAnswerForQuestion(answers: Answer[], questionId: number): AnswerValue | null {
+        const answer = answers.find(a => a.question_id === questionId);
+        return answer ? answer.value : null;
     }
 }
