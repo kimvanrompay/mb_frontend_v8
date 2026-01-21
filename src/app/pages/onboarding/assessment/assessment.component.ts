@@ -223,6 +223,8 @@ export class AssessmentComponent implements OnInit {
         if (this.currentQuestionIndex < this.questions.length - 1) {
             this.currentQuestionIndex++;
             console.log('✅ Advanced to question:', this.currentQuestionIndex + 1);
+            // Force Angular to detect the change
+            this.cdr.detectChanges();
         } else if (this.isComplete()) {
             console.log('All questions answered, submitting...');
             this.submitAssessment();
