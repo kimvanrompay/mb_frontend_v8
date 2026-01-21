@@ -140,7 +140,7 @@ export class AuthService {
       tap(response => {
         // Store the new auth token
         if (response.token) {
-          this.saveToken(response.token);
+          this.setToken(response.token);
         }
         // Update current user with verified status
         if (response.user) {
