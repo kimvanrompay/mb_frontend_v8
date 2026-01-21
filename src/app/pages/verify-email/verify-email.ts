@@ -53,59 +53,75 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle input in digit fields
+   * Handle input in digit fields - DISABLED
    */
   onDigitInput(event: any, index: number): void {
-    const input = event.target as HTMLInputElement;
-    const value = input.value;
-
-    console.log('Digit input:', index, value);
-
-    // Only allow single digit numbers
-    if (value && !/^\d$/.test(value)) {
-      console.log('Invalid input, clearing');
-      input.value = '';
-      return;
-    }
-
-    // Store the digit
-    this.digits[index] = value || '';
-    console.log('Digits array:', this.digits);
-
-    // Check if code is complete (no auto-focus, let user type naturally)
-    if (this.isCodeComplete()) {
-      console.log('Code complete, verifying...');
-      setTimeout(() => this.verifyCode(), 300);
-    }
+    // Disabled - we handle everything in keydown to prevent glitches
+    return;
   }
 
   /**
-   * Handle backspace/delete
+   * Handle keydown - this handles ALL input
    */
   onDigitKeyDown(event: KeyboardEvent, index: number): void {
     const input = event.target as HTMLInputElement;
+    const key = event.key;
 
-    if (event.key === 'Backspace') {
-      if (!input.value && index > 0) {
-        // Move to previous input on backspace if current is empty
-        event.preventDefault();
+    console.log('Keydown:', key, 'at index:', index);
+
+    // Handle backspace
+    if (key === 'Backspace') {
+      event.preventDefault();
+      if (input.value) {
+        // Clear current digit
+        input.value = '';
+        this.digits[index] = '';
+      } else if (index > 0) {
+        // Move to previous and clear it
         const prevInput = this.digitInputs.toArray()[index - 1];
         if (prevInput) {
+          prevInput.nativeElement.value = '';
+          this.digits[index - 1] = '';
           prevInput.nativeElement.focus();
-          prevInput.nativeElement.select();
         }
       }
-    } else if (event.key === 'ArrowLeft' && index > 0) {
+      return;
+    }
+
+    // Handle arrow keys
+    if (key === 'ArrowLeft' && index > 0) {
       event.preventDefault();
-      const prevInput = this.digitInputs.toArray()[index - 1];
-      if (prevInput) {
-        prevInput.nativeElement.focus();
-      }
-    } else if (event.key === 'ArrowRight' && index < 5) {
+      this.digitInputs.toArray()[index - 1].nativeElement.focus();
+      return;
+    }
+    if (key === 'ArrowRight' && index < 5) {
       event.preventDefault();
-      const nextInput = this.digitInputs.toArray()[index + 1];
-      if (nextInput) {
-        nextInput.nativeElement.focus();
+      this.digitInputs.toArray()[index + 1].nativeElement.focus();
+      return;
+    }
+
+    // Only allow digits
+    if (!/^\d$/.test(key)) {
+      event.preventDefault();
+      return;
+    }
+
+    // Handle digit input
+    event.preventDefault();
+    input.value = key;
+    this.digits[index] = key;
+    console.log('Digits:', this.digits);
+
+    // Auto-advance
+    if (index < 5) {
+      setTimeout(() => {
+        this.digitInputs.toArray()[index + 1].nativeElement.focus();
+      }, 50);
+    } else {
+      // Check if complete
+      if (this.isCodeComplete()) {
+        console.log('Code complete!');
+        setTimeout(() => this.verifyCode(), 200);
       }
     }
   }
