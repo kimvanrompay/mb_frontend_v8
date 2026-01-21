@@ -35,7 +35,7 @@ export class I18nService {
      * Initialize language from browser or localStorage
      */
     private async initializeLanguage(): Promise<void> {
-        console.log('Starting i18n initialization...');
+        console.log('🌍 Starting i18n initialization...');
 
         // Always load English first as fallback
         await this.loadLanguage(this.defaultLanguage);
@@ -61,7 +61,8 @@ export class I18nService {
         }
 
         this.currentLang$.next(langToUse);
-        console.log(`i18n initialized with language: ${langToUse}`);
+        console.log(`✅ i18n initialized with language: ${langToUse}`);
+        console.log(`📊 Total translations loaded:`, Object.keys(this.translations).length, 'languages');
     }
 
     /**
@@ -77,19 +78,35 @@ export class I18nService {
      */
     private async loadLanguage(lang: string): Promise<void> {
         if (this.translations[lang]) {
-            return; // Already loaded
+            console.log(`ℹ️ Translations for ${lang} already loaded`);
+            return;
         }
 
+        const url = `/assets/i18n/${lang}.json`;
+        console.log(`📥 Fetching translations from: ${url}`);
+
         try {
-            const data = await firstValueFrom(this.http.get<TranslationData>(`/assets/i18n/${lang}.json`));
-            this.translations[lang] = data || {};
-            console.log(`Loaded translations for language: ${lang}`, Object.keys(data || {}).length, 'keys');
-        } catch (error) {
-            console.error(`Failed to load language: ${lang}`, error);
+            const data = await firstValueFrom(this.http.get<TranslationData>(url));
+
+            if (!data || typeof data !== 'object') {
+                throw new Error(`Invalid translation data received for ${lang}`);
+            }
+
+            this.translations[lang] = data;
+            const keyCount = Object.keys(data).length;
+            console.log(`✅ Loaded ${keyCount} translation keys for language: ${lang}`);
+
+        } catch (error: any) {
+            console.error(`❌ Failed to load language: ${lang}`);
+            console.error('Error:', error);
+            console.error('Error message:', error?.message);
+            console.error('Error status:', error?.status);
+
             this.translations[lang] = {};
 
             // If failed to load non-English, ensure English is available
             if (lang !== this.defaultLanguage && !this.translations[this.defaultLanguage]) {
+                console.log(`🔄 Attempting to load fallback language: ${this.defaultLanguage}`);
                 await this.loadLanguage(this.defaultLanguage);
             }
         }
