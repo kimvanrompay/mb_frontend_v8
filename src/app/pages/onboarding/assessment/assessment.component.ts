@@ -185,29 +185,31 @@ export class AssessmentComponent implements OnInit {
 
         // Set processing flag
         this.isProcessingAnswer = true;
+        console.log('🔒 LOCKED - processing answer');
 
         const questionId = this.currentQuestion.id;
-        console.log('Selecting answer:', { questionId, value, currentIndex: this.currentQuestionIndex });
+        console.log('✏️ Q' + (this.currentQuestionIndex + 1) + ':', { questionId, value });
 
         // Remove existing answer for this question if any
         this.answers = this.answers.filter(a => a.question_id !== questionId);
 
         // Add new answer
         this.answers.push({ question_id: questionId, value });
-        console.log('Answer saved. Total answers:', this.answers.length, this.answers);
+        console.log('✅ Saved. Total:', this.answers.length, 'answers');
 
         // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
 
         // Auto-advance to next question after brief delay
         setTimeout(() => {
-            console.log('Auto-advancing to next question');
+            console.log('📍 Advancing from Q', this.currentQuestionIndex + 1, 'to Q', this.currentQuestionIndex + 2);
             this.nextQuestion();
 
-            // Reset processing flag after navigation completes
+            // Reset processing flag after navigation completes (longer delay)
             setTimeout(() => {
                 this.isProcessingAnswer = false;
-            }, 100);
+                console.log('🔓 Ready for next answer');
+            }, 500);
         }, 300);
     }
 
