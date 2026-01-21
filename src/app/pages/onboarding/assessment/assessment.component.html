@@ -114,17 +114,168 @@
         </div>
     </div>
 
-    <!-- Progress Indicator (Mobile) -->
-    <div class="sm:hidden w-full border-t border-gray-100 px-6 py-3">
-        <div class="flex items-center space-x-1">
-            <div *ngFor="let q of questions; let i = index" [class.bg-black]="isQuestionAnswered(q.id)"
-                [class.bg-gray-200]="!isQuestionAnswered(q.id)" class="h-1 flex-1 transition-colors">
+    <!-- Premium Progress Tracker Panel (Slide-out) -->
+    <div class="fixed inset-y-0 right-0 z-50 pointer-events-none">
+        <!-- Toggle Button (Always visible) -->
+        <button (click)="toggleProgressTracker()"
+            class="absolute top-32 -left-12 pointer-events-auto bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 rounded-l-lg px-3 py-6 group"
+            [class.bg-black]="showProgressTracker" [class.text-white]="showProgressTracker">
+            <div class="flex flex-col items-center space-y-2">
+                <!-- Circular Progress Indicator -->
+                <div class="relative w-10 h-10">
+                    <svg class="transform -rotate-90 w-10 h-10">
+                        <circle cx="20" cy="20" r="16" stroke="currentColor"
+                            [class.stroke-gray-200]="!showProgressTracker" [class.stroke-white]="showProgressTracker"
+                            stroke-width="2" fill="none" opacity="0.2" />
+                        <circle cx="20" cy="20" r="16" [class.stroke-black]="!showProgressTracker"
+                            [class.stroke-white]="showProgressTracker" stroke-width="2" fill="none"
+                            [style.stroke-dasharray]="100.53"
+                            [style.stroke-dashoffset]="100.53 - (100.53 * getCompletionPercentage() / 100)"
+                            class="transition-all duration-500" />
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-xs font-bold">{{ getCompletionPercentage() }}%</span>
+                    </div>
+                </div>
+                <span class="text-xs font-medium transform rotate-180" style="writing-mode: vertical-rl;">
+                    {{ answers.length }}/{{ questions.length }}
+                </span>
+            </div>
+        </button>
+
+        <!-- Slide-out Panel -->
+        <div class="pointer-events-auto h-full bg-white border-l border-gray-200 shadow-2xl transition-transform duration-500 ease-out w-96 overflow-y-auto"
+            [class.translate-x-0]="showProgressTracker" [class.translate-x-full]="!showProgressTracker">
+
+            <!-- Panel Header -->
+            <div class="sticky top-0 bg-white border-b border-gray-100 px-6 py-5 z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-black">Progress</h3>
+                        <p class="text-sm text-gray-500">Track your completion</p>
+                    </div>
+                    <button (click)="toggleProgressTracker()" class="text-gray-400 hover:text-black transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="relative">
+                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-black transition-all duration-500 ease-out"
+                            [style.width.%]="getCompletionPercentage()">
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-2 flex items-center justify-between">
+                        <span>{{ answers.length }} of {{ questions.length }} completed</span>
+                        <span class="font-semibold">{{ getCompletionPercentage() }}%</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Questions Grid -->
+            <div class="px-6 py-6">
+                <div class="grid grid-cols-3 gap-3">
+                    <button *ngFor="let q of questions; let i = index" (click)="goToQuestion(i)"
+                        class="group relative aspect-square rounded-lg border-2 transition-all duration-200 flex flex-col items-center justify-center hover:scale-105 hover:shadow-md"
+                        [class.border-black]="isQuestionAnswered(q.id)" [class.bg-black]="isQuestionAnswered(q.id)"
+                        [class.border-gray-200]="!isQuestionAnswered(q.id)" [class.bg-white]="!isQuestionAnswered(q.id)"
+                        [class.ring-4]="i === currentQuestionIndex" [class.ring-blue-500]="i === currentQuestionIndex"
+                        [class.ring-opacity-50]="i === currentQuestionIndex">
+
+                        <!-- Question Number -->
+                        <span class="text-xl font-bold transition-colors" [class.text-white]="isQuestionAnswered(q.id)"
+                            [class.text-gray-400]="!isQuestionAnswered(q.id)">
+                            {{ i + 1 }}
+                        </span>
+
+                        <!-- Status Indicator -->
+                        <div class="absolute -top-1 -right-1">
+                            <div *ngIf="isQuestionAnswered(q.id)"
+                                class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd"
+                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div *ngIf="!isQuestionAnswered(q.id) && i === currentQuestionIndex"
+                                class="w-5 h-5 bg-blue-500 rounded-full animate-pulse">
+                            </div>
+                        </div>
+
+                        <!-- Hover Label -->
+                        <span
+                            class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+                            [class.text-green-600]="isQuestionAnswered(q.id)"
+                            [class.text-gray-500]="!isQuestionAnswered(q.id)">
+                            {{ isQuestionAnswered(q.id) ? 'Answered' : 'Not answered' }}
+                        </span>
+                    </button>
+                </div>
+
+                <!-- Unanswered Questions List (if any) -->
+                <div *ngIf="getUnansweredQuestions().length > 0"
+                    class="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-red-900 mb-1">
+                                {{ getUnansweredQuestions().length }} question{{ getUnansweredQuestions().length !== 1 ?
+                                's' : '' }} remaining
+                            </h4>
+                            <p class="text-xs text-red-700 mb-2">
+                                Questions {{ getUnansweredQuestions().slice(0, 10).join(', ') }}{{
+                                getUnansweredQuestions().length > 10 ? '...' : '' }}
+                            </p>
+                            <button (click)="goToQuestion(getUnansweredQuestions()[0] - 1)"
+                                class="text-xs font-medium text-red-600 hover:text-red-800 underline">
+                                Go to first unanswered →
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completion Message -->
+                <div *ngIf="getUnansweredQuestions().length === 0"
+                    class="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-semibold text-green-900 mb-1">
+                                All questions answered!
+                            </h4>
+                            <p class="text-xs text-green-700">
+                                You're ready to submit your assessment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Keyboard Hint -->
-<div *ngIf="!isLoading && !error" class="hidden sm:block fixed bottom-6 left-6 text-xs text-gray-400">
-    Press <kbd class="px-2 py-1 border border-gray-200 font-mono">1–5</kbd> or use arrows
+<div *ngIf="!isLoading && !error"
+    class="hidden sm:block fixed bottom-6 left-6 text-xs text-gray-400 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
+    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">1–5</kbd> to answer •
+    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">←→</kbd> to navigate •
+    <button (click)="toggleProgressTracker()" class="underline hover:text-black transition-colors ml-1">View
+        progress</button>
 </div>

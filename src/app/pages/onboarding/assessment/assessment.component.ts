@@ -30,6 +30,7 @@ export class AssessmentComponent implements OnInit {
     isLoading = false;
     isSubmitting = false;
     error: string | null = null;
+    showProgressTracker = true; // Progress tracker panel visibility
 
     // Locale
     currentLocale: Locale = 'en';
@@ -238,12 +239,41 @@ export class AssessmentComponent implements OnInit {
      * Submit the assessment
      */
     submitAssessment(): void {
-        // Validate answers
+        // Check if all questions are answered
+        const unansweredQuestions: number[] = [];
+        this.questions.forEach((question, index) => {
+            if (!this.isQuestionAnswered(question.id)) {
+                unansweredQuestions.push(index + 1); // 1-indexed for display
+            }
+        });
+
+        if (unansweredQuestions.length > 0) {
+            const firstUnanswered = unansweredQuestions[0] - 1; // Convert back to 0-indexed
+
+            // Navigate to first unanswered question
+            this.currentQuestionIndex = firstUnanswered;
+
+            // Show detailed error message
+            const questionList = unansweredQuestions.length <= 5
+                ? `Questions ${unansweredQuestions.join(', ')}`
+                : `${unansweredQuestions.length} questions (starting at #${unansweredQuestions[0]})`;
+
+            this.notificationService.error(
+                `Please answer all questions. Missing: ${questionList}. Showing first unanswered question now.`,
+                'Incomplete Assessment'
+            );
+
+            // Trigger change detection to update the UI
+            this.cdr.detectChanges();
+            return;
+        }
+
+        // Validate with the service (additional validation)
         const validation = this.onboardingService.validateAnswers(this.answers);
         if (!validation.valid) {
             this.notificationService.error(
                 validation.errors.join('. '),
-                'Incomplete Assessment'
+                'Validation Error'
             );
             return;
         }
@@ -288,6 +318,30 @@ export class AssessmentComponent implements OnInit {
      */
     getAnswerValue(questionId: number): AnswerValue | null {
         return this.onboardingService.getAnswerForQuestion(this.answers, questionId);
+    }
+
+    /**
+     * Toggle progress tracker visibility
+     */
+    toggleProgressTracker(): void {
+        this.showProgressTracker = !this.showProgressTracker;
+    }
+
+    /**
+     * Get list of unanswered question numbers (1-indexed)
+     */
+    getUnansweredQuestions(): number[] {
+        return this.questions
+            .map((q, i) => ({ id: q.id, index: i + 1 }))
+            .filter(q => !this.isQuestionAnswered(q.id))
+            .map(q => q.index);
+    }
+
+    /**
+     * Get completion percentage
+     */
+    getCompletionPercentage(): number {
+        return Math.round((this.answers.length / this.questions.length) * 100);
     }
 
     /**
