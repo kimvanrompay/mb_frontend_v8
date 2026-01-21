@@ -219,9 +219,12 @@ export class AssessmentComponent implements OnInit {
      * Go to next question
      */
     nextQuestion(): void {
+        console.log('nextQuestion() called. Current:', this.currentQuestionIndex + 1, 'Total:', this.questions.length);
         if (this.currentQuestionIndex < this.questions.length - 1) {
             this.currentQuestionIndex++;
+            console.log('✅ Advanced to question:', this.currentQuestionIndex + 1);
         } else if (this.isComplete()) {
+            console.log('All questions answered, submitting...');
             this.submitAssessment();
         }
     }
