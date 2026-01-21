@@ -13,11 +13,11 @@
                 alt="Meribas" class="mx-auto h-10 w-auto mb-12 opacity-90" />
 
             <h1 class="text-5xl font-light text-black mb-3 leading-tight">
-                <ng-container>{{ 'auth.login.title' | translate }}</ng-container>
+                Welcome <span class="font-semibold">back</span>
             </h1>
 
             <p class="text-lg text-gray-500 font-light">
-                {{ 'auth.login.subtitle' | translate }}
+                Sign in to continue
             </p>
         </div>
 
@@ -35,16 +35,16 @@
             <!-- Email Field -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-900 mb-2">
-                    {{ 'auth.login.email' | translate }}
+                    Email address
                 </label>
                 <input id="email" type="email" formControlName="email" required autocomplete="email"
-                    [placeholder]="'auth.login.emailPlaceholder' | translate" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                    placeholder="you@example.com" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
                         focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
                         placeholder:text-gray-400 transition-all"
                     [class.border-red-500]="email?.invalid && email?.touched" />
                 <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="email?.errors?.['required']">{{ 'auth.login.emailRequired' | translate }}</span>
-                    <span *ngIf="email?.errors?.['email']">{{ 'auth.login.emailInvalid' | translate }}</span>
+                    <span *ngIf="email?.errors?.['required']">Email is required</span>
+                    <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
                 </p>
             </div>
 
@@ -52,21 +52,20 @@
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <label for="password" class="block text-sm font-medium text-gray-900">
-                        {{ 'auth.login.password' | translate }}
+                        Password
                     </label>
                     <a href="#" class="text-sm text-gray-600 hover:text-black transition-colors">
-                        {{ 'auth.login.forgotPassword' | translate }}
+                        Forgot password?
                     </a>
                 </div>
                 <input id="password" type="password" formControlName="password" required autocomplete="current-password"
-                    [placeholder]="'auth.login.passwordPlaceholder' | translate" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                    placeholder="Enter your password" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
                         focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
                         placeholder:text-gray-400 transition-all"
                     [class.border-red-500]="password?.invalid && password?.touched" />
                 <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="password?.errors?.['required']">{{ 'auth.login.passwordRequired' | translate }}</span>
-                    <span *ngIf="password?.errors?.['minlength']">{{ 'auth.login.passwordMinLength' | translate
-                        }}</span>
+                    <span *ngIf="password?.errors?.['required']">Password is required</span>
+                    <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
                 </p>
             </div>
 
@@ -75,7 +74,7 @@
                 <button type="submit" [disabled]="isLoading || loginForm.invalid" class="w-full px-6 py-3 text-base font-medium text-white bg-black rounded-lg 
                         hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
                         disabled:bg-gray-300 disabled:cursor-not-allowed transition-all">
-                    <span *ngIf="!isLoading">{{ 'auth.login.signIn' | translate }} →</span>
+                    <span *ngIf="!isLoading">Sign in →</span>
                     <span *ngIf="isLoading" class="flex items-center justify-center space-x-2">
                         <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
@@ -84,7 +83,7 @@
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        <span>{{ 'auth.login.signingIn' | translate }}</span>
+                        <span>Signing in...</span>
                     </span>
                 </button>
             </div>
@@ -93,9 +92,9 @@
         <!-- Register Link - Subtle -->
         <div class="mt-8 pt-8 border-t border-gray-200 text-center">
             <p class="text-sm text-gray-600">
-                {{ 'auth.login.noAccount' | translate }}
+                Don't have an account?
                 <a routerLink="/register" class="text-black font-medium hover:underline transition-colors">
-                    {{ 'auth.login.startTrial' | translate }}
+                    Start a free trial
                 </a>
             </p>
         </div>
@@ -103,9 +102,8 @@
         <!-- Footer - Minimal -->
         <div class="mt-12 text-center">
             <p class="text-xs text-gray-500">
-                {{ 'footer.needHelp' | translate }}
-                <a href="#" class="text-black hover:underline transition-colors">{{ 'footer.contactSupport' | translate
-                    }}</a>
+                Need help?
+                <a href="#" class="text-black hover:underline transition-colors">Contact support</a>
             </p>
         </div>
     </div>
