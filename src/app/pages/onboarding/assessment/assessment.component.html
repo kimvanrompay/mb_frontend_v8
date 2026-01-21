@@ -26,57 +26,74 @@
         <div class="h-0.5 bg-black transition-all duration-500 ease-out" [style.width.%]="progress"></div>
     </div>
 
-    <!-- Expandable Header with Questions Overview -->
-    <div class="w-full border-b border-gray-100">
-        <!-- Header Bar (Clickable) -->
-        <button (click)="toggleHeaderDrawer()" class="w-full px-6 py-4 hover:bg-gray-50 transition-colors">
-            <div class="max-w-3xl mx-auto flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <button *ngIf="currentQuestionIndex > 0" (click)="previousQuestion(); $event.stopPropagation()"
-                        class="text-gray-400 hover:text-black transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <span class="text-sm text-gray-500">
-                        Question <span class="font-medium text-black">{{ currentQuestionIndex + 1 }}</span> of {{
-                        questions.length }}
-                    </span>
-                </div>
-                <div class="flex items-center space-x-3">
+    <!-- Horizontal Question Navigation Stepper -->
+    <div class="w-full border-b border-gray-100 bg-white">
+        <div class="px-6 py-6">
+            <div class="max-w-6xl mx-auto">
+                <!-- Header Info -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">
+                            Question <span class="font-medium text-black">{{ currentQuestionIndex + 1 }}</span> of {{
+                            questions.length }}
+                        </span>
+                    </div>
                     <span class="text-sm font-medium text-black">{{ progress }}%</span>
-                    <svg class="w-4 h-4 text-gray-400 transition-transform duration-200"
-                        [class.rotate-180]="showHeaderDrawer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
                 </div>
-            </div>
-        </button>
 
-        <!-- Expandable Questions Grid -->
-        <div class="overflow-hidden transition-all duration-300 border-t border-gray-100"
-            [class.max-h-0]="!showHeaderDrawer" [class.max-h-96]="showHeaderDrawer">
-            <div class="px-6 py-6 bg-gray-50">
-                <div class="max-w-3xl mx-auto">
-                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-4">All Questions</p>
-                    <div class="grid grid-cols-9 gap-2">
-                        <button *ngFor="let q of questions; let i = index"
-                            (click)="goToQuestion(i); toggleHeaderDrawer()"
-                            class="aspect-square rounded-lg border-2 transition-all duration-200 hover:scale-110 flex items-center justify-center text-sm font-semibold"
-                            [class.border-black]="isQuestionAnswered(q.id)" [class.bg-black]="isQuestionAnswered(q.id)"
-                            [class.text-white]="isQuestionAnswered(q.id)"
-                            [class.border-gray-300]="!isQuestionAnswered(q.id)"
-                            [class.bg-white]="!isQuestionAnswered(q.id)"
-                            [class.text-gray-400]="!isQuestionAnswered(q.id)"
-                            [class.ring-2]="i === currentQuestionIndex"
-                            [class.ring-blue-500]="i === currentQuestionIndex">
-                            {{ i + 1 }}
-                        </button>
-                    </div>
-                    <div class="mt-4 flex items-center justify-between text-xs text-gray-600">
-                        <span>{{ answers.length }} answered • {{ questions.length - answers.length }} remaining</span>
-                        <span class="text-black font-medium">{{ progress }}% complete</span>
-                    </div>
+                <!-- Stepper Navigation -->
+                <nav aria-label="Question progress" class="overflow-x-auto">
+                    <ol role="list" class="flex items-center space-x-2 pb-2">
+                        <li *ngFor="let q of questions; let i = index; let last = last" class="flex items-center"
+                            [class.flex-1]="!last">
+
+                            <!-- Connecting Line (before current step) -->
+                            <div *ngIf="i > 0" class="h-0.5 w-8 sm:w-12 transition-colors duration-300"
+                                [class.bg-black]="isQuestionAnswered(q.id)"
+                                [class.bg-gray-200]="!isQuestionAnswered(q.id)">
+                            </div>
+
+                            <!-- Step Circle -->
+                            <button (click)="goToQuestion(i)"
+                                [attr.aria-current]="i === currentQuestionIndex ? 'step' : null"
+                                class="relative flex-shrink-0 flex items-center justify-center transition-all duration-200"
+                                [class.size-8]="i !== currentQuestionIndex"
+                                [class.size-10]="i === currentQuestionIndex">
+
+                                <!-- Completed Step -->
+                                <div *ngIf="isQuestionAnswered(q.id) && i !== currentQuestionIndex"
+                                    class="flex size-8 items-center justify-center rounded-full bg-black hover:bg-gray-800 transition-colors">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" class="size-4 text-white">
+                                        <path
+                                            d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                                            clip-rule="evenodd" fill-rule="evenodd" />
+                                    </svg>
+                                    <span class="sr-only">Question {{ i + 1 }} (Completed)</span>
+                                </div>
+
+                                <!-- Current Step -->
+                                <div *ngIf="i === currentQuestionIndex"
+                                    class="flex size-10 items-center justify-center rounded-full border-2 border-black bg-white ring-4 ring-black ring-opacity-10">
+                                    <span class="size-3 rounded-full bg-black"></span>
+                                    <span class="sr-only">Question {{ i + 1 }} (Current)</span>
+                                </div>
+
+                                <!-- Upcoming Step -->
+                                <div *ngIf="!isQuestionAnswered(q.id) && i !== currentQuestionIndex"
+                                    class="group flex size-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white hover:border-gray-400 transition-colors">
+                                    <span
+                                        class="size-2 rounded-full bg-transparent group-hover:bg-gray-300 transition-colors"></span>
+                                    <span class="sr-only">Question {{ i + 1 }}</span>
+                                </div>
+                            </button>
+                        </li>
+                    </ol>
+                </nav>
+
+                <!-- Progress Summary -->
+                <div class="mt-4 flex items-center justify-between text-xs text-gray-600">
+                    <span>{{ answers.length }} answered</span>
+                    <span class="text-black font-medium">{{ questions.length - answers.length }} remaining</span>
                 </div>
             </div>
         </div>
