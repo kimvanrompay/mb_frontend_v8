@@ -46,7 +46,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex items-center justify-center overflow-y-auto px-6 pr-24">
+    <div class="flex-1 flex items-center justify-center overflow-y-auto px-6 pr-8">
         <div class="w-full max-w-4xl py-12">
 
             <!-- Question - Typography Focus -->
@@ -116,30 +116,31 @@
 
     <!-- Premium Progress Tracker Panel (Slide-out) -->
     <div class="fixed inset-y-0 right-0 z-50 pointer-events-none">
-        <!-- Toggle Button (Always visible) -->
+        <!-- Toggle Button (Bottom-right corner) -->
         <button (click)="toggleProgressTracker()"
-            class="absolute top-32 -left-12 pointer-events-auto bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 rounded-l-lg px-3 py-6 group"
+            class="absolute bottom-24 -left-14 pointer-events-auto bg-white border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 rounded-l-xl px-4 py-3 group"
             [class.bg-black]="showProgressTracker" [class.text-white]="showProgressTracker">
-            <div class="flex flex-col items-center space-y-2">
+            <div class="flex items-center space-x-3">
                 <!-- Circular Progress Indicator -->
-                <div class="relative w-10 h-10">
-                    <svg class="transform -rotate-90 w-10 h-10">
-                        <circle cx="20" cy="20" r="16" stroke="currentColor"
+                <div class="relative w-12 h-12">
+                    <svg class="transform -rotate-90 w-12 h-12">
+                        <circle cx="24" cy="24" r="20" stroke="currentColor"
                             [class.stroke-gray-200]="!showProgressTracker" [class.stroke-white]="showProgressTracker"
                             stroke-width="2" fill="none" opacity="0.2" />
-                        <circle cx="20" cy="20" r="16" [class.stroke-black]="!showProgressTracker"
-                            [class.stroke-white]="showProgressTracker" stroke-width="2" fill="none"
-                            [style.stroke-dasharray]="100.53"
-                            [style.stroke-dashoffset]="100.53 - (100.53 * getCompletionPercentage() / 100)"
+                        <circle cx="24" cy="24" r="20" [class.stroke-black]="!showProgressTracker"
+                            [class.stroke-white]="showProgressTracker" stroke-width="3" fill="none"
+                            [style.stroke-dasharray]="125.6"
+                            [style.stroke-dashoffset]="125.6 - (125.6 * getCompletionPercentage() / 100)"
                             class="transition-all duration-500" />
                     </svg>
                     <div class="absolute inset-0 flex items-center justify-center">
                         <span class="text-xs font-bold">{{ getCompletionPercentage() }}%</span>
                     </div>
                 </div>
-                <span class="text-xs font-medium transform rotate-180" style="writing-mode: vertical-rl;">
-                    {{ answers.length }}/{{ questions.length }}
-                </span>
+                <div class="text-left">
+                    <div class="text-xs font-medium uppercase tracking-wide">Progress</div>
+                    <div class="text-sm font-bold">{{ answers.length }}/{{ questions.length }}</div>
+                </div>
             </div>
         </button>
 
