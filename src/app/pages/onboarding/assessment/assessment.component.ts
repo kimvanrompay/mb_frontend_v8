@@ -154,9 +154,7 @@ export class AssessmentComponent implements OnInit {
      */
     get currentAnswer(): AnswerValue | null {
         if (!this.currentQuestion) return null;
-        const answer = this.onboardingService.getAnswerForQuestion(this.answers, this.currentQuestion.id);
-        console.log('Current answer for Q' + (this.currentQuestionIndex + 1) + ':', answer);
-        return answer;
+        return this.onboardingService.getAnswerForQuestion(this.answers, this.currentQuestion.id);
     }
 
     /**
