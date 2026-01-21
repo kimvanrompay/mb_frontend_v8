@@ -57,17 +57,25 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
    */
   onDigitInput(event: any, index: number): void {
     const input = event.target as HTMLInputElement;
-    const value = input.value;
+    let value = input.value;
+
+    // If multiple characters entered (e.g., from paste), take only the first digit
+    if (value.length > 1) {
+      value = value.charAt(0);
+      input.value = value;
+    }
 
     // Only allow numbers
     if (value && !/^\d$/.test(value)) {
       input.value = '';
+      this.digits[index] = '';
       return;
     }
 
+    // Update the digits array
     this.digits[index] = value;
 
-    // Auto-advance to next input
+    // Auto-advance to next input if value entered
     if (value && index < 5) {
       const nextInput = this.digitInputs.toArray()[index + 1];
       if (nextInput) {
@@ -75,9 +83,9 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
       }
     }
 
-    // Auto-submit when all 6 digits entered
+    // Auto-submit when all 6 digits entered (only on last digit)
     if (index === 5 && value && this.isCodeComplete()) {
-      this.verifyCode();
+      setTimeout(() => this.verifyCode(), 100); // Small delay to ensure all inputs are updated
     }
   }
 
@@ -87,18 +95,24 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   onDigitKeyDown(event: KeyboardEvent, index: number): void {
     const input = event.target as HTMLInputElement;
 
-    if (event.key === 'Backspace' && !input.value && index > 0) {
-      // Move to previous input on backspace if current is empty
-      const prevInput = this.digitInputs.toArray()[index - 1];
-      if (prevInput) {
-        prevInput.nativeElement.focus();
+    if (event.key === 'Backspace') {
+      if (!input.value && index > 0) {
+        // Move to previous input on backspace if current is empty
+        event.preventDefault();
+        const prevInput = this.digitInputs.toArray()[index - 1];
+        if (prevInput) {
+          prevInput.nativeElement.focus();
+          prevInput.nativeElement.select();
+        }
       }
     } else if (event.key === 'ArrowLeft' && index > 0) {
+      event.preventDefault();
       const prevInput = this.digitInputs.toArray()[index - 1];
       if (prevInput) {
         prevInput.nativeElement.focus();
       }
     } else if (event.key === 'ArrowRight' && index < 5) {
+      event.preventDefault();
       const nextInput = this.digitInputs.toArray()[index + 1];
       if (nextInput) {
         nextInput.nativeElement.focus();
@@ -111,7 +125,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
    */
   onPaste(event: ClipboardEvent): void {
     event.preventDefault();
-    const pastedData = event.clipboardData?.getData('text');
+    const pastedData = event.clipboardData?.getData('text').trim();
 
     if (pastedData && /^\d{6}$/.test(pastedData)) {
       // Valid 6-digit code pasted
@@ -122,8 +136,15 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
           input.nativeElement.value = pastedData[i];
         }
       }
-      // Auto-submit
-      this.verifyCode();
+
+      // Focus last input
+      const lastInput = this.digitInputs.toArray()[5];
+      if (lastInput) {
+        lastInput.nativeElement.focus();
+      }
+
+      // Auto-submit after paste
+      setTimeout(() => this.verifyCode(), 100);
     }
   }
 
