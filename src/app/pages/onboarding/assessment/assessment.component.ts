@@ -119,27 +119,28 @@ export class AssessmentComponent implements OnInit {
 
     submitAssessment(): void {
         if (!this.canGoNext) {
-            this.notificationService.showError('Please answer all questions on this page.');
+            alert('Please answer all questions on this page.');
             return;
         }
 
         if (this.answers.length !== this.questions.length) {
-            this.notificationService.showError('Please answer all questions before submitting.');
+            alert('Please answer all questions before submitting.');
             return;
         }
 
         this.isSubmitting = true;
 
         this.onboardingService.submitRecruiterAnswers(this.answers, this.currentLocale).subscribe({
-            next: (result) => {
+            next: (result: any) => {
                 sessionStorage.removeItem('assessment_answers');
                 this.router.navigate(['/onboarding/success'], {
                     state: { result }
                 });
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.isSubmitting = false;
-                this.notificationService.showError('Failed to submit assessment. Please try again.');
+                console.error('Submit error:', err);
+                alert('Failed to submit assessment. Please try again.');
             }
         });
     }
