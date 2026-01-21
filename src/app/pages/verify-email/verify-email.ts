@@ -57,35 +57,34 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
    */
   onDigitInput(event: any, index: number): void {
     const input = event.target as HTMLInputElement;
-    let value = input.value;
+    const value = input.value;
 
-    // If multiple characters entered (e.g., from paste), take only the first digit
-    if (value.length > 1) {
-      value = value.charAt(0);
-      input.value = value;
-    }
-
-    // Only allow numbers
+    // Only allow single digit numbers
     if (value && !/^\d$/.test(value)) {
       input.value = '';
-      this.digits[index] = '';
       return;
     }
 
-    // Update the digits array
-    this.digits[index] = value;
+    // If value is entered
+    if (value) {
+      // Store in array
+      this.digits[index] = value;
 
-    // Auto-advance to next input if value entered
-    if (value && index < 5) {
-      const nextInput = this.digitInputs.toArray()[index + 1];
-      if (nextInput) {
-        nextInput.nativeElement.focus();
+      // Auto-advance to next field
+      if (index < 5) {
+        const nextInput = this.digitInputs.toArray()[index + 1];
+        if (nextInput) {
+          setTimeout(() => nextInput.nativeElement.focus(), 10);
+        }
+      } else {
+        // Last digit - check if complete
+        if (this.isCodeComplete()) {
+          setTimeout(() => this.verifyCode(), 200);
+        }
       }
-    }
-
-    // Auto-submit when all 6 digits entered (only on last digit)
-    if (index === 5 && value && this.isCodeComplete()) {
-      setTimeout(() => this.verifyCode(), 100); // Small delay to ensure all inputs are updated
+    } else {
+      // Clear digit
+      this.digits[index] = '';
     }
   }
 
