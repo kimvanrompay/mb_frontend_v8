@@ -66,8 +66,9 @@ export class I18nService {
         }
 
         try {
-            const data = await this.http.get<TranslationData>(`./assets/i18n/${lang}.json`).toPromise();
+            const data = await this.http.get<TranslationData>(`/assets/i18n/${lang}.json`).toPromise();
             this.translations[lang] = data || {};
+            console.log(`Loaded translations for language: ${lang}`, Object.keys(data || {}).length, 'keys');
         } catch (error) {
             console.error(`Failed to load language: ${lang}`, error);
             this.translations[lang] = {};
