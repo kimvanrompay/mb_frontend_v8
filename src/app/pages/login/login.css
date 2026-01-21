@@ -1,0 +1,104 @@
+/* Glassmorphic animated shapes */
+.glass-shape {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.01) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Shape 1 - Large slow mover */
+.glass-shape-1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+    animation: float-1 25s ease-in-out infinite;
+}
+
+/* Shape 2 - Medium fast mover */
+.glass-shape-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -80px;
+    right: -80px;
+    animation: float-2 20s ease-in-out infinite;
+}
+
+/* Shape 3 - Small quick mover */
+.glass-shape-3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    right: -50px;
+    animation: float-3 15s ease-in-out infinite;
+}
+
+/* Shape 4 - Small slow mover */
+.glass-shape-4 {
+    width: 250px;
+    height: 250px;
+    bottom: 30%;
+    left: -80px;
+    animation: float-4 30s ease-in-out infinite;
+}
+
+/* Float animations */
+@keyframes float-1 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    33% {
+        transform: translate(100px, 80px) rotate(120deg);
+    }
+
+    66% {
+        transform: translate(-50px, 120px) rotate(240deg);
+    }
+}
+
+@keyframes float-2 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    33% {
+        transform: translate(-120px, -60px) rotate(-120deg);
+    }
+
+    66% {
+        transform: translate(80px, -100px) rotate(-240deg);
+    }
+}
+
+@keyframes float-3 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-100px, 100px) scale(1.2);
+    }
+}
+
+@keyframes float-4 {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translate(120px, -80px) rotate(180deg) scale(0.9);
+    }
+}
