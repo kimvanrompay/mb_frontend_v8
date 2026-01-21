@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,7 +41,8 @@ export class AssessmentComponent implements OnInit {
         private onboardingService: OnboardingService,
         private authService: AuthService,
         private notificationService: NotificationService,
-        private router: Router
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
@@ -68,6 +69,7 @@ export class AssessmentComponent implements OnInit {
                     console.error('Response is null or undefined!');
                     this.isLoading = false;
                     this.error = 'Invalid response from server';
+                    this.cdr.detectChanges();
                     return;
                 }
 
@@ -76,12 +78,16 @@ export class AssessmentComponent implements OnInit {
                     console.error('Full response:', JSON.stringify(response));
                     this.isLoading = false;
                     this.error = 'No questions found in response';
+                    this.cdr.detectChanges();
                     return;
                 }
 
                 this.questions = response.questions;
                 this.isLoading = false;
                 console.log('Questions loaded, isLoading set to false. Total questions:', this.questions?.length);
+                console.log('Triggering change detection...');
+                this.cdr.detectChanges();
+                console.log('Change detection triggered');
 
                 // Restore any previously saved answers from session storage
                 const savedAnswers = sessionStorage.getItem('assessment_answers');
@@ -107,6 +113,7 @@ export class AssessmentComponent implements OnInit {
                 this.error = 'Failed to load questions. Please try again.';
                 this.notificationService.error('Failed to load assessment questions', 'Error');
                 console.error('Error loading questions:', error);
+                this.cdr.detectChanges();
             },
             complete: () => {
                 console.log('Observable completed');
@@ -118,6 +125,7 @@ export class AssessmentComponent implements OnInit {
                     if (!this.questions || this.questions.length === 0) {
                         this.error = 'No questions loaded';
                     }
+                    this.cdr.detectChanges();
                 }
             }
         });
