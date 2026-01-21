@@ -7,21 +7,21 @@
 
     <div class="w-full max-w-md relative z-10">
 
-        <!-- Logo & Header - Typography First -->
+        <!-- Logo & Header -->
         <div class="text-center mb-12">
             <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
                 alt="Meribas" class="mx-auto h-10 w-auto mb-12 opacity-90" />
 
             <h1 class="text-5xl font-light text-black mb-3 leading-tight">
-                Welcome <span class="font-semibold">back</span>
+                {{ 'auth.login.title' | t }}
             </h1>
 
             <p class="text-lg text-gray-500 font-light">
-                Sign in to continue
+                {{ 'auth.login.subtitle' | t }}
             </p>
         </div>
 
-        <!-- Error Message - Minimal -->
+        <!-- Error Message -->
         <div *ngIf="errorMessage" class="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
             <p class="text-sm font-medium text-red-900">{{ errorMessage }}</p>
             <ul *ngIf="errors.length > 0" class="mt-2 text-sm text-red-700 space-y-1">
@@ -29,43 +29,43 @@
             </ul>
         </div>
 
-        <!-- Form - Clean & Spacious -->
+        <!-- Form -->
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
-            <!-- Email Field -->
+            <!-- Email -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-900 mb-2">
-                    Email address
+                    {{ 'auth.login.email' | t }}
                 </label>
                 <input id="email" type="email" formControlName="email" required autocomplete="email"
-                    placeholder="you@example.com" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                    [placeholder]="'auth.login.emailPlaceholder' | t" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
                         focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
                         placeholder:text-gray-400 transition-all"
                     [class.border-red-500]="email?.invalid && email?.touched" />
                 <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="email?.errors?.['required']">Email is required</span>
-                    <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+                    <span *ngIf="email?.errors?.['required']">{{ 'auth.login.emailRequired' | t }}</span>
+                    <span *ngIf="email?.errors?.['email']">{{ 'auth.login.emailInvalid' | t }}</span>
                 </p>
             </div>
 
-            <!-- Password Field -->
+            <!-- Password -->
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <label for="password" class="block text-sm font-medium text-gray-900">
-                        Password
+                        {{ 'auth.login.password' | t }}
                     </label>
                     <a href="#" class="text-sm text-gray-600 hover:text-black transition-colors">
-                        Forgot password?
+                        {{ 'auth.login.forgotPassword' | t }}
                     </a>
                 </div>
                 <input id="password" type="password" formControlName="password" required autocomplete="current-password"
-                    placeholder="Enter your password" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                    [placeholder]="'auth.login.passwordPlaceholder' | t" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
                         focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
                         placeholder:text-gray-400 transition-all"
                     [class.border-red-500]="password?.invalid && password?.touched" />
                 <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="password?.errors?.['required']">Password is required</span>
-                    <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+                    <span *ngIf="password?.errors?.['required']">{{ 'auth.login.passwordRequired' | t }}</span>
+                    <span *ngIf="password?.errors?.['minlength']">{{ 'auth.login.passwordMinLength' | t }}</span>
                 </p>
             </div>
 
@@ -74,7 +74,7 @@
                 <button type="submit" [disabled]="isLoading || loginForm.invalid" class="w-full px-6 py-3 text-base font-medium text-white bg-black rounded-lg 
                         hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
                         disabled:bg-gray-300 disabled:cursor-not-allowed transition-all">
-                    <span *ngIf="!isLoading">Sign in →</span>
+                    <span *ngIf="!isLoading">{{ 'auth.login.signIn' | t }} →</span>
                     <span *ngIf="isLoading" class="flex items-center justify-center space-x-2">
                         <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
@@ -83,27 +83,27 @@
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        <span>Signing in...</span>
+                        <span>{{ 'auth.login.signingIn' | t }}</span>
                     </span>
                 </button>
             </div>
         </form>
 
-        <!-- Register Link - Subtle -->
+        <!-- Register Link -->
         <div class="mt-8 pt-8 border-t border-gray-200 text-center">
             <p class="text-sm text-gray-600">
-                Don't have an account?
+                {{ 'auth.login.noAccount' | t }}
                 <a routerLink="/register" class="text-black font-medium hover:underline transition-colors">
-                    Start a free trial
+                    {{ 'auth.login.startTrial' | t }}
                 </a>
             </p>
         </div>
 
-        <!-- Footer - Minimal -->
+        <!-- Footer -->
         <div class="mt-12 text-center">
             <p class="text-xs text-gray-500">
-                Need help?
-                <a href="#" class="text-black hover:underline transition-colors">Contact support</a>
+                {{ 'footer.needHelp' | t }}
+                <a href="#" class="text-black hover:underline transition-colors">{{ 'footer.contactSupport' | t }}</a>
             </p>
         </div>
     </div>
