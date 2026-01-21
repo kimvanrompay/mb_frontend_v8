@@ -162,24 +162,12 @@
 
                 <button *ngIf="isSubmitting" disabled
                     class="min-w-[140px] px-10 py-2 bg-gray-300 text-gray-500 text-sm font-medium cursor-not-allowed">
-                    clip-rule="evenodd" />
-                    </svg>
-            </div>
-            <div *ngIf="!isQuestionAnswered(q.id) && i === currentQuestionIndex"
-                class="w-5 h-5 bg-blue-500 rounded-full animate-pulse">
+                    Submitting...
+                </button>
             </div>
         </div>
-
-        <!-- Hover Label -->
-        <span
-            class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-            [class.text-green-600]="isQuestionAnswered(q.id)" [class.text-gray-500]="!isQuestionAnswered(q.id)">
-            {{ isQuestionAnswered(q.id) ? 'Answered' : 'Not answered' }}
-        </span>
-        </button>
     </div>
 
-    <!-- Unanswered Questions List (if any) -->
     <div *ngIf="getUnansweredQuestions().length > 0" class="mt-8 p-4 bg-red-50 border border-red-200 rounded-lg">
         <div class="flex items-start space-x-3">
             <div class="flex-shrink-0">
@@ -228,14 +216,10 @@
     </div>
 </div>
 </div>
-</div>
-</div>
 
 <!-- Keyboard Hint -->
 <div *ngIf="!isLoading && !error"
     class="hidden sm:block fixed bottom-6 left-6 text-xs text-gray-400 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
     <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">1–5</kbd> to answer •
-    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">←→</kbd> to navigate •
-    <button (click)="toggleProgressTracker()" class="underline hover:text-black transition-colors ml-1">View
-        progress</button>
+    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">←→</kbd> to navigate
 </div>
