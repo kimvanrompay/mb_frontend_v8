@@ -23,6 +23,9 @@ export class I18nService {
      * Initialize language from browser or localStorage
      */
     private async initializeLanguage(): Promise<void> {
+        // Always load English first as fallback
+        await this.loadLanguage(this.defaultLanguage);
+
         // Check localStorage first
         const savedLang = localStorage.getItem('app_language');
 
@@ -38,7 +41,11 @@ export class I18nService {
             }
         }
 
-        await this.loadLanguage(langToUse);
+        // Load the selected language (if different from English)
+        if (langToUse !== this.defaultLanguage) {
+            await this.loadLanguage(langToUse);
+        }
+
         this.currentLang$.next(langToUse);
     }
 
@@ -64,6 +71,11 @@ export class I18nService {
         } catch (error) {
             console.error(`Failed to load language: ${lang}`, error);
             this.translations[lang] = {};
+
+            // If failed to load non-English, ensure English is available
+            if (lang !== this.defaultLanguage && !this.translations[this.defaultLanguage]) {
+                await this.loadLanguage(this.defaultLanguage);
+            }
         }
     }
 
@@ -72,8 +84,8 @@ export class I18nService {
      */
     async setLanguage(lang: string): Promise<void> {
         if (!this.supportedLanguages.includes(lang)) {
-            console.warn(`Language ${lang} not supported`);
-            return;
+            console.warn(`Language ${lang} not supported, using ${this.defaultLanguage}`);
+            lang = this.defaultLanguage;
         }
 
         await this.loadLanguage(lang);
@@ -96,14 +108,24 @@ export class I18nService {
     }
 
     /**
-     * Translate a key
+     * Translate a key with fallback to English
      */
     translate(key: string, params?: any): string {
         const lang = this.currentLang$.value;
-        const translation = this.getNestedValue(this.translations[lang], key);
+        let translation = this.getNestedValue(this.translations[lang], key);
 
+        // Fallback to English if translation not found in current language
+        if (!translation && lang !== this.defaultLanguage) {
+            translation = this.getNestedValue(this.translations[this.defaultLanguage], key);
+
+            if (translation) {
+                console.warn(`Translation for "${key}" not found in ${lang}, using English fallback`);
+            }
+        }
+
+        // If still not found, return the key itself
         if (!translation) {
-            console.warn(`Translation not found for key: ${key} in language: ${lang}`);
+            console.warn(`Translation not found for key: ${key} in any language`);
             return key;
         }
 
@@ -119,6 +141,7 @@ export class I18nService {
      * Get nested value from object using dot notation
      */
     private getNestedValue(obj: any, path: string): any {
+        if (!obj) return undefined;
         return path.split('.').reduce((current, key) => current?.[key], obj);
     }
 
