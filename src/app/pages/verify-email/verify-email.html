@@ -60,7 +60,7 @@
 
             <div class="digit-inputs flex justify-between space-x-3 mb-4">
                 <input *ngFor="let digit of digits; let i = index" #digitInput type="text" maxlength="1"
-                    inputmode="numeric" pattern="[0-9]" [value]="digit" (input)="onDigitInput($event, i)"
+                    inputmode="numeric" pattern="[0-9]" (input)="onDigitInput($event, i)"
                     (keydown)="onDigitKeyDown($event, i)" (paste)="onPaste($event)" [disabled]="isVerifying" class="w-14 h-16 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none transition-all
                         disabled:bg-gray-100 disabled:cursor-not-allowed" [class.border-red-500]="error"
                     [class.border-green-500]="successMessage" autocomplete="off" />
