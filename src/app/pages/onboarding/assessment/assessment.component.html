@@ -46,23 +46,23 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex items-center justify-center overflow-y-auto px-6">
-        <div class="w-full max-w-2xl py-12">
+    <div class="flex-1 flex items-center justify-center overflow-y-auto px-6 pr-24">
+        <div class="w-full max-w-4xl py-12">
 
             <!-- Question - Typography Focus -->
-            <h2 class="text-3xl font-light text-black mb-12 leading-tight text-center">
+            <h2 class="text-3xl font-light text-black mb-12 leading-tight text-center px-4">
                 {{ currentQuestionText }}
             </h2>
 
             <!-- Scale Labels (Top) -->
-            <div class="flex justify-between mb-2 px-1 text-xs text-gray-400 uppercase tracking-wide">
+            <div class="flex justify-between mb-2 px-1 text-xs text-gray-400 uppercase tracking-wide max-w-3xl mx-auto">
                 <span>Disagree</span>
                 <span>Neutral</span>
                 <span>Agree</span>
             </div>
 
             <!-- Answer Options - Typography Only -->
-            <div class="space-y-2">
+            <div class="space-y-2 max-w-3xl mx-auto">
                 <button *ngFor="let option of scaleOptions" (click)="selectAnswer(option)"
                     [class.selected]="currentAnswer === option" class="answer-option w-full px-6 py-4 border border-gray-200 hover:border-black transition-all duration-200
                            bg-white text-left group">
@@ -87,7 +87,7 @@
             </div>
 
             <!-- Navigation -->
-            <div class="mt-8 flex items-center justify-between">
+            <div class="mt-8 flex items-center justify-between max-w-3xl mx-auto">
                 <button *ngIf="currentQuestionIndex > 0" (click)="previousQuestion()"
                     class="text-sm text-gray-500 hover:text-black transition-colors font-light">
                     ← Previous

@@ -30,7 +30,7 @@ export class AssessmentComponent implements OnInit {
     isLoading = false;
     isSubmitting = false;
     error: string | null = null;
-    showProgressTracker = true; // Progress tracker panel visibility
+    showProgressTracker = false; // Progress tracker panel visibility (starts closed)
 
     // Locale
     currentLocale: Locale = 'en';

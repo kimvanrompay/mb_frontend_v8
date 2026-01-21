@@ -108,4 +108,29 @@ export class SuccessComponent implements OnInit {
         const maxScore = 15; // 3 questions × 5 max value
         return Math.round((score / maxScore) * 100);
     }
+
+    /**
+     * Get SVG path for radial chart segment
+     */
+    getSegmentPath(type: EnneagramType, score: number): string {
+        const maxRadius = 140;
+        const radius = (score / 15) * maxRadius;
+        const segmentAngle = 40; // 360 / 9 = 40 degrees per segment
+        const startAngle = ((type - 1) * segmentAngle) * (Math.PI / 180);
+        const endAngle = (type * segmentAngle) * (Math.PI / 180);
+
+        const centerX = 200;
+        const centerY = 200;
+
+        // Calculate arc points
+        const x1 = centerX + radius * Math.cos(startAngle);
+        const y1 = centerY + radius * Math.sin(startAngle);
+        const x2 = centerX + radius * Math.cos(endAngle);
+        const y2 = centerY + radius * Math.sin(endAngle);
+
+        // Create path: Move to center, line to start, arc to end, line back to center
+        const largeArcFlag = segmentAngle > 180 ? 1 : 0;
+
+        return `M ${centerX},${centerY} L ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2} Z`;
+    }
 }

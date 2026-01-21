@@ -6,112 +6,300 @@
     </div>
 </div>
 
-<!-- Success Screen - Typography First -->
+<!-- Success Screen - Enhanced with Visuals -->
 <div *ngIf="!isLoading && result" class="fixed inset-0 bg-white overflow-y-auto">
-    <div class="min-h-full flex items-center justify-center px-6 py-12">
-        <div class="w-full max-w-2xl">
+    <div class="min-h-full px-6 py-12">
+        <div class="w-full max-w-6xl mx-auto">
 
             <!-- Typography Header -->
-            <div class="text-center mb-16">
+            <div class="text-center mb-12">
                 <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">
                     Assessment Complete
                 </p>
-                <h1 class="text-5xl font-light text-black mb-4 leading-tight">
+                <h1 class="text-6xl font-light text-black mb-6 leading-tight">
                     You are
                     <br><span class="font-semibold">{{ result.type_name }}</span>
                 </h1>
-                <p class="text-lg text-gray-600 max-w-lg mx-auto leading-relaxed">
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed mb-4">
                     {{ result.type_description }}
                 </p>
-            </div>
-
-            <!-- Score Display - Typography -->
-            <div class="mb-12">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-sm text-gray-500 uppercase tracking-wide">Your Score</span>
-                    <span class="text-2xl font-light text-black">
-                        {{ result.all_scores[result.dominant_type] }}<span class="text-gray-400">/15</span>
-                    </span>
-                </div>
-                <div class="w-full h-px bg-gray-200">
-                    <div class="h-px bg-black transition-all duration-1000"
-                        [style.width.%]="getScorePercentage(result.all_scores[result.dominant_type])"></div>
+                <div class="flex items-center justify-center space-x-3 text-sm text-gray-500">
+                    <span>Enneagram Type {{ result.dominant_type }}</span>
+                    <span>•</span>
+                    <span>{{ result.locale.toUpperCase() }}</span>
                 </div>
             </div>
 
-            <!-- Top 3 - Clean Typography -->
-            <div class="mb-12">
-                <p class="text-sm text-gray-500 uppercase tracking-wide mb-4">Top Three Types</p>
-                <div class="space-y-3">
-                    <div *ngFor="let item of topThreeTypes; let i = index"
-                        class="flex items-center justify-between py-3 border-b border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <span class="text-lg font-light text-gray-400">{{ i + 1 }}</span>
-                            <div>
-                                <div class="text-base font-medium text-black">{{ item.name }}</div>
-                                <div class="text-xs text-gray-500">Type {{ item.type }}</div>
+            <!-- Main Visual Section - Two Column Layout -->
+            <div class="grid lg:grid-cols-2 gap-12 mb-12">
+
+                <!-- LEFT: Enneagram Diagram -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wide mb-6">Enneagram Profile</h3>
+
+                    <!-- SVG Enneagram Diagram -->
+                    <div class="relative aspect-square max-w-md mx-auto">
+                        <svg viewBox="0 0 400 400" class="w-full h-full">
+                            <!-- Background Circle -->
+                            <circle cx="200" cy="200" r="180" fill="none" stroke="#e5e7eb" stroke-width="2" />
+
+                            <!-- Inner connecting lines (enneagram pattern) -->
+                            <g stroke="#d1d5db" stroke-width="1" opacity="0.3">
+                                <!-- Triangle: 3-6-9 -->
+                                <line x1="200" y1="20" x2="356" y2="295" />
+                                <line x1="356" y1="295" x2="44" y2="295" />
+                                <line x1="44" y1="295" x2="200" y2="20" />
+                                <!-- Hexagon: 1-4-2-8-5-7 -->
+                                <line x1="307" y1="54" x2="93" y2="200" />
+                                <line x1="93" y1="200" x2="307" y2="346" />
+                                <line x1="307" y1="346" x2="356" y2="105" />
+                                <line x1="356" y1="105" x2="44" y2="105" />
+                                <line x1="44" y1="105" x2="93" y2="346" />
+                                <line x1="93" y1="346" x2="307" y2="54" />
+                            </g>
+
+                            <!-- Type points -->
+                            <g>
+                                <!-- Type 9 (top) -->
+                                <circle cx="200" cy="20" r="24"
+                                    [attr.fill]="result.dominant_type === 9 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 9 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="200" y="27" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 9 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">9</text>
+
+                                <!-- Type 1 (top right) -->
+                                <circle cx="307" cy="54" r="24"
+                                    [attr.fill]="result.dominant_type === 1 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 1 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="307" y="61" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 1 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">1</text>
+
+                                <!-- Type 2 (right) -->
+                                <circle cx="356" cy="105" r="24"
+                                    [attr.fill]="result.dominant_type === 2 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 2 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="356" y="112" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 2 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">2</text>
+
+                                <!-- Type 3 (bottom right) -->
+                                <circle cx="356" cy="295" r="24"
+                                    [attr.fill]="result.dominant_type === 3 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 3 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="356" y="302" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 3 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">3</text>
+
+                                <!-- Type 4 (bottom right) -->
+                                <circle cx="307" cy="346" r="24"
+                                    [attr.fill]="result.dominant_type === 4 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 4 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="307" y="353" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 4 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">4</text>
+
+                                <!-- Type 5 (bottom) -->
+                                <circle cx="200" cy="380" r="24"
+                                    [attr.fill]="result.dominant_type === 5 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 5 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="200" y="387" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 5 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">5</text>
+
+                                <!-- Type 6 (bottom left) -->
+                                <circle cx="93" cy="346" r="24"
+                                    [attr.fill]="result.dominant_type === 6 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 6 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="93" y="353" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 6 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">6</text>
+
+                                <!-- Type 7 (bottom left) -->
+                                <circle cx="44" cy="295" r="24"
+                                    [attr.fill]="result.dominant_type === 7 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 7 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="44" y="302" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 7 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">7</text>
+
+                                <!-- Type 8 (left) -->
+                                <circle cx="44" cy="105" r="24"
+                                    [attr.fill]="result.dominant_type === 8 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 8 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="44" y="112" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 8 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">8</text>
+
+                                <!-- Type 1 (top left) -->
+                                <circle cx="93" cy="54" r="24"
+                                    [attr.fill]="result.dominant_type === 1 ? '#000' : '#fff'"
+                                    [attr.stroke]="result.dominant_type === 1 ? '#000' : '#d1d5db'" stroke-width="2" />
+                                <text x="93" y="61" text-anchor="middle"
+                                    [attr.fill]="result.dominant_type === 1 ? '#fff' : '#6b7280'" font-size="16"
+                                    font-weight="600">1</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">
+                            The Enneagram shows 9 interconnected personality types
+                        </p>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Radial Score Chart -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wide mb-6">Your Score Distribution
+                    </h3>
+
+                    <!-- Radial Chart -->
+                    <div class="relative aspect-square max-w-md mx-auto">
+                        <svg viewBox="0 0 400 400" class="w-full h-full transform -rotate-90">
+                            <!-- Background circles -->
+                            <circle cx="200" cy="200" r="140" fill="none" stroke="#f3f4f6" stroke-width="1" />
+                            <circle cx="200" cy="200" r="105" fill="none" stroke="#f3f4f6" stroke-width="1" />
+                            <circle cx="200" cy="200" r="70" fill="none" stroke="#f3f4f6" stroke-width="1" />
+                            <circle cx="200" cy="200" r="35" fill="none" stroke="#f3f4f6" stroke-width="1" />
+
+                            <!-- Score segments (9 slices, 40 degrees each) -->
+                            <g *ngFor="let item of sortedScores; let i = index">
+                                <!-- Calculate angle and radius based on score -->
+                                <path [attr.d]="getSegmentPath(item.type, item.score)"
+                                    [attr.fill]="result.dominant_type === item.type ? '#000' : '#d1d5db'"
+                                    [attr.opacity]="result.dominant_type === item.type ? 1 : 0.4" />
+                            </g>
+                        </svg>
+
+                        <!-- Center text -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center">
+                                <div class="text-5xl font-bold text-black">{{ result.all_scores[result.dominant_type] }}
+                                </div>
+                                <div class="text-sm text-gray-500 mt-1">out of 15</div>
                             </div>
                         </div>
-                        <span class="text-base font-light text-black">{{ item.score }}</span>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600">
+                            Your highest score is in Type {{ result.dominant_type }}
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <!-- All Scores - Minimal -->
-            <details class="group mb-12">
+            <!-- Top 3 Scores - Card Layout -->
+            <div class="mb-12">
+                <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wide mb-6">Your Top Three Types</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div *ngFor="let item of topThreeTypes; let i = index"
+                        class="bg-white rounded-xl p-6 border-2 transition-all hover:shadow-lg"
+                        [class.border-black]="i === 0" [class.border-gray-200]="i !== 0">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-4xl font-bold text-gray-300">#{{i + 1}}</span>
+                            <div class="text-right">
+                                <div class="text-3xl font-bold text-black">{{ item.score }}</div>
+                                <div class="text-xs text-gray-500">/ 15</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="text-lg font-semibold text-black">{{ item.name }}</div>
+                            <div class="text-sm text-gray-500">Type {{ item.type }}</div>
+                        </div>
+                        <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-black transition-all duration-1000"
+                                [style.width.%]="getScorePercentage(item.score)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Scores - Expandable -->
+            <details class="group mb-12 bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <summary
-                    class="cursor-pointer list-none flex items-center justify-between py-3 border-t border-gray-200 text-sm text-gray-600 hover:text-black transition-colors">
-                    <span class="uppercase tracking-wide">View All Scores</span>
-                    <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor"
+                    class="cursor-pointer list-none flex items-center justify-between text-sm font-medium text-gray-900 uppercase tracking-wide">
+                    <span>View All 9 Type Scores</span>
+                    <svg class="w-5 h-5 transition-transform group-open:rotate-180" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </summary>
-                <div class="mt-4 space-y-2">
-                    <div *ngFor="let item of sortedScores" class="flex items-center justify-between py-2 text-sm">
-                        <span class="font-light text-gray-600">{{ item.name }}</span>
-                        <div class="flex items-center space-x-3">
-                            <div class="w-32 h-px bg-gray-200">
-                                <div class="h-px bg-gray-400 transition-all"
-                                    [style.width.%]="getScorePercentage(item.score)"></div>
-                            </div>
-                            <span class="font-light text-gray-900 w-6 text-right">{{ item.score }}</span>
+                <div class="mt-6 grid md:grid-cols-3 gap-4">
+                    <div *ngFor="let item of sortedScores"
+                        class="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200">
+                        <div>
+                            <div class="text-sm font-medium text-black">{{ item.name }}</div>
+                            <div class="text-xs text-gray-500">Type {{ item.type }}</div>
                         </div>
+                        <div class="text-2xl font-bold text-black">{{ item.score }}</div>
                     </div>
                 </div>
             </details>
 
-            <!-- Benefits - Typography Grid -->
-            <div class="mb-12 pb-12 border-t border-gray-200 pt-12">
-                <p class="text-sm text-gray-500 uppercase tracking-wide mb-6">What This Means</p>
-                <div class="grid grid-cols-2 gap-x-8 gap-y-6">
-                    <div>
-                        <h4 class="text-sm font-medium text-black mb-1">Personalized Experience</h4>
-                        <p class="text-sm text-gray-600 leading-relaxed">Dashboard tailored to your type</p>
+            <!-- Benefits Section -->
+            <div class="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-200 mb-12">
+                <h3 class="text-sm font-medium text-gray-900 uppercase tracking-wide mb-6 text-center">What This Means
+                    For You</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-sm font-semibold text-black mb-2">Personalized Experience</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">Dashboard and workflows tailored to your
+                            recruiting style</p>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-black mb-1">Better Insights</h4>
-                        <p class="text-sm text-gray-600 leading-relaxed">Recommendations that match</p>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-sm font-semibold text-black mb-2">Better Insights</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">AI recommendations that match your
+                            decision-making patterns</p>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-black mb-1">Optimized Workflow</h4>
-                        <p class="text-sm text-gray-600 leading-relaxed">Tools aligned with your style</p>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h4 class="text-sm font-semibold text-black mb-2">Optimized Workflow</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">Communication templates and tools aligned with
+                            your style</p>
                     </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-black mb-1">Growth Path</h4>
-                        <p class="text-sm text-gray-600 leading-relaxed">Development suggestions</p>
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
+                        </div>
+                        <h4 class="text-sm font-semibold text-black mb-2">Growth Path</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed">Personalized development suggestions and blind
+                            spot awareness</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Clean CTA -->
+            <!-- CTA -->
             <div class="text-center">
                 <button (click)="continueToDashboard()"
-                    class="px-12 py-4 text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors duration-200">
-                    Continue to Dashboard
+                    class="px-12 py-4 text-base font-medium text-white bg-black hover:bg-gray-800 transition-all duration-200 rounded-lg shadow-lg hover:shadow-xl">
+                    Continue to Dashboard →
                 </button>
-                <p class="mt-4 text-xs text-gray-400">
-                    View results anytime in your profile
+                <p class="mt-4 text-sm text-gray-500">
+                    You can view your results anytime in your profile settings
                 </p>
             </div>
 
