@@ -196,14 +196,24 @@ export class AssessmentComponent implements OnInit {
         // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
 
-        // Brief delay to show selection, then auto-advance
-        setTimeout(() => {
-            this.nextQuestion();
+        // Check if this is the last question
+        const isLastQuestion = this.currentQuestionIndex === this.questions.length - 1;
 
-            // Reset transition flag
-            setTimeout(() => {
-                this.isTransitioning = false;
-            }, 100);
+        // Brief delay to show selection, then auto-advance or submit
+        setTimeout(() => {
+            if (isLastQuestion) {
+                // Last question - auto-submit
+                console.log('📝 Last question answered - auto-submitting...');
+                this.submitAssessment();
+            } else {
+                // Not last question - advance to next
+                this.nextQuestion();
+
+                // Reset transition flag
+                setTimeout(() => {
+                    this.isTransitioning = false;
+                }, 100);
+            }
         }, 400);
     }
 

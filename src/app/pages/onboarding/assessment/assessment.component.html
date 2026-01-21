@@ -94,20 +94,11 @@
                 </button>
             </div>
 
-            <!-- Progress hint or Complete button -->
+            <!-- Progress hint only -->
             <div class="text-center mt-8 px-4">
-                <button *ngIf="currentQuestionIndex === questions.length - 1 && currentAnswer !== null && !isSubmitting"
-                    (click)="submitAssessment()" class="px-10 py-4 sm:py-3 bg-black text-white text-base sm:text-sm font-medium 
-                           hover:bg-gray-800 transition-colors rounded-lg touch-manipulation">
-                    Complete Assessment
-                </button>
-                <button *ngIf="isSubmitting" disabled class="px-10 py-4 sm:py-3 bg-gray-300 text-gray-500 text-base sm:text-sm font-medium 
-                           cursor-not-allowed rounded-lg">
-                    Submitting...
-                </button>
-                <p *ngIf="currentQuestionIndex < questions.length - 1" class="text-xs sm:text-xs text-gray-400 mt-2">
-                    Tap an answer to continue
-                </p>
+                <p class="text-xs sm:text-xs text-gray-400">
+                    {{ currentQuestionIndex < questions.length - 1 ? 'Tap an answer to continue'
+                        : 'Tap an answer to complete' }} </p>
             </div>
         </div>
     </div>
@@ -116,6 +107,5 @@
 <!-- Keyboard Hint -->
 <div *ngIf="!isLoading && !error"
     class="hidden sm:block fixed bottom-6 left-6 text-xs text-gray-400 bg-stone-50 px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
-    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">1–5</kbd> to answer •
-    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">←→</kbd> to navigate
+    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">1–5</kbd> to answer
 </div>
