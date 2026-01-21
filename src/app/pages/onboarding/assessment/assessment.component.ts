@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -21,393 +21,130 @@ import {
     styleUrl: './assessment.component.css'
 })
 export class AssessmentComponent implements OnInit {
-    // Questions and state
     questions: RecruiterQuestion[] = [];
-    currentQuestionIndex = 0;
     answers: Answer[] = [];
+    currentPage = 0;
+    questionsPerPage = 3;
 
-    // UI state
     isLoading = false;
     isSubmitting = false;
     error: string | null = null;
-    showProgressTracker = false;
-    showHeaderDrawer = false;
-    isTransitioning = false; // Prevent double-clicks during auto-advance
-
-    // Locale
     currentLocale: Locale = 'en';
-
-    // Likert scale options
     scaleOptions: AnswerValue[] = [1, 2, 3, 4, 5];
 
     constructor(
         private onboardingService: OnboardingService,
         private authService: AuthService,
         private notificationService: NotificationService,
-        private router: Router,
-        private cdr: ChangeDetectorRef
+        private router: Router
     ) { }
 
     ngOnInit(): void {
         this.loadQuestions();
     }
 
-    /**
-     * Load questions from API
-     */
     loadQuestions(): void {
-        console.log('loadQuestions() called - setting isLoading to true');
         this.isLoading = true;
         this.error = null;
 
-        console.log('Making API call to getRecruiterQuestions...');
+        const user = this.authService.getCurrentUser();
+        this.currentLocale = user?.locale || 'en';
+
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
-            next: (response: any) => {
-                console.log('API Response received:', response);
-                console.log('Response type:', typeof response);
-                console.log('Response.questions:', response.questions);
-
-                // Check if response or questions is null/undefined
-                if (!response) {
-                    console.error('Response is null or undefined!');
-                    this.isLoading = false;
-                    this.error = 'Invalid response from server';
-                    this.cdr.detectChanges();
-                    return;
-                }
-
-                if (!response.questions) {
-                    console.error('Response.questions is null or undefined!');
-                    console.error('Full response:', JSON.stringify(response));
-                    this.isLoading = false;
-                    this.error = 'No questions found in response';
-                    this.cdr.detectChanges();
-                    return;
-                }
-
-                this.questions = response.questions;
+            next: (questions) => {
+                this.questions = questions;
+                this.answers = [];
+                this.currentPage = 0;
                 this.isLoading = false;
-                console.log('Questions loaded, isLoading set to false. Total questions:', this.questions?.length);
-                console.log('Triggering change detection...');
-                this.cdr.detectChanges();
-                console.log('Change detection triggered');
-
-                // Restore any previously saved answers from session storage
-                const savedAnswers = sessionStorage.getItem('assessment_answers');
-                if (savedAnswers) {
-                    this.answers = JSON.parse(savedAnswers);
-                    // Resume from last unanswered question
-                    const lastIndex = this.answers.length;
-                    if (lastIndex < this.questions.length) {
-                        this.currentQuestionIndex = lastIndex;
-                    }
-                }
             },
-            error: (error: any) => {
-                console.error('API Error occurred:', error);
-                console.error('Error details:', {
-                    status: error.status,
-                    statusText: error.statusText,
-                    message: error.message,
-                    error: error.error
-                });
-
-                this.isLoading = false;
+            error: (err) => {
                 this.error = 'Failed to load questions. Please try again.';
-                this.notificationService.error('Failed to load assessment questions', 'Error');
-                console.error('Error loading questions:', error);
-                this.cdr.detectChanges();
-            },
-            complete: () => {
-                console.log('Observable completed');
-                // If we get here and still loading, something went wrong
-                if (this.isLoading) {
-                    console.error('Observable completed but isLoading is still true!');
-                    console.error('Questions loaded:', this.questions?.length || 0);
-                    this.isLoading = false;
-                    if (!this.questions || this.questions.length === 0) {
-                        this.error = 'No questions loaded';
-                    }
-                    this.cdr.detectChanges();
-                }
+                this.isLoading = false;
             }
         });
     }
 
-    /**
-     * Get the current question
-     */
-    get currentQuestion(): RecruiterQuestion | null {
-        return this.questions[this.currentQuestionIndex] || null;
+    get currentQuestions(): RecruiterQuestion[] {
+        const start = this.currentPage * this.questionsPerPage;
+        const end = start + this.questionsPerPage;
+        return this.questions.slice(start, end);
     }
 
-    /**
-     * Get the question text in current locale
-     */
-    get currentQuestionText(): string {
-        if (!this.currentQuestion) return '';
-        return this.currentQuestion.content[this.currentLocale];
+    get totalPages(): number {
+        return Math.ceil(this.questions.length / this.questionsPerPage);
     }
 
-    /**
-     * Get current answer for current question
-     */
-    get currentAnswer(): AnswerValue | null {
-        if (!this.currentQuestion) return null;
-        return this.onboardingService.getAnswerForQuestion(this.answers, this.currentQuestion.id);
-    }
-
-    /**
-     * Get progress percentage
-     */
     get progress(): number {
-        return Math.round(((this.currentQuestionIndex + 1) / this.questions.length) * 100);
+        return Math.round((this.answers.length / this.questions.length) * 100);
     }
 
-    /**
-     * Get label for a scale value
-     */
-    getScaleLabel(value: AnswerValue): string {
-        return LIKERT_SCALE_LABELS[this.currentLocale][value];
+    get canGoNext(): boolean {
+        // Check if all questions on current page are answered
+        const currentQuestions = this.currentQuestions;
+        return currentQuestions.every(q => this.getAnswer(q.id) !== null);
     }
 
-    /**
-     * Handle answer selection
-     */
-    selectAnswer(value: AnswerValue): void {
-        if (!this.currentQuestion) return;
+    get isLastPage(): boolean {
+        return this.currentPage === this.totalPages - 1;
+    }
 
-        // Prevent double-clicking during transition
-        if (this.isTransitioning) return;
-        this.isTransitioning = true;
+    getAnswer(questionId: string): AnswerValue | null {
+        return this.onboardingService.getAnswerForQuestion(this.answers, questionId);
+    }
 
-        const questionId = this.currentQuestion.id;
-        console.log('✏️ Selected:', { question: this.currentQuestionIndex + 1, value });
-
-        // Remove existing answer for this question if any
+    selectAnswer(questionId: string, value: AnswerValue): void {
+        // Remove existing answer for this question
         this.answers = this.answers.filter(a => a.question_id !== questionId);
 
         // Add new answer
         this.answers.push({ question_id: questionId, value });
-        console.log('✅ Saved. Total:', this.answers.length, 'answers');
 
         // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
-
-        // Check if this is the last question
-        const isLastQuestion = this.currentQuestionIndex === this.questions.length - 1;
-
-        // Brief delay to show selection, then auto-advance or submit
-        setTimeout(() => {
-            if (isLastQuestion) {
-                // Last question - auto-submit
-                console.log('📝 Last question answered - auto-submitting...');
-                this.submitAssessment();
-            } else {
-                // Not last question - advance to next
-                this.nextQuestion();
-
-                // Reset transition flag
-                setTimeout(() => {
-                    this.isTransitioning = false;
-                }, 100);
-            }
-        }, 400);
     }
 
-    /**
-     * Go to next question
-     */
-    nextQuestion(): void {
-        console.log('nextQuestion() called. Current:', this.currentQuestionIndex + 1, 'Total:', this.questions.length);
-        if (this.currentQuestionIndex < this.questions.length - 1) {
-            this.currentQuestionIndex++;
-            console.log('✅ Advanced to question:', this.currentQuestionIndex + 1);
-            // Force Angular to detect the change
-            this.cdr.detectChanges();
-        } else if (this.isComplete()) {
-            console.log('All questions answered, submitting...');
-            this.submitAssessment();
+    nextPage(): void {
+        if (this.canGoNext && !this.isLastPage) {
+            this.currentPage++;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    /**
-     * Go to previous question
-     */
-    previousQuestion(): void {
-        if (this.currentQuestionIndex > 0) {
-            this.currentQuestionIndex--;
+    previousPage(): void {
+        if (this.currentPage > 0) {
+            this.currentPage--;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
-    /**
-     * Jump to specific question
-     */
-    goToQuestion(index: number): void {
-        if (index >= 0 && index < this.questions.length) {
-            this.currentQuestionIndex = index;
-        }
-    }
-
-    /**
-     * Check if assessment is complete
-     */
-    isComplete(): boolean {
-        return this.onboardingService.isComplete(this.answers);
-    }
-
-    /**
-     * Check if a question has been answered
-     */
-    isQuestionAnswered(questionId: number): boolean {
-        return this.answers.some(a => a.question_id === questionId);
-    }
-
-    /**
-     * Submit the assessment
-     */
     submitAssessment(): void {
-        // Check if all questions are answered
-        const unansweredQuestions: number[] = [];
-        this.questions.forEach((question, index) => {
-            if (!this.isQuestionAnswered(question.id)) {
-                unansweredQuestions.push(index + 1); // 1-indexed for display
-            }
-        });
-
-        if (unansweredQuestions.length > 0) {
-            const firstUnanswered = unansweredQuestions[0] - 1; // Convert back to 0-indexed
-
-            // Navigate to first unanswered question
-            this.currentQuestionIndex = firstUnanswered;
-
-            // Show detailed error message
-            const questionList = unansweredQuestions.length <= 5
-                ? `Questions ${unansweredQuestions.join(', ')}`
-                : `${unansweredQuestions.length} questions (starting at #${unansweredQuestions[0]})`;
-
-            this.notificationService.error(
-                `Please answer all questions. Missing: ${questionList}. Showing first unanswered question now.`,
-                'Incomplete Assessment'
-            );
-
-            // Trigger change detection to update the UI
-            this.cdr.detectChanges();
+        if (!this.canGoNext) {
+            this.notificationService.showError('Please answer all questions on this page.');
             return;
         }
 
-        // Validate with the service (additional validation)
-        const validation = this.onboardingService.validateAnswers(this.answers);
-        if (!validation.valid) {
-            this.notificationService.error(
-                validation.errors.join('. '),
-                'Validation Error'
-            );
-            return;
-        }
-
-        const user = this.authService.getCurrentUser();
-        if (!user?.email) {
-            this.notificationService.error('User email not found', 'Error');
+        if (this.answers.length !== this.questions.length) {
+            this.notificationService.showError('Please answer all questions before submitting.');
             return;
         }
 
         this.isSubmitting = true;
 
-        const submission = {
-            locale: this.currentLocale,
-            user_email: user.email,
-            answers: this.answers
-        };
-
-        this.onboardingService.submitRecruiterAssessment(submission).subscribe({
-            next: (response: any) => {
-                this.isSubmitting = false;
-                // Clear saved answers
+        this.onboardingService.submitRecruiterAnswers(this.answers, this.currentLocale).subscribe({
+            next: (result) => {
                 sessionStorage.removeItem('assessment_answers');
-                // Navigate to success page with results
                 this.router.navigate(['/onboarding/success'], {
-                    state: { result: response.result }
+                    state: { result }
                 });
             },
-            error: (error: any) => {
+            error: (err) => {
                 this.isSubmitting = false;
-                this.notificationService.error(
-                    error.error?.error || 'Failed to submit assessment',
-                    'Submission Error'
-                );
-                console.error('Error submitting assessment:', error);
+                this.notificationService.showError('Failed to submit assessment. Please try again.');
             }
         });
     }
 
-    /**
-     * Get answer value for a specific question (for progress indicator)
-     */
-    getAnswerValue(questionId: number): AnswerValue | null {
-        return this.onboardingService.getAnswerForQuestion(this.answers, questionId);
-    }
-
-    /**
-     * Toggle progress tracker visibility
-     */
-    toggleProgressTracker(): void {
-        this.showProgressTracker = !this.showProgressTracker;
-    }
-
-    /**
-     * Toggle header questions drawer
-     */
-    toggleHeaderDrawer(): void {
-        this.showHeaderDrawer = !this.showHeaderDrawer;
-    }
-
-    /**
-     * Get list of unanswered question numbers (1-indexed)
-     */
-    getUnansweredQuestions(): number[] {
-        return this.questions
-            .map((q, i) => ({ id: q.id, index: i + 1 }))
-            .filter(q => !this.isQuestionAnswered(q.id))
-            .map(q => q.index);
-    }
-
-    /**
-     * Get completion percentage
-     */
-    getCompletionPercentage(): number {
-        return Math.round((this.answers.length / this.questions.length) * 100);
-    }
-
-    /**
-     * Handle keyboard shortcuts
-     * 1-5: Select answer
-     * Arrow Left: Previous question
-     * Arrow Right: Next question (if answered)
-     */
-    @HostListener('window:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent): void {
-        // Don't handle if user is typing in an input
-        if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-            return;
-        }
-
-        // Number keys 1-5 for answers
-        if (event.key >= '1' && event.key <= '5') {
-            event.preventDefault();
-            const value = parseInt(event.key) as AnswerValue;
-            this.selectAnswer(value);
-        }
-
-        // Arrow keys for navigation
-        if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            this.previousQuestion();
-        }
-
-        if (event.key === 'ArrowRight' && this.currentAnswer !== null) {
-            event.preventDefault();
-            this.nextQuestion();
-        }
+    getScaleLabel(value: AnswerValue): string {
+        return LIKERT_SCALE_LABELS[this.currentLocale][value];
     }
 }

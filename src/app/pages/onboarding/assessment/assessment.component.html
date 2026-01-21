@@ -1,5 +1,5 @@
 <!-- Loading State -->
-<div *ngIf="isLoading" class="fixed inset-0 bg-stone-50 flex items-center justify-center z-50">
+<div *ngIf="isLoading" class="fixed inset-0 bg-stone-50 flex items-center justify-center">
     <div class="text-center">
         <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-black mb-4"></div>
         <p class="text-sm text-gray-500 uppercase tracking-wide">Loading</p>
@@ -7,35 +7,34 @@
 </div>
 
 <!-- Error State -->
-<div *ngIf="error && !isLoading" class="fixed inset-0 bg-stone-50 flex items-center justify-center z-50 p-6">
+<div *ngIf="error && !isLoading" class="fixed inset-0 bg-stone-50 flex items-center justify-center p-6">
     <div class="max-w-md text-center">
         <h2 class="text-2xl font-light text-black mb-2">Unable to Load</h2>
         <p class="text-gray-600 mb-6">{{ error }}</p>
         <button (click)="loadQuestions()"
-            class="px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+            class="px-6 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors rounded-lg">
             Try Again
         </button>
     </div>
 </div>
 
 <!-- Assessment Container -->
-<div *ngIf="!isLoading && !error" class="fixed inset-0 bg-stone-50 flex flex-col">
+<div *ngIf="!isLoading && !error" class="min-h-screen bg-stone-50">
 
-    <!-- Minimal Progress Bar -->
+    <!-- Progress Bar -->
     <div class="w-full border-b border-gray-200">
-        <div class="h-0.5 bg-black transition-all duration-500 ease-out" [style.width.%]="progress"></div>
+        <div class="h-1 bg-black transition-all duration-500" [style.width.%]="progress"></div>
     </div>
 
-    <!-- Simple Header -->
+    <!-- Header -->
     <div class="w-full border-b border-gray-100 bg-stone-50">
-        <div class="px-6 py-4">
+        <div class="px-4 sm:px-6 py-4">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
                 <span class="text-sm text-gray-500">
-                    Question <span class="font-medium text-black">{{ currentQuestionIndex + 1 }}</span> of {{
-                    questions.length }}
+                    Page <span class="font-medium text-black">{{ currentPage + 1 }}</span> of {{ totalPages }}
                 </span>
-                <div class="flex items-center gap-6">
-                    <span class="text-sm text-gray-500">{{ answers.length }} answered</span>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-gray-500">{{ answers.length }}/{{ questions.length }} answered</span>
                     <span class="text-sm font-medium text-black">{{ progress }}%</span>
                 </div>
             </div>
@@ -43,69 +42,96 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex items-center justify-center overflow-y-auto px-6">
-        <div class="w-full max-w-4xl py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-            <!-- Question -->
-            <h2 class="text-3xl font-light text-black mb-12 leading-tight text-center px-4">
-                {{ currentQuestionText }}
-            </h2>
+        <!-- Questions (3 per page) -->
+        <div class="space-y-12">
+            <div *ngFor="let question of currentQuestions; let i = index"
+                class="bg-white rounded-lg border border-gray-200 p-6 sm:p-8">
 
-            <!-- Scale Labels -->
-            <div class="flex justify-between mb-2 px-1 text-xs text-gray-400 uppercase tracking-wide max-w-3xl mx-auto">
-                <span>Disagree</span>
-                <span>Neutral</span>
-                <span>Agree</span>
-            </div>
+                <!-- Question Number & Text -->
+                <div class="mb-6">
+                    <span class="text-xs font-medium text-gray-400 uppercase tracking-wide">
+                        Question {{ (currentPage * questionsPerPage) + i + 1 }} of {{ questions.length }}
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-light text-black mt-2 leading-snug">
+                        {{ question.text }}
+                    </h3>
+                </div>
 
-
-            <!-- Answer Options - Mobile Optimized -->
-            <div class="space-y-3 max-w-2xl mx-auto px-4 sm:px-0" [class.opacity-50]="isTransitioning">
-                <button *ngFor="let option of scaleOptions" (click)="selectAnswer(option)"
-                    [class.ring-2]="currentAnswer === option" [class.ring-black]="currentAnswer === option"
-                    [class.bg-gray-50]="currentAnswer === option" [disabled]="isTransitioning" class="answer-option w-full px-4 sm:px-6 py-5 sm:py-4 border border-gray-200 rounded-lg
-                           hover:border-black transition-all duration-200 bg-white text-left group 
-                           disabled:cursor-wait active:scale-98 touch-manipulation">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3 sm:space-x-4">
-                            <div class="w-10 h-10 sm:w-8 sm:h-8 border border-gray-200 group-hover:border-black 
-                                        transition-colors flex items-center justify-center flex-shrink-0 rounded"
-                                [class.border-black]="currentAnswer === option"
-                                [class.bg-black]="currentAnswer === option">
-                                <span class="text-base sm:text-sm font-medium transition-colors"
-                                    [class.text-gray-400]="currentAnswer !== option"
-                                    [class.text-white]="currentAnswer === option"
-                                    [class.group-hover:text-black]="currentAnswer !== option">
+                <!-- Answer Options -->
+                <div class="space-y-2">
+                    <button *ngFor="let option of scaleOptions" (click)="selectAnswer(question.id, option)"
+                        [class.ring-2]="getAnswer(question.id) === option"
+                        [class.ring-black]="getAnswer(question.id) === option"
+                        [class.bg-gray-50]="getAnswer(question.id) === option" class="w-full px-4 py-3 border border-gray-200 rounded-lg hover:border-black 
+                               transition-all text-left flex items-center justify-between group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 border border-gray-200 group-hover:border-black rounded flex items-center justify-center transition-colors"
+                                [class.border-black]="getAnswer(question.id) === option"
+                                [class.bg-black]="getAnswer(question.id) === option">
+                                <span class="text-sm font-medium transition-colors"
+                                    [class.text-gray-400]="getAnswer(question.id) !== option"
+                                    [class.text-white]="getAnswer(question.id) === option">
                                     {{ option }}
                                 </span>
                             </div>
-                            <span
-                                class="text-base sm:text-base font-light text-gray-700 group-hover:text-black transition-colors">
+                            <span class="text-base font-light text-gray-700 group-hover:text-black transition-colors">
                                 {{ getScaleLabel(option) }}
                             </span>
                         </div>
-                        <svg *ngIf="currentAnswer === option" class="w-5 h-5 text-black flex-shrink-0"
-                            fill="currentColor" viewBox="0 0 20 20">
+                        <svg *ngIf="getAnswer(question.id) === option" class="w-5 h-5 text-black" fill="currentColor"
+                            viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                                 clip-rule="evenodd" />
                         </svg>
-                    </div>
-                </button>
-            </div>
-
-            <!-- Progress hint only -->
-            <div class="text-center mt-8 px-4">
-                <p class="text-xs sm:text-xs text-gray-400">
-                    {{ currentQuestionIndex < questions.length - 1 ? 'Tap an answer to continue'
-                        : 'Tap an answer to complete' }} </p>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Keyboard Hint -->
-<div *ngIf="!isLoading && !error"
-    class="hidden sm:block fixed bottom-6 left-6 text-xs text-gray-400 bg-stone-50 px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
-    <kbd class="px-2 py-1 bg-gray-50 border border-gray-200 rounded font-mono">1–5</kbd> to answer
+        <!-- Navigation Buttons -->
+        <div class="flex items-center justify-between mt-12 gap-4">
+            <!-- Previous Button -->
+            <button *ngIf="currentPage > 0" (click)="previousPage()" class="px-6 py-3 border border-gray-300 text-gray-700 text-sm font-medium 
+                       hover:bg-gray-50 transition-colors rounded-lg">
+                ← Previous
+            </button>
+            <div *ngIf="currentPage === 0" class="w-32"></div>
+
+            <!-- Next/Submit Button -->
+            <div class="flex-1 flex justify-end">
+                <button *ngIf="!isLastPage && canGoNext" (click)="nextPage()" class="px-8 py-3 bg-black text-white text-sm font-medium 
+                           hover:bg-gray-800 transition-colors rounded-lg">
+                    Next →
+                </button>
+
+                <button *ngIf="!isLastPage && !canGoNext" disabled class="px-8 py-3 bg-gray-200 text-gray-400 text-sm font-medium 
+                           cursor-not-allowed rounded-lg">
+                    Answer all questions
+                </button>
+
+                <button *ngIf="isLastPage && canGoNext && !isSubmitting" (click)="submitAssessment()" class="px-8 py-3 bg-black text-white text-sm font-medium 
+                           hover:bg-gray-800 transition-colors rounded-lg">
+                    Complete Assessment
+                </button>
+
+                <button *ngIf="isLastPage && !canGoNext && !isSubmitting" disabled class="px-8 py-3 bg-gray-200 text-gray-400 text-sm font-medium 
+                           cursor-not-allowed rounded-lg">
+                    Answer all questions
+                </button>
+
+                <button *ngIf="isSubmitting" disabled class="px-8 py-3 bg-gray-300 text-gray-500 text-sm font-medium 
+                           cursor-not-allowed rounded-lg">
+                    Submitting...
+                </button>
+            </div>
+        </div>
+
+        <!-- Helper Text -->
+        <p class="text-center text-xs text-gray-400 mt-6">
+            {{ isLastPage ? 'Answer all questions to complete the assessment' : 'Answer all questions to continue' }}
+        </p>
+    </div>
 </div>
