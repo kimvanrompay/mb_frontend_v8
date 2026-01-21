@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 export interface User {
   id: string;
   email: string;
+  email_verified: boolean;
+  email_verified_at: string | null;
   first_name: string;
   last_name: string;
   full_name: string;
@@ -125,6 +127,50 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return this.hasToken();
+  }
+
+  /**
+   * Verify email with 6-digit code
+   */
+  verifyEmail(code: string): Observable<{ message: string; user: Partial<User> }> {
+    return this.http.post<{ message: string; user: Partial<User> }>(
+      `${this.API_URL}/auth/verify_email`,
+      { code }
+    ).pipe(
+      tap(response => {
+        // Update current user with verified status
+        const currentUser = this.currentUserSubject.value;
+        if (currentUser && response.user) {
+          this.currentUserSubject.next({
+            ...currentUser,
+            ...response.user
+          });
+        }
+      })
+    );
+  }
+
+  /**
+   * Resend verification code
+   */
+  resendVerification(): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.API_URL}/auth/resend_verification`,
+      {}
+    );
+  }
+
+  /**
+   * Update user data in the current user subject
+   */
+  updateUser(userData: Partial<User>): void {
+    const currentUser = this.currentUserSubject.value;
+    if (currentUser) {
+      this.currentUserSubject.next({
+        ...currentUser,
+        ...userData
+      });
+    }
   }
 
   /**

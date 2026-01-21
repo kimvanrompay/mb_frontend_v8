@@ -93,18 +93,14 @@ export class RegisterComponent {
         this.cdr.detectChanges(); // Force UI update
 
         this.notificationService.success(
-          'Your account has been created successfully! Welcome to Meribas.',
+          response.message || 'Registration successful! Please check your email to verify your account.',
           'Registration Successful'
         );
 
         // Small delay to show success message before redirect
         setTimeout(() => {
-          // Check if user needs onboarding
-          if (response.user.needs_onboarding) {
-            this.router.navigate(['/onboarding']);
-          } else {
-            this.router.navigate(['/dashboard']);
-          }
+          // Redirect to email verification page
+          this.router.navigate(['/verify-email']);
         }, 1000);
       },
       error: (error) => {
