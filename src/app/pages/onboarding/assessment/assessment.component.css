@@ -1,52 +1,76 @@
-/* Typography-First Styles */
-
-/* Answer Options */
-.answer-option {
-    transition: all 0.2s ease-out;
+.scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    padding-top: 65px;
+    /* Space for fixed header */
 }
 
-.answer-option:hover {
-    background-color: #fafafa;
+.question-section {
+    min-height: 100vh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
 }
 
-.answer-option.selected {
-    background-color: #000;
-    border-color: #000;
-    color: #fff;
+.question-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.answer-option.selected span {
-    color: #fff;
-}
-
-.answer-option.selected .border-gray-200 {
-    border-color: #fff;
-}
-
-/* Progress Indicators */
-.progress-dot {
-    transition: all 0.3s ease-out;
-}
-
-/* Smooth Transitions */
-button {
-    transition: all 0.2s ease-out;
-}
-
-/* Keyboard Hint */
-kbd {
-    font-family: ui-monospace, monospace;
-}
-
-/* Focus States */
-button:focus-visible {
-    outline: 2px solid black;
-    outline-offset: 2px;
-}
-
-/* Mobile Optimizations */
+/* Smooth scrolling on mobile */
 @media (max-width: 640px) {
-    .answer-option {
-        padding: 1rem;
+    .scroll-container {
+        -webkit-overflow-scrolling: touch;
     }
+
+    .question-section {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Answer button animations */
+button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Bounce animation for scroll hint */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
 }

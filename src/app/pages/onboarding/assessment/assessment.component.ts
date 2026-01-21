@@ -23,8 +23,6 @@ import {
 export class AssessmentComponent implements OnInit {
     questions: RecruiterQuestion[] = [];
     answers: Answer[] = [];
-    currentPage = 0;
-    questionsPerPage = 3;
 
     isLoading = false;
     isSubmitting = false;
@@ -53,7 +51,6 @@ export class AssessmentComponent implements OnInit {
             next: (response) => {
                 this.questions = response.questions;
                 this.answers = [];
-                this.currentPage = 0;
                 this.isLoading = false;
             },
             error: (err: any) => {
@@ -63,27 +60,12 @@ export class AssessmentComponent implements OnInit {
         });
     }
 
-    get currentQuestions(): RecruiterQuestion[] {
-        const start = this.currentPage * this.questionsPerPage;
-        const end = start + this.questionsPerPage;
-        return this.questions.slice(start, end);
-    }
-
-    get totalPages(): number {
-        return Math.ceil(this.questions.length / this.questionsPerPage);
-    }
-
     get progress(): number {
         return Math.round((this.answers.length / this.questions.length) * 100);
     }
 
-    get canGoNext(): boolean {
-        const currentQuestions = this.currentQuestions;
-        return currentQuestions.every(q => this.getAnswer(q.id) !== null);
-    }
-
-    get isLastPage(): boolean {
-        return this.currentPage === this.totalPages - 1;
+    get canSubmit(): boolean {
+        return this.answers.length === this.questions.length;
     }
 
     getAnswer(questionId: number): AnswerValue | null {
@@ -100,27 +82,8 @@ export class AssessmentComponent implements OnInit {
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
     }
 
-    nextPage(): void {
-        if (this.canGoNext && !this.isLastPage) {
-            this.currentPage++;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
-    previousPage(): void {
-        if (this.currentPage > 0) {
-            this.currentPage--;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    }
-
     submitAssessment(): void {
-        if (!this.canGoNext) {
-            alert('Please answer all questions on this page.');
-            return;
-        }
-
-        if (this.answers.length !== this.questions.length) {
+        if (!this.canSubmit) {
             alert('Please answer all questions before submitting.');
             return;
         }
