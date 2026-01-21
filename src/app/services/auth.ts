@@ -130,21 +130,21 @@ export class AuthService {
   }
 
   /**
-   * Verify email with 6-digit code
+   * Verify email with activation token from email link
    */
-  verifyEmail(code: string): Observable<{ message: string; user: Partial<User> }> {
-    return this.http.post<{ message: string; user: Partial<User> }>(
-      `${this.API_URL}/auth/verify_email`,
-      { code }
+  verifyEmail(token: string): Observable<{ message: string; token: string; user: Partial<User> }> {
+    // GET request - public endpoint, no authentication needed
+    return this.http.get<{ message: string; token: string; user: Partial<User> }>(
+      `${this.API_URL}/auth/verify_email?token=${token}`
     ).pipe(
       tap(response => {
+        // Store the new auth token
+        if (response.token) {
+          this.saveToken(response.token);
+        }
         // Update current user with verified status
-        const currentUser = this.currentUserSubject.value;
-        if (currentUser && response.user) {
-          this.currentUserSubject.next({
-            ...currentUser,
-            ...response.user
-          });
+        if (response.user) {
+          this.currentUserSubject.next(response.user as User);
         }
       })
     );

@@ -1,305 +1,101 @@
-import { Component, OnInit, ViewChildren, QueryList, ElementRef, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { NotificationService } from '../../services/notification';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-verify-email',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './verify-email.html',
-  styleUrl: './verify-email.css'
+  styleUrls: ['./verify-email.css']
 })
 export class VerifyEmailComponent implements OnInit, OnDestroy {
-  @ViewChildren('digitInput') digitInputs!: QueryList<ElementRef>;
-
-  email: string = '';
-  digits: string[] = ['', '', '', '', '', ''];
-  isVerifying: boolean = false;
+  isVerifying = true;
+  success = false;
   error: string | null = null;
-  successMessage: string | null = null;
-  resendCountdown: number = 0;
-  private countdownInterval: any;
+  email = '';
+
+  private subscription?: Subscription;
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    // Get token from URL query parameter
+    const token = this.route.snapshot.queryParams['token'];
+
+    if (!token) {
+      this.showError('No verification token provided. Please use the link from your email.');
+      return;
+    }
+
+    // Get user info for display
     const user = this.authService.getCurrentUser();
-
-    if (!user) {
-      this.router.navigate(['/login']);
-      return;
+    if (user) {
+      this.email = user.email;
     }
 
-    this.email = user.email;
-
-    // If already verified, redirect to dashboard/onboarding
-    if (user.email_verified) {
-      this.redirectAfter();
-      return;
-    }
+    // Verify email with token
+    this.verifyEmail(token);
   }
 
   ngOnDestroy(): void {
-    if (this.countdownInterval) {
-      clearInterval(this.countdownInterval);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
-  /**
-   * Handle input in digit fields - DISABLED
-   */
-  onDigitInput(event: any, index: number): void {
-    // Disabled - we handle everything in keydown to prevent glitches
-    return;
-  }
+  private verifyEmail(token: string): void {
+    console.log('🔑 Verifying email with token...');
 
-  /**
-   * Handle keydown - this handles ALL input
-   */
-  onDigitKeyDown(event: KeyboardEvent, index: number): void {
-    const input = event.target as HTMLInputElement;
-    const key = event.key;
+    this.subscription = this.authService.verifyEmail(token).subscribe({
+      next: (response) => {
+        console.log('✅ Email verified successfully!', response);
+        this.isVerifying = false;
+        this.success = true;
 
-    console.log('Keydown:', key, 'at index:', index);
-
-    // Handle backspace
-    if (key === 'Backspace') {
-      event.preventDefault();
-      if (input.value) {
-        // Clear current digit
-        input.value = '';
-        this.digits[index] = '';
-      } else if (index > 0) {
-        // Move to previous and clear it
-        const prevInput = this.digitInputs.toArray()[index - 1];
-        if (prevInput) {
-          prevInput.nativeElement.value = '';
-          this.digits[index - 1] = '';
-          prevInput.nativeElement.focus();
-        }
+        // Redirect to onboarding after 2 seconds
+        setTimeout(() => {
+          this.router.navigate(['/onboarding']);
+        }, 2000);
+      },
+      error: (err) => {
+        console.error('❌ Verification failed:', err);
+        const errorMessage = err.error?.error || err.error?.message || 'Verification failed. The link may be invalid or expired.';
+        this.showError(errorMessage);
       }
-      return;
-    }
-
-    // Handle arrow keys
-    if (key === 'ArrowLeft' && index > 0) {
-      event.preventDefault();
-      this.digitInputs.toArray()[index - 1].nativeElement.focus();
-      return;
-    }
-    if (key === 'ArrowRight' && index < 5) {
-      event.preventDefault();
-      this.digitInputs.toArray()[index + 1].nativeElement.focus();
-      return;
-    }
-
-    // Only allow digits
-    if (!/^\d$/.test(key)) {
-      event.preventDefault();
-      return;
-    }
-
-    // Handle digit input
-    event.preventDefault();
-    input.value = key;
-    this.digits[index] = key;
-    console.log('Digits:', this.digits);
-
-    // Auto-advance
-    if (index < 5) {
-      setTimeout(() => {
-        this.digitInputs.toArray()[index + 1].nativeElement.focus();
-      }, 50);
-    } else {
-      // Check if complete
-      if (this.isCodeComplete()) {
-        console.log('Code complete!');
-        setTimeout(() => this.verifyCode(), 200);
-      }
-    }
+    });
   }
 
-  /**
-   * Handle paste event
-   */
-  onPaste(event: ClipboardEvent): void {
-    event.preventDefault();
-    const pastedData = event.clipboardData?.getData('text').trim();
-
-    if (pastedData && /^\d{6}$/.test(pastedData)) {
-      // Valid 6-digit code pasted
-      for (let i = 0; i < 6; i++) {
-        this.digits[i] = pastedData[i];
-        const input = this.digitInputs.toArray()[i];
-        if (input) {
-          input.nativeElement.value = pastedData[i];
-        }
-      }
-
-      // Focus last input
-      const lastInput = this.digitInputs.toArray()[5];
-      if (lastInput) {
-        lastInput.nativeElement.focus();
-      }
-
-      // Auto-submit after paste
-      setTimeout(() => this.verifyCode(), 100);
-    }
+  private showError(message: string): void {
+    this.isVerifying = false;
+    this.error = message;
   }
 
-  /**
-   * Check if all 6 digits are entered
-   */
-  isCodeComplete(): boolean {
-    return this.digits.every(digit => digit.length === 1);
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
 
-  /**
-   * Get the full 6-digit code
-   */
-  getCode(): string {
-    return this.digits.join('');
-  }
-
-  /**
-   * Verify the entered code
-   */
-  async verifyCode(): Promise<void> {
-    if (!this.isCodeComplete()) {
-      this.error = 'Please enter all 6 digits';
-      return;
-    }
-
+  resendVerification(): void {
     this.isVerifying = true;
     this.error = null;
-    this.successMessage = null;
 
-    const code = this.getCode();
-
-    this.authService.verifyEmail(code).subscribe({
+    this.subscription = this.authService.resendVerification().subscribe({
       next: (response) => {
+        console.log('✅ Verification email resent!', response);
         this.isVerifying = false;
-        this.successMessage = response.message || 'Email verified successfully!';
-        this.notificationService.success('Email verified!', 'Success');
-
-        // Redirect after short delay
-        setTimeout(() => {
-          this.redirectAfter();
-        }, 1500);
+        this.showError('A new verification link has been sent to your email. Please check your inbox.');
       },
-      error: (error) => {
-        this.isVerifying = false;
-
-        if (error.status === 422) {
-          this.error = error.error?.error || 'Invalid or expired code';
-
-          // Shake animation on error
-          this.shakeInputs();
-        } else {
-          this.error = 'Unable to verify. Please try again.';
-        }
-
-        // Clear digits on error for retry
-        this.clearDigits();
+      error: (err) => {
+        console.error('❌ Resend failed:', err);
+        const errorMessage = err.error?.error || err.error?.message || 'Failed to resend verification email.';
+        this.showError(errorMessage);
       }
     });
-  }
-
-  /**
-   * Resend verification code
-   */
-  async resendCode(): Promise<void> {
-    if (this.resendCountdown > 0) return;
-
-    this.authService.resendVerification().subscribe({
-      next: (response) => {
-        this.notificationService.success(response.message || 'Code sent! Check your email.', 'Success');
-        this.error = null;
-
-        // Start 60-second countdown
-        this.resendCountdown = 60;
-        this.startCountdown();
-      },
-      error: (error) => {
-        if (error.status === 429) {
-          const retryAfter = error.error?.retry_after || 60;
-          this.resendCountdown = retryAfter;
-          this.startCountdown();
-          this.notificationService.error(`Please wait ${retryAfter} seconds before requesting another code`, 'Rate Limited');
-        } else {
-          this.notificationService.error('Failed to resend code. Please try again.', 'Error');
-        }
-      }
-    });
-  }
-
-  /**
-   * Start countdown timer for resend button
-   */
-  private startCountdown(): void {
-    if (this.countdownInterval) {
-      clearInterval(this.countdownInterval);
-    }
-
-    this.countdownInterval = setInterval(() => {
-      this.resendCountdown--;
-      if (this.resendCountdown <= 0) {
-        clearInterval(this.countdownInterval);
-      }
-    }, 1000);
-  }
-
-  /**
-   * Clear all digit inputs
-   */
-  clearDigits(): void {
-    this.digits = ['', '', '', '', '', ''];
-    this.digitInputs.toArray().forEach((input, index) => {
-      input.nativeElement.value = '';
-      if (index === 0) {
-        input.nativeElement.focus();
-      }
-    });
-  }
-
-  /**
-   * Shake inputs on error
-   */
-  private shakeInputs(): void {
-    const container = document.querySelector('.digit-inputs');
-    if (container) {
-      container.classList.add('shake');
-      setTimeout(() => {
-        container.classList.remove('shake');
-      }, 500);
-    }
-  }
-
-  /**
-   * Redirect after successful verification
-   */
-  private redirectAfter(): void {
-    const user = this.authService.getCurrentUser();
-
-    if (user?.needs_onboarding) {
-      this.router.navigate(['/onboarding/welcome']);
-    } else {
-      this.router.navigate(['/dashboard']);
-    }
-  }
-
-  /**
-   * Go back to registration
-   */
-  goToRegister(): void {
-    this.authService.logout();
-    this.router.navigate(['/register']);
   }
 }
