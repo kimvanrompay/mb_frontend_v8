@@ -55,7 +55,7 @@
                         Question {{ (currentPage * questionsPerPage) + i + 1 }} of {{ questions.length }}
                     </span>
                     <h3 class="text-xl sm:text-2xl font-light text-black mt-2 leading-snug">
-                        {{ question.text }}
+                        {{ getQuestionText(question) }}
                     </h3>
                 </div>
 

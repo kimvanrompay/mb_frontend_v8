@@ -1,16 +1,16 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OnboardingService } from '../../../services/onboarding.service';
 import { AuthService } from '../../../services/auth';
-import { NotificationService } from '../../../services/notification';
 import {
     RecruiterQuestion,
     Answer,
     AnswerValue,
     Locale,
-    LIKERT_SCALE_LABELS
+    LIKERT_SCALE_LABELS,
+    AssessmentSubmission
 } from '../../../models/recruiter-assessment.model';
 
 @Component({
@@ -35,7 +35,6 @@ export class AssessmentComponent implements OnInit {
     constructor(
         private onboardingService: OnboardingService,
         private authService: AuthService,
-        private notificationService: NotificationService,
         private router: Router
     ) { }
 
@@ -48,16 +47,16 @@ export class AssessmentComponent implements OnInit {
         this.error = null;
 
         const user = this.authService.getCurrentUser();
-        this.currentLocale = user?.locale || 'en';
+        this.currentLocale = (user as any)?.locale || 'en';
 
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
-            next: (questions) => {
-                this.questions = questions;
+            next: (response) => {
+                this.questions = response.questions;
                 this.answers = [];
                 this.currentPage = 0;
                 this.isLoading = false;
             },
-            error: (err) => {
+            error: (err: any) => {
                 this.error = 'Failed to load questions. Please try again.';
                 this.isLoading = false;
             }
@@ -79,7 +78,6 @@ export class AssessmentComponent implements OnInit {
     }
 
     get canGoNext(): boolean {
-        // Check if all questions on current page are answered
         const currentQuestions = this.currentQuestions;
         return currentQuestions.every(q => this.getAnswer(q.id) !== null);
     }
@@ -88,18 +86,17 @@ export class AssessmentComponent implements OnInit {
         return this.currentPage === this.totalPages - 1;
     }
 
-    getAnswer(questionId: string): AnswerValue | null {
+    getAnswer(questionId: number): AnswerValue | null {
         return this.onboardingService.getAnswerForQuestion(this.answers, questionId);
     }
 
-    selectAnswer(questionId: string, value: AnswerValue): void {
-        // Remove existing answer for this question
+    getQuestionText(question: RecruiterQuestion): string {
+        return question.content[this.currentLocale];
+    }
+
+    selectAnswer(questionId: number, value: AnswerValue): void {
         this.answers = this.answers.filter(a => a.question_id !== questionId);
-
-        // Add new answer
         this.answers.push({ question_id: questionId, value });
-
-        // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
     }
 
@@ -130,11 +127,18 @@ export class AssessmentComponent implements OnInit {
 
         this.isSubmitting = true;
 
-        this.onboardingService.submitRecruiterAnswers(this.answers, this.currentLocale).subscribe({
-            next: (result: any) => {
+        const user = this.authService.getCurrentUser();
+        const submission: AssessmentSubmission = {
+            locale: this.currentLocale,
+            user_email: user?.email || '',
+            answers: this.answers
+        };
+
+        this.onboardingService.submitRecruiterAssessment(submission).subscribe({
+            next: (response: any) => {
                 sessionStorage.removeItem('assessment_answers');
                 this.router.navigate(['/onboarding/success'], {
-                    state: { result }
+                    state: { result: response.result }
                 });
             },
             error: (err: any) => {
