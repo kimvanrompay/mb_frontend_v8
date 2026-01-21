@@ -14,15 +14,29 @@ export class I18nService {
     private currentLang$ = new BehaviorSubject<string>('en');
     private supportedLanguages = ['en', 'nl'];
     private defaultLanguage = 'en';
+    private initializationPromise: Promise<void> | null = null;
 
     constructor(private http: HttpClient) {
-        this.initializeLanguage();
+        // Don't auto-initialize in constructor
+    }
+
+    /**
+     * Public method to initialize translations (called by APP_INITIALIZER)
+     */
+    initialize(): Promise<void> {
+        if (this.initializationPromise) {
+            return this.initializationPromise;
+        }
+        this.initializationPromise = this.initializeLanguage();
+        return this.initializationPromise;
     }
 
     /**
      * Initialize language from browser or localStorage
      */
     private async initializeLanguage(): Promise<void> {
+        console.log('Starting i18n initialization...');
+
         // Always load English first as fallback
         await this.loadLanguage(this.defaultLanguage);
 
@@ -47,6 +61,7 @@ export class I18nService {
         }
 
         this.currentLang$.next(langToUse);
+        console.log(`i18n initialized with language: ${langToUse}`);
     }
 
     /**

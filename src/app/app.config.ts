@@ -25,9 +25,8 @@ export function initializeApp(authService: AuthService) {
 // Factory function to initialize i18n
 export function initializeI18n(i18nService: I18nService) {
   return () => {
-    // I18n service initializes automatically in constructor
-    // This just ensures it's created before the app starts
-    return Promise.resolve();
+    // Actually wait for translations to load
+    return i18nService.initialize();
   };
 }
 
