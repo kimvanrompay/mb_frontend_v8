@@ -32,6 +32,7 @@ export class AssessmentComponent implements OnInit {
     error: string | null = null;
     showProgressTracker = false; // Progress tracker panel visibility (starts closed)
     showHeaderDrawer = false; // Header questions overview drawer
+    private isProcessingAnswer = false; // Prevent duplicate answer submissions
 
     // Locale
     currentLocale: Locale = 'en';
@@ -174,7 +175,16 @@ export class AssessmentComponent implements OnInit {
      * Handle answer selection
      */
     selectAnswer(value: AnswerValue): void {
+        // Guard against duplicate rapid clicks
+        if (this.isProcessingAnswer) {
+            console.log('⚠️ Already processing an answer, ignoring duplicate click');
+            return;
+        }
+
         if (!this.currentQuestion) return;
+
+        // Set processing flag
+        this.isProcessingAnswer = true;
 
         const questionId = this.currentQuestion.id;
         console.log('Selecting answer:', { questionId, value, currentIndex: this.currentQuestionIndex });
@@ -193,6 +203,11 @@ export class AssessmentComponent implements OnInit {
         setTimeout(() => {
             console.log('Auto-advancing to next question');
             this.nextQuestion();
+
+            // Reset processing flag after navigation completes
+            setTimeout(() => {
+                this.isProcessingAnswer = false;
+            }, 100);
         }, 300);
     }
 
