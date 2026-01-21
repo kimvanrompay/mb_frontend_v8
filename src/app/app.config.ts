@@ -2,6 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, APP_INITIALIZER 
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { AuthService } from './services/auth';
+import { I18nService } from './services/i18n.service';
 import { authInterceptor } from './interceptors/auth.interceptor';
 
 import { routes } from './app.routes';
@@ -21,6 +22,15 @@ export function initializeApp(authService: AuthService) {
   };
 }
 
+// Factory function to initialize i18n
+export function initializeI18n(i18nService: I18nService) {
+  return () => {
+    // I18n service initializes automatically in constructor
+    // This just ensures it's created before the app starts
+    return Promise.resolve();
+  };
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -29,6 +39,12 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([authInterceptor])
     ),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeI18n,
+      deps: [I18nService],
+      multi: true
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
