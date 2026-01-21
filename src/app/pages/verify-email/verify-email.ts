@@ -59,32 +59,23 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     const value = input.value;
 
+    console.log('Digit input:', index, value);
+
     // Only allow single digit numbers
     if (value && !/^\d$/.test(value)) {
+      console.log('Invalid input, clearing');
       input.value = '';
       return;
     }
 
-    // If value is entered
-    if (value) {
-      // Store in array
-      this.digits[index] = value;
+    // Store the digit
+    this.digits[index] = value || '';
+    console.log('Digits array:', this.digits);
 
-      // Auto-advance to next field
-      if (index < 5) {
-        const nextInput = this.digitInputs.toArray()[index + 1];
-        if (nextInput) {
-          setTimeout(() => nextInput.nativeElement.focus(), 10);
-        }
-      } else {
-        // Last digit - check if complete
-        if (this.isCodeComplete()) {
-          setTimeout(() => this.verifyCode(), 200);
-        }
-      }
-    } else {
-      // Clear digit
-      this.digits[index] = '';
+    // Check if code is complete (no auto-focus, let user type naturally)
+    if (this.isCodeComplete()) {
+      console.log('Code complete, verifying...');
+      setTimeout(() => this.verifyCode(), 300);
     }
   }
 
