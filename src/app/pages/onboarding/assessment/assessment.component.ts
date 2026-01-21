@@ -52,13 +52,36 @@ export class AssessmentComponent implements OnInit {
      * Load questions from API
      */
     loadQuestions(): void {
+        console.log('loadQuestions() called - setting isLoading to true');
         this.isLoading = true;
         this.error = null;
 
+        console.log('Making API call to getRecruiterQuestions...');
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
             next: (response: any) => {
+                console.log('API Response received:', response);
+                console.log('Response type:', typeof response);
+                console.log('Response.questions:', response.questions);
+
+                // Check if response or questions is null/undefined
+                if (!response) {
+                    console.error('Response is null or undefined!');
+                    this.isLoading = false;
+                    this.error = 'Invalid response from server';
+                    return;
+                }
+
+                if (!response.questions) {
+                    console.error('Response.questions is null or undefined!');
+                    console.error('Full response:', JSON.stringify(response));
+                    this.isLoading = false;
+                    this.error = 'No questions found in response';
+                    return;
+                }
+
                 this.questions = response.questions;
                 this.isLoading = false;
+                console.log('Questions loaded, isLoading set to false. Total questions:', this.questions?.length);
 
                 // Restore any previously saved answers from session storage
                 const savedAnswers = sessionStorage.getItem('assessment_answers');
@@ -72,10 +95,30 @@ export class AssessmentComponent implements OnInit {
                 }
             },
             error: (error: any) => {
+                console.error('API Error occurred:', error);
+                console.error('Error details:', {
+                    status: error.status,
+                    statusText: error.statusText,
+                    message: error.message,
+                    error: error.error
+                });
+
                 this.isLoading = false;
                 this.error = 'Failed to load questions. Please try again.';
                 this.notificationService.error('Failed to load assessment questions', 'Error');
                 console.error('Error loading questions:', error);
+            },
+            complete: () => {
+                console.log('Observable completed');
+                // If we get here and still loading, something went wrong
+                if (this.isLoading) {
+                    console.error('Observable completed but isLoading is still true!');
+                    console.error('Questions loaded:', this.questions?.length || 0);
+                    this.isLoading = false;
+                    if (!this.questions || this.questions.length === 0) {
+                        this.error = 'No questions loaded';
+                    }
+                }
             }
         });
     }

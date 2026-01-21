@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import {
     RecruiterQuestionsResponse,
     AssessmentSubmission,
@@ -23,7 +24,8 @@ export class OnboardingService {
      * @param locale Language code (en, nl, fr, de, es)
      */
     getRecruiterQuestions(locale: Locale = 'en'): Observable<RecruiterQuestionsResponse> {
-        // Add cache-busting headers to prevent 304 responses
+        // Add cache-busting headers AND timestamp to prevent 304 responses
+        const timestamp = new Date().getTime();
         const headers = new HttpHeaders({
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
@@ -33,9 +35,17 @@ export class OnboardingService {
         return this.http.get<RecruiterQuestionsResponse>(
             `${this.API_URL}/onboarding/recruiter_questions`,
             {
-                params: { locale },
+                params: {
+                    locale,
+                    _t: timestamp.toString()  // Cache-busting parameter
+                },
                 headers: headers
             }
+        ).pipe(
+            tap(response => {
+                console.log('Recruiter questions loaded:', response);
+                console.log('Questions array:', (response as any).questions);
+            })
         );
     }
 
