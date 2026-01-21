@@ -12,9 +12,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./verify-email.css']
 })
 export class VerifyEmailComponent implements OnInit, OnDestroy {
-  isVerifying = true;
+  isVerifying = false;
   success = false;
   error: string | null = null;
+  showCheckEmail = false;
   email = '';
 
   private subscription?: Subscription;
@@ -26,21 +27,23 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    // Get token from URL query parameter
-    const token = this.route.snapshot.queryParams['token'];
-
-    if (!token) {
-      this.showError('No verification token provided. Please use the link from your email.');
-      return;
-    }
-
     // Get user info for display
     const user = this.authService.getCurrentUser();
     if (user) {
       this.email = user.email;
     }
 
-    // Verify email with token
+    // Get token from URL query parameter
+    const token = this.route.snapshot.queryParams['token'];
+
+    if (!token) {
+      // No token = user came from registration, show "check email" screen
+      this.showCheckEmail = true;
+      return;
+    }
+
+    // Has token = user clicked email link, auto-verify
+    this.isVerifying = true;
     this.verifyEmail(token);
   }
 
@@ -75,6 +78,7 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   private showError(message: string): void {
     this.isVerifying = false;
     this.error = message;
+    this.showCheckEmail = false;
   }
 
   goToLogin(): void {
@@ -84,12 +88,13 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
   resendVerification(): void {
     this.isVerifying = true;
     this.error = null;
+    this.showCheckEmail = false;
 
     this.subscription = this.authService.resendVerification().subscribe({
       next: (response) => {
         console.log('✅ Verification email resent!', response);
         this.isVerifying = false;
-        this.showError('A new verification link has been sent to your email. Please check your inbox.');
+        this.showCheckEmail = true;
       },
       error: (err) => {
         console.error('❌ Resend failed:', err);
