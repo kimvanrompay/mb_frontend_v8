@@ -59,10 +59,10 @@
             </div>
 
             <!-- Answer Options -->
-            <div class="space-y-2 max-w-3xl mx-auto">
+            <div class="space-y-2 max-w-3xl mx-auto" [class.opacity-50]="isTransitioning">
                 <button *ngFor="let option of scaleOptions" (click)="selectAnswer(option)"
-                    [class.selected]="currentAnswer === option" class="answer-option w-full px-6 py-4 border border-gray-200 hover:border-black transition-all duration-200
-                           bg-white text-left group">
+                    [class.selected]="currentAnswer === option" [disabled]="isTransitioning" class="answer-option w-full px-6 py-4 border border-gray-200 hover:border-black transition-all duration-200
+                           bg-white text-left group disabled:cursor-wait">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-4">
                             <div
@@ -81,30 +81,20 @@
                 </button>
             </div>
 
-            <!-- Navigation Buttons -->
-            <div class="flex items-center justify-center mt-12 gap-4 max-w-3xl mx-auto">
-                <button *ngIf="currentQuestionIndex > 0" (click)="previousQuestion()"
-                    class="text-sm text-gray-500 hover:text-black transition-colors font-light">
-                    ← Previous
-                </button>
-                <div class="flex-1"></div>
-
-                <button *ngIf="currentAnswer !== null && currentQuestionIndex < questions.length - 1"
-                    (click)="nextQuestion()"
-                    class="min-w-[140px] px-8 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
-                    Next →
-                </button>
-
-                <button *ngIf="currentAnswer !== null && currentQuestionIndex === questions.length - 1 && !isSubmitting"
+            <!-- Progress hint or Complete button -->
+            <div class="text-center mt-8">
+                <button *ngIf="currentQuestionIndex === questions.length - 1 && currentAnswer !== null && !isSubmitting"
                     (click)="submitAssessment()"
-                    class="min-w-[140px] px-10 py-2 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
-                    Complete
+                    class="px-10 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+                    Complete Assessment
                 </button>
-
                 <button *ngIf="isSubmitting" disabled
-                    class="min-w-[140px] px-10 py-2 bg-gray-300 text-gray-500 text-sm font-medium cursor-not-allowed">
+                    class="px-10 py-3 bg-gray-300 text-gray-500 text-sm font-medium cursor-not-allowed">
                     Submitting...
                 </button>
+                <p *ngIf="currentQuestionIndex < questions.length - 1" class="text-xs text-gray-400">
+                    Click an answer to continue
+                </p>
             </div>
         </div>
     </div>

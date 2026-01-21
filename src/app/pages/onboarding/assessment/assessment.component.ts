@@ -30,8 +30,9 @@ export class AssessmentComponent implements OnInit {
     isLoading = false;
     isSubmitting = false;
     error: string | null = null;
-    showProgressTracker = false; // Progress tracker panel visibility (starts closed)
-    showHeaderDrawer = false; // Header questions overview drawer
+    showProgressTracker = false;
+    showHeaderDrawer = false;
+    isTransitioning = false; // Prevent double-clicks during auto-advance
 
     // Locale
     currentLocale: Locale = 'en';
@@ -176,8 +177,12 @@ export class AssessmentComponent implements OnInit {
     selectAnswer(value: AnswerValue): void {
         if (!this.currentQuestion) return;
 
+        // Prevent double-clicking during transition
+        if (this.isTransitioning) return;
+        this.isTransitioning = true;
+
         const questionId = this.currentQuestion.id;
-        console.log('✏️ Q' + (this.currentQuestionIndex + 1) + ':', { questionId, value });
+        console.log('✏️ Selected:', { question: this.currentQuestionIndex + 1, value });
 
         // Remove existing answer for this question if any
         this.answers = this.answers.filter(a => a.question_id !== questionId);
@@ -189,7 +194,15 @@ export class AssessmentComponent implements OnInit {
         // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
 
-        // No auto-advance - user clicks Next button manually
+        // Brief delay to show selection, then auto-advance
+        setTimeout(() => {
+            this.nextQuestion();
+
+            // Reset transition flag
+            setTimeout(() => {
+                this.isTransitioning = false;
+            }, 100);
+        }, 400);
     }
 
     /**
