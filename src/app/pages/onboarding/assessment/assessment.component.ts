@@ -31,6 +31,7 @@ export class AssessmentComponent implements OnInit {
     isSubmitting = false;
     error: string | null = null;
     showProgressTracker = false; // Progress tracker panel visibility (starts closed)
+    showHeaderDrawer = false; // Header questions overview drawer
 
     // Locale
     currentLocale: Locale = 'en';
@@ -325,6 +326,13 @@ export class AssessmentComponent implements OnInit {
      */
     toggleProgressTracker(): void {
         this.showProgressTracker = !this.showProgressTracker;
+    }
+
+    /**
+     * Toggle header questions drawer
+     */
+    toggleHeaderDrawer(): void {
+        this.showHeaderDrawer = !this.showHeaderDrawer;
     }
 
     /**
