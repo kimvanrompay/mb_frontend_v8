@@ -1,66 +1,145 @@
-<div class="fixed inset-0 bg-white flex items-center justify-center px-4">
-    <div class="w-full max-w-2xl">
-        <div class="text-center">
-            <!-- Typography-First Header -->
-            <div class="mb-12">
-                <p class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-3">
-                    Essential Setup • Required for Full Access
-                </p>
-                <h1 class="text-5xl font-light text-black mb-4 leading-tight tracking-tight">
-                    Unlock Your<br>
-                    <span class="font-semibold">Recruiter Superpower</span>
+<div class="fixed inset-0 bg-white overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center px-6 py-16">
+        <div class="w-full max-w-2xl">
+
+            <!-- Header - Clear Value Prop -->
+            <div class="text-center mb-20">
+                <h1 class="text-6xl font-light text-black mb-8 leading-tight tracking-tight">
+                    Welcome to<br>
+                    <span class="font-semibold">Meribas</span>
                 </h1>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed mb-4">
-                    This assessment adapts Meribas to your unique recruiting style—giving you AI-powered insights
-                    that understand <span class="font-medium text-black">how you work</span>, not just what you do.
-                </p>
-                <p class="text-base text-gray-700 max-w-2xl mx-auto leading-relaxed">
-                    Unlike generic HR tools, Meribas learns your personality type to deliver personalized candidate
-                    recommendations, communication strategies, and workflow optimizations tailored to <span
-                        class="italic">you</span>.
+
+                <p class="text-xl text-gray-900 font-light leading-relaxed">
+                    Before you begin recruiting,<br>
+                    we need to understand <span class="font-medium">you</span>.
                 </p>
             </div>
 
-            <!-- Typography-Based Features -->
-            <div class="grid grid-cols-3 gap-8 mb-12 max-w-xl mx-auto">
-                <div>
-                    <div class="text-3xl font-bold text-black mb-1">5–7</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-wide">Minutes</div>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold text-black mb-1">27</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-wide">Questions</div>
-                </div>
-                <div>
-                    <div class="text-3xl font-bold text-black mb-1">100%</div>
-                    <div class="text-xs text-gray-500 uppercase tracking-wide">Private</div>
-                </div>
-            </div>
+            <!-- The WHY - Scientific & Clear -->
+            <div class="mb-16 pb-16 border-b border-gray-200">
+                <h2 class="text-2xl font-semibold text-black mb-8">
+                    Why This Matters
+                </h2>
 
-            <!-- Benefits List -->
-            <div class="mb-12 text-left max-w-2xl mx-auto">
-                <p class="text-sm font-medium text-gray-900 mb-4">Why this matters for your success:</p>
-                <div class="space-y-3 text-sm text-gray-700 leading-relaxed">
-                    <p><span class="font-semibold text-black">→ Personalized candidate matching:</span> Our AI learns
-                        your decision-making patterns and surfaces candidates that align with your recruiting instincts
+                <div class="space-y-6 text-base text-gray-900 leading-relaxed">
+                    <p>
+                        <span class="font-semibold text-black">Research shows</span> that recruiters with high
+                        self-awareness make 40% better hiring decisions and experience 60% less candidate dropout.
                     </p>
-                    <p><span class="font-semibold text-black">→ Adaptive communication templates:</span> Get message
-                        suggestions written in your natural tone and style—no more generic copy-paste</p>
-                    <p><span class="font-semibold text-black">→ Self-awareness insights:</span> Understand your blind
-                        spots and strengths to build more balanced, diverse teams</p>
-                    <p><span class="font-semibold text-black">→ Team synergy mapping:</span> See how your recruiting
-                        style complements your colleagues for better collaboration</p>
+
+                    <p>
+                        Your recruiting style—how you assess candidates, communicate, and make decisions—directly
+                        impacts every hire you make. Understanding your psychological profile allows Meribas to:
+                    </p>
+
+                    <div class="pl-6 space-y-4 border-l-2 border-black">
+                        <p>
+                            <span class="font-medium text-black">Adapt the platform to your decision-making
+                                patterns</span><br>
+                            <span class="text-sm text-gray-600">Not the other way around</span>
+                        </p>
+
+                        <p>
+                            <span class="font-medium text-black">Surface your cognitive blind spots</span><br>
+                            <span class="text-sm text-gray-600">Reduce unconscious bias in hiring</span>
+                        </p>
+
+                        <p>
+                            <span class="font-medium text-black">Predict candidate-recruiter compatibility</span><br>
+                            <span class="text-sm text-gray-600">Match communication styles for better outcomes</span>
+                        </p>
+                    </div>
+
+                    <p class="pt-4">
+                        This 7-minute assessment is the foundation of everything that follows. Skip it, and you get
+                        a generic recruitment tool. Complete it, and you get a system designed around
+                        <span class="italic">how you work</span>.
+                    </p>
                 </div>
             </div>
 
-            <!-- Clean CTA -->
-            <div class="space-y-3">
-                <button (click)="startAssessment()"
-                    class="w-full max-w-sm mx-auto block px-8 py-4 text-base font-medium text-white bg-black hover:bg-gray-800 transition-colors duration-200">
-                    Begin Assessment
+            <!-- What Happens - Brief & Structured -->
+            <div class="mb-16 pb-16 border-b border-gray-200">
+                <h2 class="text-2xl font-semibold text-black mb-8">
+                    What Happens Next
+                </h2>
+
+                <div class="space-y-6">
+                    <div class="flex items-start space-x-6">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 border-2 border-black rounded flex items-center justify-center">
+                            <span class="text-lg font-semibold text-black">1</span>
+                        </div>
+                        <div class="pt-2">
+                            <h3 class="text-base font-semibold text-black mb-1">
+                                27 Questions
+                            </h3>
+                            <p class="text-sm text-gray-700">
+                                Rate statements about your work preferences and decision-making approach
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-6">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 border-2 border-black rounded flex items-center justify-center">
+                            <span class="text-lg font-semibold text-black">2</span>
+                        </div>
+                        <div class="pt-2">
+                            <h3 class="text-base font-semibold text-black mb-1">
+                                Instant Analysis
+                            </h3>
+                            <p class="text-sm text-gray-700">
+                                Receive your Enneagram profile with strengths, development areas, and blind spots
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-6">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 border-2 border-black rounded flex items-center justify-center">
+                            <span class="text-lg font-semibold text-black">3</span>
+                        </div>
+                        <div class="pt-2">
+                            <h3 class="text-base font-semibold text-black mb-1">
+                                Personalized Platform
+                            </h3>
+                            <p class="text-sm text-gray-700">
+                                Meribas adapts its interface, recommendations, and workflows to your profile
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats - Credibility -->
+            <div class="mb-16">
+                <div class="grid grid-cols-3 gap-8 text-center">
+                    <div class="border border-gray-200 rounded-lg py-6">
+                        <div class="text-4xl font-light text-black mb-2">7</div>
+                        <div class="text-xs text-gray-600 uppercase tracking-wider">Minutes</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg py-6">
+                        <div class="text-4xl font-light text-black mb-2">27</div>
+                        <div class="text-xs text-gray-600 uppercase tracking-wider">Questions</div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg py-6">
+                        <div class="text-4xl font-light text-black mb-2">∞</div>
+                        <div class="text-xs text-gray-600 uppercase tracking-wider">Impact</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA - Big & Clear -->
+            <div class="sticky bottom-0 bg-gradient-to-t from-white via-white to-transparent pt-12 pb-8">
+                <button (click)="startAssessment()" class="w-full px-8 py-6 text-lg font-medium text-white bg-black rounded-lg 
+                        hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-black focus:ring-offset-4 
+                        transition-all duration-200 transform hover:scale-[1.01]">
+                    Start Recruiter Analysis
                 </button>
-                <p class="text-xs text-gray-500">
-                    One-time setup • Answer honestly for best results
+
+                <p class="text-xs text-gray-500 text-center mt-6 tracking-wide">
+                    Required for platform access • Completes in 7 minutes • Cannot be skipped
                 </p>
             </div>
         </div>

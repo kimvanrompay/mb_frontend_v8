@@ -1,8 +1,10 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, APP_INITIALIZER } from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors, HttpClient } from '@angular/common/http';
 import { AuthService } from './services/auth';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { routes } from './app.routes';
 
@@ -21,6 +23,11 @@ export function initializeApp(authService: AuthService) {
   };
 }
 
+// Translation loader factory
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -28,6 +35,16 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withFetch(),
       withInterceptors([authInterceptor])
+    ),
+    importProvidersFrom(
+      TranslateModule.forRoot({
+        defaultLanguage: 'en',
+        loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient]
+        }
+      })
     ),
     {
       provide: APP_INITIALIZER,
