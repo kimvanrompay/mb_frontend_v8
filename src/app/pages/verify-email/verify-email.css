@@ -1,11 +1,15 @@
-/* Glassmorphic animated shapes */
+/* Glassmorphic animated shapes with green glow */
 .glass-shape {
     position: absolute;
     border-radius: 50%;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0.01) 100%);
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.02) 0%, rgba(34, 197, 94, 0.01) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 2px solid rgba(34, 197, 94, 0.3);
+    box-shadow:
+        0 0 20px rgba(34, 197, 94, 0.2),
+        0 0 40px rgba(34, 197, 94, 0.1),
+        inset 0 0 20px rgba(34, 197, 94, 0.05);
     pointer-events: none;
     z-index: 0;
 }
