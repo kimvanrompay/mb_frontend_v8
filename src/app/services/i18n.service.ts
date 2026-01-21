@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, firstValueFrom } from 'rxjs';
 
 export interface TranslationData {
     [key: string]: any;
@@ -81,7 +81,7 @@ export class I18nService {
         }
 
         try {
-            const data = await this.http.get<TranslationData>(`/assets/i18n/${lang}.json`).toPromise();
+            const data = await firstValueFrom(this.http.get<TranslationData>(`/assets/i18n/${lang}.json`));
             this.translations[lang] = data || {};
             console.log(`Loaded translations for language: ${lang}`, Object.keys(data || {}).length, 'keys');
         } catch (error) {
