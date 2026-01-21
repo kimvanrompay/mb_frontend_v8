@@ -1,40 +1,50 @@
-<div class="register-container">
-    <!-- Main Content -->
-    <div class="flex-1 flex items-center justify-center px-6 py-12">
-        <div class="w-full max-w-md glass-card rounded-2xl p-8">
-            <!-- Logo -->
-            <div class="text-center mb-8">
+<div class="fixed inset-0 bg-white overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center px-6 py-12">
+        <div class="w-full max-w-lg">
+
+            <!-- Logo & Header - Typography First -->
+            <div class="text-center mb-12">
                 <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                    alt="Meribas" class="mx-auto h-12 w-auto mb-6" />
-                <h1 class="text-4xl font-bold text-black mb-2">Sign up for Meribas Free</h1>
-                <p class="text-lg text-gray-600">Just need a few things to get you going…</p>
+                    alt="Meribas" class="mx-auto h-10 w-auto mb-12 opacity-90" />
+
+                <h1 class="text-5xl font-light text-black mb-3 leading-tight">
+                    Start your <span class="font-semibold">free trial</span>
+                </h1>
+
+                <p class="text-lg text-gray-500 font-light">
+                    No credit card required • 3-day trial
+                </p>
             </div>
 
-            <!-- Step Indicator -->
-            <div class="flex items-center justify-center mb-8">
-                <div class="flex items-center">
+            <!-- Step Indicator - Minimal -->
+            <div class="flex items-center justify-center mb-10">
+                <div class="flex items-center space-x-3">
                     <!-- Step 1 -->
                     <div class="flex items-center">
                         <div
-                            [class]="currentStep === 1 ? 'flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-semibold' : 'flex items-center justify-center w-10 h-10 rounded-full border-2 border-black text-black font-semibold'">
+                            [class]="currentStep === 1 
+                            ? 'w-8 h-8 rounded-full bg-black text-white text-sm font-medium flex items-center justify-center' 
+                            : 'w-8 h-8 rounded-full border border-gray-300 text-gray-400 text-sm font-medium flex items-center justify-center'">
                             1
                         </div>
-                        <span class="ml-2 text-sm font-semibold" [class.text-black]="currentStep === 1"
+                        <span class="ml-2 text-sm" [class.text-black]="currentStep === 1"
                             [class.text-gray-400]="currentStep !== 1">
                             Company
                         </span>
                     </div>
 
                     <!-- Separator -->
-                    <div class="mx-4 w-12 h-0.5 bg-gray-300"></div>
+                    <div class="w-12 h-px bg-gray-300"></div>
 
                     <!-- Step 2 -->
                     <div class="flex items-center">
                         <div
-                            [class]="currentStep === 2 ? 'flex items-center justify-center w-10 h-10 rounded-full bg-black text-white font-semibold' : 'flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-300 text-gray-400 font-semibold'">
+                            [class]="currentStep === 2 
+                            ? 'w-8 h-8 rounded-full bg-black text-white text-sm font-medium flex items-center justify-center' 
+                            : 'w-8 h-8 rounded-full border border-gray-300 text-gray-400 text-sm font-medium flex items-center justify-center'">
                             2
                         </div>
-                        <span class="ml-2 text-sm font-semibold" [class.text-black]="currentStep === 2"
+                        <span class="ml-2 text-sm" [class.text-black]="currentStep === 2"
                             [class.text-gray-400]="currentStep !== 2">
                             Account
                         </span>
@@ -42,171 +52,173 @@
                 </div>
             </div>
 
-            <!-- Inline Error Alert -->
-            <div *ngIf="errorMessage" class="rounded-md border border-black bg-white p-4 mb-6">
-                <div class="flex">
-                    <div class="shrink-0">
-                        <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 text-black">
-                            <path
-                                d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM8.28 7.22a.75.75 0 0 0-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 1 0 1.06 1.06L10 11.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L11.06 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L10 8.94 8.28 7.22Z"
-                                clip-rule="evenodd" fill-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <h3 class="text-sm font-semibold text-black">{{ errorMessage }}</h3>
-                        <div *ngIf="errors.length > 0" class="mt-2 text-sm text-gray-700">
-                            <ul role="list" class="list-disc space-y-1 pl-5">
-                                <li *ngFor="let error of errors">{{ error }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+            <!-- Error Message - Minimal -->
+            <div *ngIf="errorMessage" class="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p class="text-sm font-medium text-red-900">{{ errorMessage }}</p>
+                <ul *ngIf="errors.length > 0" class="mt-2 text-sm text-red-700 space-y-1 list-disc list-inside">
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                </ul>
             </div>
 
-            <!-- Form -->
-            <form [formGroup]="registerForm" class="space-y-5">
+            <!-- Form - Clean & Spacious -->
+            <form [formGroup]="registerForm" class="space-y-6">
+
                 <!-- STEP 1: Company Information -->
-                <div *ngIf="currentStep === 1" class="space-y-5">
+                <div *ngIf="currentStep === 1" class="space-y-6">
                     <!-- Company Name -->
                     <div>
-                        <label for="tenant_name" class="block text-base font-semibold text-black mb-2">
+                        <label for="tenant_name" class="block text-sm font-medium text-gray-900 mb-2">
                             Company name
                         </label>
                         <input id="tenant_name" type="text" formControlName="tenant_name" required
-                            placeholder="Acme Corporation"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            placeholder="Acme Corporation" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                placeholder:text-gray-400 transition-all"
                             [class.border-red-500]="tenant_name?.invalid && tenant_name?.touched" />
-                        <p *ngIf="tenant_name?.invalid && tenant_name?.touched" class="mt-2 text-sm text-black">
+                        <p *ngIf="tenant_name?.invalid && tenant_name?.touched" class="mt-2 text-sm text-red-600">
                             Company name is required
                         </p>
                     </div>
 
                     <!-- Subdomain -->
                     <div>
-                        <label for="tenant_subdomain" class="block text-base font-semibold text-black mb-2">
+                        <label for="tenant_subdomain" class="block text-sm font-medium text-gray-900 mb-2">
                             Choose your workspace URL
                         </label>
-                        <div class="flex items-center">
+                        <div class="flex">
                             <input id="tenant_subdomain" type="text" formControlName="tenant_subdomain" required
-                                placeholder="acme"
-                                class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-l-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                                placeholder="acme" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-l-lg 
+                                    focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                    placeholder:text-gray-400 transition-all"
                                 [class.border-red-500]="tenant_subdomain?.invalid && tenant_subdomain?.touched" />
                             <span
-                                class="px-4 py-3 text-base text-gray-600 bg-gray-100 border-2 border-l-0 border-black rounded-r-md">
+                                class="inline-flex items-center px-4 text-base text-gray-600 bg-gray-50 border border-l-0 border-gray-300 rounded-r-lg">
                                 .meribas.app
                             </span>
                         </div>
                         <p *ngIf="tenant_subdomain?.invalid && tenant_subdomain?.touched"
-                            class="mt-2 text-sm text-black">
+                            class="mt-2 text-sm text-red-600">
                             <span *ngIf="tenant_subdomain?.errors?.['required']">Subdomain is required</span>
                             <span *ngIf="tenant_subdomain?.errors?.['pattern']">Use lowercase letters, numbers, and
                                 hyphens only</span>
                             <span
-                                *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">Subdomain
-                                must be 3-30 characters</span>
+                                *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">
+                                Subdomain must be 3-30 characters
+                            </span>
                         </p>
                     </div>
 
                     <!-- Next Button -->
                     <div class="pt-4">
-                        <button type="button" (click)="nextStep()"
-                            class="w-full px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors">
+                        <button type="button" (click)="nextStep()" class="w-full px-6 py-3 text-base font-medium text-white bg-black rounded-lg 
+                                hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
+                                transition-all">
                             Next: Your account →
                         </button>
                     </div>
                 </div>
 
                 <!-- STEP 2: Personal Information -->
-                <div *ngIf="currentStep === 2" class="space-y-5">
-                    <!-- First Name -->
-                    <div>
-                        <label for="first_name" class="block text-base font-semibold text-black mb-2">
-                            First name
-                        </label>
-                        <input id="first_name" type="text" formControlName="first_name" required placeholder="John"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                            [class.border-red-500]="first_name?.invalid && first_name?.touched" />
-                        <p *ngIf="first_name?.invalid && first_name?.touched" class="mt-2 text-sm text-black">
-                            First name is required
-                        </p>
+                <div *ngIf="currentStep === 2" class="space-y-6">
+                    <!-- Name Fields - Side by Side -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- First Name -->
+                        <div>
+                            <label for="first_name" class="block text-sm font-medium text-gray-900 mb-2">
+                                First name
+                            </label>
+                            <input id="first_name" type="text" formControlName="first_name" required placeholder="John"
+                                class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                    focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                    placeholder:text-gray-400 transition-all"
+                                [class.border-red-500]="first_name?.invalid && first_name?.touched" />
+                            <p *ngIf="first_name?.invalid && first_name?.touched" class="mt-2 text-sm text-red-600">
+                                Required
+                            </p>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div>
+                            <label for="last_name" class="block text-sm font-medium text-gray-900 mb-2">
+                                Last name
+                            </label>
+                            <input id="last_name" type="text" formControlName="last_name" required placeholder="Doe"
+                                class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                    focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                    placeholder:text-gray-400 transition-all"
+                                [class.border-red-500]="last_name?.invalid && last_name?.touched" />
+                            <p *ngIf="last_name?.invalid && last_name?.touched" class="mt-2 text-sm text-red-600">
+                                Required
+                            </p>
+                        </div>
                     </div>
 
-                    <!-- Last Name -->
+                    <!-- Email -->
                     <div>
-                        <label for="last_name" class="block text-base font-semibold text-black mb-2">
-                            Last name
-                        </label>
-                        <input id="last_name" type="text" formControlName="last_name" required placeholder="Doe"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
-                            [class.border-red-500]="last_name?.invalid && last_name?.touched" />
-                        <p *ngIf="last_name?.invalid && last_name?.touched" class="mt-2 text-sm text-black">
-                            Last name is required
-                        </p>
-                    </div>
-
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-base font-semibold text-black mb-2">
-                            Your email address
+                        <label for="email" class="block text-sm font-medium text-gray-900 mb-2">
+                            Email address
                         </label>
                         <input id="email" type="email" formControlName="email" required autocomplete="email"
-                            placeholder="you@example.com"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            placeholder="you@example.com" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                placeholder:text-gray-400 transition-all"
                             [class.border-red-500]="email?.invalid && email?.touched" />
-                        <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-black">
+                        <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-red-600">
                             <span *ngIf="email?.errors?.['required']">Email is required</span>
                             <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
                         </p>
                     </div>
 
-                    <!-- Password Field -->
+                    <!-- Password -->
                     <div>
-                        <label for="password" class="block text-base font-semibold text-black mb-2">
-                            Choose a password
+                        <label for="password" class="block text-sm font-medium text-gray-900 mb-2">
+                            Password
                         </label>
                         <input id="password" type="password" formControlName="password" required
-                            autocomplete="new-password" placeholder="At least 6 characters"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            autocomplete="new-password" placeholder="At least 6 characters" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                placeholder:text-gray-400 transition-all"
                             [class.border-red-500]="password?.invalid && password?.touched" />
-                        <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-black">
+                        <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-red-600">
                             <span *ngIf="password?.errors?.['required']">Password is required</span>
                             <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
                         </p>
                     </div>
 
-                    <!-- Password Confirmation Field -->
+                    <!-- Password Confirmation -->
                     <div>
-                        <label for="password_confirmation" class="block text-base font-semibold text-black mb-2">
-                            Confirm your password
+                        <label for="password_confirmation" class="block text-sm font-medium text-gray-900 mb-2">
+                            Confirm password
                         </label>
                         <input id="password_confirmation" type="password" formControlName="password_confirmation"
-                            required autocomplete="new-password" placeholder="Type it again"
-                            class="block w-full px-4 py-3 text-base text-black bg-white border-2 border-black rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 placeholder:text-gray-400"
+                            required autocomplete="new-password" placeholder="Type it again" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
+                                focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
+                                placeholder:text-gray-400 transition-all"
                             [class.border-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
                         <p *ngIf="password_confirmation?.invalid && password_confirmation?.touched"
-                            class="mt-2 text-sm text-black">
+                            class="mt-2 text-sm text-red-600">
                             <span *ngIf="password_confirmation?.errors?.['required']">Please confirm your
                                 password</span>
                         </p>
                         <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
-                            class="mt-2 text-sm text-black">
+                            class="mt-2 text-sm text-red-600">
                             Passwords do not match
                         </p>
                     </div>
 
-                    <!-- Terms Agreement Checkbox -->
+                    <!-- Terms Agreement -->
                     <div class="pt-2">
-                        <label class="flex items-start cursor-pointer group">
+                        <label class="flex items-start cursor-pointer">
                             <input type="checkbox" formControlName="termsAgreed"
-                                class="mt-1 h-5 w-5 rounded border-2 border-black text-black focus:ring-2 focus:ring-black focus:ring-offset-2 cursor-pointer" />
-                            <span class="ml-3 text-base text-black">
-                                I agree to the Meribas
-                                <a href="#" class="underline hover:no-underline">Terms of Service</a>
+                                class="mt-1 h-4 w-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer" />
+                            <span class="ml-3 text-sm text-gray-700">
+                                I agree to the
+                                <a href="#" class="text-black hover:underline">Terms of Service</a>
                                 and
-                                <a href="#" class="underline hover:no-underline">Privacy Policy</a>.
+                                <a href="#" class="text-black hover:underline">Privacy Policy</a>
                             </span>
                         </label>
-                        <p *ngIf="termsAgreed?.invalid && termsAgreed?.touched" class="mt-2 text-sm text-black ml-8">
+                        <p *ngIf="termsAgreed?.invalid && termsAgreed?.touched" class="mt-2 ml-7 text-sm text-red-600">
                             You must agree to the terms to continue
                         </p>
                     </div>
@@ -214,36 +226,49 @@
                     <!-- Navigation Buttons -->
                     <div class="pt-4 flex gap-4">
                         <!-- Back Button -->
-                        <button type="button" (click)="previousStep()"
-                            class="flex-1 px-6 py-3 text-lg font-semibold text-black bg-white border-2 border-black rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors">
+                        <button type="button" (click)="previousStep()" class="flex-1 px-6 py-3 text-base font-medium text-black bg-white border border-gray-300 rounded-lg 
+                                hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
+                                transition-all">
                             ← Back
                         </button>
 
                         <!-- Create Account Button -->
-                        <button type="submit" (click)="onSubmit()" [disabled]="isLoading || registerForm.invalid"
-                            class="flex-1 px-6 py-3 text-lg font-semibold text-white bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                        <button type="submit" (click)="onSubmit()" [disabled]="isLoading || registerForm.invalid" class="flex-1 px-6 py-3 text-base font-medium text-white bg-black rounded-lg 
+                                hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
+                                disabled:bg-gray-300 disabled:cursor-not-allowed transition-all">
                             <span *ngIf="!isLoading">Create account →</span>
-                            <span *ngIf="isLoading">Creating...</span>
+                            <span *ngIf="isLoading" class="flex items-center justify-center space-x-2">
+                                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                <span>Creating...</span>
+                            </span>
                         </button>
                     </div>
                 </div>
-
-                <!-- Sign In Link (shown on both steps) -->
-                <div class="text-center pt-2">
-                    <p class="text-base text-gray-600">
-                        Already have an account?
-                        <a routerLink="/login" class="text-black underline hover:no-underline font-semibold">Sign in</a>
-                    </p>
-                </div>
             </form>
+
+            <!-- Sign In Link - Subtle -->
+            <div class="mt-8 pt-8 border-t border-gray-200 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <a routerLink="/login" class="text-black font-medium hover:underline transition-colors">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+
+            <!-- Footer - Minimal -->
+            <div class="mt-12 text-center">
+                <p class="text-xs text-gray-500">
+                    Need help?
+                    <a href="#" class="text-black hover:underline transition-colors">Contact support</a>
+                </p>
+            </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="py-6 text-center border-t border-white/10">
-        <p class="text-base text-white/80">
-            Questions? Need a hand?
-            <a href="#" class="text-white underline hover:no-underline font-semibold">Support can help</a>.
-        </p>
-    </footer>
 </div>
