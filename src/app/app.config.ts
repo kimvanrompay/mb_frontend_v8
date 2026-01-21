@@ -23,9 +23,9 @@ export function initializeApp(authService: AuthService) {
   };
 }
 
-// Translation loader factory
+// Translation loader factory - compatible with ngx-translate v17
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(http);
 }
 
 export const appConfig: ApplicationConfig = {
