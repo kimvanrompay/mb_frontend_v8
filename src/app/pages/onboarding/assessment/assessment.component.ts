@@ -177,18 +177,21 @@ export class AssessmentComponent implements OnInit {
         if (!this.currentQuestion) return;
 
         const questionId = this.currentQuestion.id;
+        console.log('Selecting answer:', { questionId, value, currentIndex: this.currentQuestionIndex });
 
         // Remove existing answer for this question if any
         this.answers = this.answers.filter(a => a.question_id !== questionId);
 
         // Add new answer
         this.answers.push({ question_id: questionId, value });
+        console.log('Answer saved. Total answers:', this.answers.length, this.answers);
 
         // Save to session storage
         sessionStorage.setItem('assessment_answers', JSON.stringify(this.answers));
 
         // Auto-advance to next question after brief delay
         setTimeout(() => {
+            console.log('Auto-advancing to next question');
             this.nextQuestion();
         }, 300);
     }
