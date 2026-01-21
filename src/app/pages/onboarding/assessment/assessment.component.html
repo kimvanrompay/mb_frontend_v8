@@ -58,42 +58,55 @@
                 <span>Agree</span>
             </div>
 
-            <!-- Answer Options -->
-            <div class="space-y-2 max-w-3xl mx-auto" [class.opacity-50]="isTransitioning">
+
+            <!-- Answer Options - Mobile Optimized -->
+            <div class="space-y-3 max-w-2xl mx-auto px-4 sm:px-0" [class.opacity-50]="isTransitioning">
                 <button *ngFor="let option of scaleOptions" (click)="selectAnswer(option)"
-                    [class.selected]="currentAnswer === option" [disabled]="isTransitioning" class="answer-option w-full px-6 py-4 border border-gray-200 hover:border-black transition-all duration-200
-                           bg-white text-left group disabled:cursor-wait">
+                    [class.ring-2]="currentAnswer === option" [class.ring-black]="currentAnswer === option"
+                    [class.bg-gray-50]="currentAnswer === option" [disabled]="isTransitioning" class="answer-option w-full px-4 sm:px-6 py-5 sm:py-4 border border-gray-200 rounded-lg
+                           hover:border-black transition-all duration-200 bg-white text-left group 
+                           disabled:cursor-wait active:scale-98 touch-manipulation">
                     <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-4">
-                            <div
-                                class="w-8 h-8 border border-gray-200 group-hover:border-black transition-colors flex items-center justify-center">
-                                <span
-                                    class="text-sm font-medium text-gray-400 group-hover:text-black transition-colors">
+                        <div class="flex items-center space-x-3 sm:space-x-4">
+                            <div class="w-10 h-10 sm:w-8 sm:h-8 border border-gray-200 group-hover:border-black 
+                                        transition-colors flex items-center justify-center flex-shrink-0 rounded"
+                                [class.border-black]="currentAnswer === option"
+                                [class.bg-black]="currentAnswer === option">
+                                <span class="text-base sm:text-sm font-medium transition-colors"
+                                    [class.text-gray-400]="currentAnswer !== option"
+                                    [class.text-white]="currentAnswer === option"
+                                    [class.group-hover:text-black]="currentAnswer !== option">
                                     {{ option }}
                                 </span>
                             </div>
-                            <span class="text-base font-light text-gray-700 group-hover:text-black transition-colors">
+                            <span
+                                class="text-base sm:text-base font-light text-gray-700 group-hover:text-black transition-colors">
                                 {{ getScaleLabel(option) }}
                             </span>
                         </div>
-                        <div *ngIf="currentAnswer === option" class="w-2 h-2 bg-black"></div>
+                        <svg *ngIf="currentAnswer === option" class="w-5 h-5 text-black flex-shrink-0"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
                     </div>
                 </button>
             </div>
 
             <!-- Progress hint or Complete button -->
-            <div class="text-center mt-8">
+            <div class="text-center mt-8 px-4">
                 <button *ngIf="currentQuestionIndex === questions.length - 1 && currentAnswer !== null && !isSubmitting"
-                    (click)="submitAssessment()"
-                    class="px-10 py-3 bg-black text-white text-sm font-medium hover:bg-gray-800 transition-colors">
+                    (click)="submitAssessment()" class="px-10 py-4 sm:py-3 bg-black text-white text-base sm:text-sm font-medium 
+                           hover:bg-gray-800 transition-colors rounded-lg touch-manipulation">
                     Complete Assessment
                 </button>
-                <button *ngIf="isSubmitting" disabled
-                    class="px-10 py-3 bg-gray-300 text-gray-500 text-sm font-medium cursor-not-allowed">
+                <button *ngIf="isSubmitting" disabled class="px-10 py-4 sm:py-3 bg-gray-300 text-gray-500 text-base sm:text-sm font-medium 
+                           cursor-not-allowed rounded-lg">
                     Submitting...
                 </button>
-                <p *ngIf="currentQuestionIndex < questions.length - 1" class="text-xs text-gray-400">
-                    Click an answer to continue
+                <p *ngIf="currentQuestionIndex < questions.length - 1" class="text-xs sm:text-xs text-gray-400 mt-2">
+                    Tap an answer to continue
                 </p>
             </div>
         </div>
