@@ -129,24 +129,79 @@
             "readyToSubmit": "Estás listo para enviar tu evaluación."
         },
         "success": {
-            "title": "Evaluación completada",
-            "youAre": "Eres",
-            "enneagramProfile": "Perfil de Eneagrama",
-            "scoreDistribution": "Tu distribución de puntuación",
-            "topThreeTypes": "Tus tres principales tipos",
-            "outOf": "de",
-            "viewAllScores": "Ver las 9 puntuaciones de tipos",
-            "whatThisMeans": "Lo que esto significa para ti",
-            "personalizedExperience": "Experiencia personalizada",
-            "personalizedDesc": "Panel y flujos de trabajo adaptados a tu estilo de reclutamiento",
-            "betterInsights": "Mejores perspectivas",
-            "betterInsightsDesc": "Recomendaciones de IA que se ajustan a tus patrones de toma de decisiones",
-            "optimizedWorkflow": "Flujo de trabajo optimizado",
-            "optimizedWorkflowDesc": "Plantillas de comunicación y herramientas alineadas con tu estilo",
-            "growthPath": "Camino de crecimiento",
-            "growthPathDesc": "Sugerencias de desarrollo personalizadas y conciencia de puntos ciegos",
-            "continueToDashboard": "Continuar al panel",
-            "viewResultsAnytime": "Puedes ver tus resultados en cualquier momento en la configuración de tu perfil"
+            "section1": {
+                "goal": "Validación",
+                "title": "Título & Resumen",
+                "question": "¿Es esto preciso?",
+                "youAre": "Eres",
+                "typeLabel": "Tipo",
+                "helpText": "Este es tu tipo de Eneagrama dominante basado en tus respuestas. Representa tus motivaciones centrales y visión del mundo.",
+                "basedOn": "Basado en tus resultados de evaluación en"
+            },
+            "section2": {
+                "goal": "Matiz",
+                "title": "Gráfico Visual",
+                "question": "¿Qué tan extremo soy?",
+                "dominantScore": "Tu Puntuación de Tipo Dominante",
+                "strengthLabel": "fuerza en este tipo",
+                "allTypes": "Los 9 Tipos de Eneagrama",
+                "topLabel": "Top",
+                "helpText": "Tienes rasgos de los 9 tipos, pero en diferentes proporciones. Esto muestra qué tipos te influyen más.",
+                "scoreExplainer": "Cada tipo se puntúa de 0-15 basado en 3 preguntas por tipo. Puntuaciones más altas indican tendencias más fuertes."
+            },
+            "section3": {
+                "goal": "Ego/Reflexión",
+                "title": "Fortalezas & Debilidades",
+                "question": "¿En qué soy bueno/malo?",
+                "status": "Estado",
+                "inDevelopment": "En Desarrollo",
+                "strengthsLabel": "Fortalezas",
+                "strengthsDesc": "Tus talentos y habilidades naturales",
+                "growthLabel": "Áreas de Crecimiento",
+                "growthDesc": "Patrones para desarrollar y refinar",
+                "helpText": "Comprender tus fortalezas naturales y puntos ciegos te ayuda a aprovechar lo que funciona y crecer donde es necesario."
+            },
+            "section4": {
+                "goal": "Utilidad",
+                "title": "Trabajo & Carrera",
+                "question": "¿Cómo lo uso en mi trabajo?",
+                "status": "Estado",
+                "inDevelopment": "En Desarrollo",
+                "communication": "Comunicación",
+                "interviewStyle": "Estilo de Entrevista",
+                "evaluation": "Evaluación",
+                "helpText": "Tu tipo influye en cómo interactúas con candidatos, conduces entrevistas y tomas decisiones de contratación."
+            },
+            "section5": {
+                "goal": "Conciencia",
+                "title": "Perfil de Estrés",
+                "question": "¿Por qué actúo raro bajo presión?",
+                "status": "Estado",
+                "inDevelopment": "En Desarrollo",
+                "underStress": "Bajo Estrés",
+                "underStressDesc": "Patrones de comportamiento cuando estás abrumado",
+                "management": "Gestión",
+                "managementDesc": "Técnicas para el equilibrio",
+                "helpText": "Bajo estrés, puedes adoptar rasgos de otros tipos. Reconocer estos patrones te ayuda a gestionarlos."
+            },
+            "section6": {
+                "goal": "Crecimiento",
+                "title": "Plan de Acción",
+                "question": "¿Cómo puedo mejorar?",
+                "status": "Estado",
+                "inDevelopment": "En Desarrollo",
+                "immediate": "Acciones Inmediatas",
+                "immediateDesc": "Logros rápidos que puedes implementar hoy",
+                "thirtyDay": "Desafío de 30 Días",
+                "thirtyDayDesc": "Plan de desarrollo estructurado",
+                "longTerm": "Objetivos a Largo Plazo",
+                "longTermDesc": "Objetivos de crecimiento estratégicos",
+                "helpText": "El crecimiento personal es un viaje. Estas recomendaciones están adaptadas a la trayectoria de desarrollo de tu tipo."
+            },
+            "cta": {
+                "button": "Continuar al Panel",
+                "footer": "Resultados accesibles en cualquier momento en la configuración del perfil"
+            }
         }
     },
     "dashboard": {

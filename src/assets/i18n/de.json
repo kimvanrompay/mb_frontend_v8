@@ -129,24 +129,79 @@
             "readyToSubmit": "Sie sind bereit, Ihre Bewertung abzusenden."
         },
         "success": {
-            "title": "Bewertung abgeschlossen",
-            "youAre": "Sie sind",
-            "enneagramProfile": "Enneagramm-Profil",
-            "scoreDistribution": "Ihre Punkteverteilung",
-            "topThreeTypes": "Ihre Top-Drei-Typen",
-            "outOf": "von",
-            "viewAllScores": "Alle 9 Typ-Punkte anzeigen",
-            "whatThisMeans": "Was das für Sie bedeutet",
-            "personalizedExperience": "Personalisierte Erfahrung",
-            "personalizedDesc": "Dashboard und Workflows auf Ihren Recruiting-Stil zugeschnitten",
-            "betterInsights": "Bessere Einsichten",
-            "betterInsightsDesc": "KI-Empfehlungen, die zu Ihren Entscheidungsmustern passen",
-            "optimizedWorkflow": "Optimierter Workflow",
-            "optimizedWorkflowDesc": "Kommunikationsvorlagen und Tools, die mit Ihrem Stil übereinstimmen",
-            "growthPath": "Wachstumspfad",
-            "growthPathDesc": "Personalisierte Entwicklungsvorschläge und Bewusstsein für blinde Flecken",
-            "continueToDashboard": "Weiter zum Dashboard",
-            "viewResultsAnytime": "Sie können Ihre Ergebnisse jederzeit in Ihren Profileinstellungen einsehen"
+            "section1": {
+                "goal": "Validierung",
+                "title": "Überschrift & Zusammenfassung",
+                "question": "Stimmt das?",
+                "youAre": "Sie sind",
+                "typeLabel": "Typ",
+                "helpText": "Dies ist Ihr dominanter Enneagramm-Typ basierend auf Ihren Antworten. Er repräsentiert Ihre Kernmotivationen und Weltanschauung.",
+                "basedOn": "Basierend auf Ihren Bewertungsergebnissen in"
+            },
+            "section2": {
+                "goal": "Nuance",
+                "title": "Visuelle Grafik",
+                "question": "Wie extrem bin ich?",
+                "dominantScore": "Ihre Dominante Typ-Punktzahl",
+                "strengthLabel": "Stärke in diesem Typ",
+                "allTypes": "Alle 9 Enneagramm-Typen",
+                "topLabel": "Top",
+                "helpText": "Sie haben Eigenschaften aller 9 Typen, aber in unterschiedlichen Anteilen. Dies zeigt, welche Typen Sie am meisten beeinflussen.",
+                "scoreExplainer": "Jeder Typ wird von 0-15 bewertet, basierend auf 3 Fragen pro Typ. Höhere Punktzahlen deuten auf stärkere Tendenzen hin."
+            },
+            "section3": {
+                "goal": "Ego/Reflexion",
+                "title": "Stärken & Schwächen",
+                "question": "Worin bin ich gut/schlecht?",
+                "status": "Status",
+                "inDevelopment": "In Entwicklung",
+                "strengthsLabel": "Stärken",
+                "strengthsDesc": "Ihre natürlichen Talente und Fähigkeiten",
+                "growthLabel": "Wachstumsbereiche",
+                "growthDesc": "Muster zu entwickeln und zu verfeinern",
+                "helpText": "Das Verständnis Ihrer natürlichen Stärken und blinden Flecken hilft Ihnen, zu nutzen, was funktioniert, und dort zu wachsen, wo es nötig ist."
+            },
+            "section4": {
+                "goal": "Nutzen",
+                "title": "Arbeit & Karriere",
+                "question": "Wie nutze ich das bei meiner Arbeit?",
+                "status": "Status",
+                "inDevelopment": "In Entwicklung",
+                "communication": "Kommunikation",
+                "interviewStyle": "Interview-Stil",
+                "evaluation": "Bewertung",
+                "helpText": "Ihr Typ beeinflusst, wie Sie mit Kandidaten interagieren, Interviews führen und Einstellungsentscheidungen treffen."
+            },
+            "section5": {
+                "goal": "Bewusstsein",
+                "title": "Stressprofil",
+                "question": "Warum verhalte ich mich unter Druck seltsam?",
+                "status": "Status",
+                "inDevelopment": "In Entwicklung",
+                "underStress": "Unter Stress",
+                "underStressDesc": "Verhaltensmuster bei Überforderung",
+                "management": "Management",
+                "managementDesc": "Techniken für Balance",
+                "helpText": "Unter Stress können Sie Eigenschaften anderer Typen annehmen. Das Erkennen dieser Muster hilft Ihnen, sie zu bewältigen."
+            },
+            "section6": {
+                "goal": "Wachstum",
+                "title": "Aktionsplan",
+                "question": "Wie werde ich besser?",
+                "status": "Status",
+                "inDevelopment": "In Entwicklung",
+                "immediate": "Sofortige Maßnahmen",
+                "immediateDesc": "Schnelle Gewinne, die Sie heute umsetzen können",
+                "thirtyDay": "30-Tage-Challenge",
+                "thirtyDayDesc": "Strukturierter Entwicklungsplan",
+                "longTerm": "Langfristige Ziele",
+                "longTermDesc": "Strategische Wachstumsziele",
+                "helpText": "Persönliches Wachstum ist eine Reise. Diese Empfehlungen sind auf den Entwicklungspfad Ihres Typs zugeschnitten."
+            },
+            "cta": {
+                "button": "Weiter zum Dashboard",
+                "footer": "Ergebnisse jederzeit in den Profileinstellungen zugänglich"
+            }
         }
     },
     "dashboard": {

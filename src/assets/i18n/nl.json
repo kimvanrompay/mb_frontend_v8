@@ -129,24 +129,79 @@
             "readyToSubmit": "Je kunt je assessment nu indienen."
         },
         "success": {
-            "title": "Assessment voltooid",
-            "youAre": "Je bent",
-            "enneagramProfile": "Enneagram profiel",
-            "scoreDistribution": "Je scoreverdeling",
-            "topThreeTypes": "Je top drie types",
-            "outOf": "van de",
-            "viewAllScores": "Bekijk alle 9 type scores",
-            "whatThisMeans": "Wat dit voor jou betekent",
-            "personalizedExperience": "Gepersonaliseerde ervaring",
-            "personalizedDesc": "Dashboard en workflows afgestemd op jouw recruteerstijl",
-            "betterInsights": "Betere inzichten",
-            "betterInsightsDesc": "AI-aanbevelingen die passen bij jouw besluitvormingspatronen",
-            "optimizedWorkflow": "Geoptimaliseerde workflow",
-            "optimizedWorkflowDesc": "Communicatiesjablonen en tools afgestemd op jouw stijl",
-            "growthPath": "Groeipad",
-            "growthPathDesc": "Gepersonaliseerde ontwikkelingssuggesties en blinde vlekkenbewustzijn",
-            "continueToDashboard": "Ga verder naar dashboard",
-            "viewResultsAnytime": "Je kunt je resultaten altijd bekijken in je profielinstellingen"
+            "section1": {
+                "goal": "Validatie",
+                "title": "Kop & Samenvatting",
+                "question": "Klopt dit?",
+                "youAre": "Je bent",
+                "typeLabel": "Type",
+                "helpText": "Dit is je dominante Enneagram type gebaseerd op je antwoorden. Het vertegenwoordigt je kernmotivaties en wereldbeeld.",
+                "basedOn": "Gebaseerd op je assessment resultaten in"
+            },
+            "section2": {
+                "goal": "Nuance",
+                "title": "Visuele Grafiek",
+                "question": "Hoe extreem ben ik?",
+                "dominantScore": "Je Dominante Type Score",
+                "strengthLabel": "sterkte in dit type",
+                "allTypes": "Alle 9 Enneagram Types",
+                "topLabel": "Top",
+                "helpText": "Je hebt eigenschappen van alle 9 types, maar in verschillende verhoudingen. Dit toont welke types je het meest beïnvloeden.",
+                "scoreExplainer": "Elk type wordt gescoord van 0-15 gebaseerd op 3 vragen per type. Hogere scores duiden op sterkere neigingen."
+            },
+            "section3": {
+                "goal": "Ego/Reflectie",
+                "title": "Sterke & Zwakke Punten",
+                "question": "Waar ben ik goed/slecht in?",
+                "status": "Status",
+                "inDevelopment": "In Ontwikkeling",
+                "strengthsLabel": "Sterke Punten",
+                "strengthsDesc": "Je natuurlijke talenten en vaardigheden",
+                "growthLabel": "Groeigebieden",
+                "growthDesc": "Patronen om te ontwikkelen en verfijnen",
+                "helpText": "Het begrijpen van je natuurlijke sterke punten en blinde vlekken helpt je te benutten wat werkt en te groeien waar nodig."
+            },
+            "section4": {
+                "goal": "Nut",
+                "title": "Werk & Carrière",
+                "question": "Hoe gebruik ik dit op mijn werk?",
+                "status": "Status",
+                "inDevelopment": "In Ontwikkeling",
+                "communication": "Communicatie",
+                "interviewStyle": "Interviewstijl",
+                "evaluation": "Evaluatie",
+                "helpText": "Je type beïnvloedt hoe je omgaat met kandidaten, interviews voert en aanwervingsbeslissingen neemt."
+            },
+            "section5": {
+                "goal": "Bewustzijn",
+                "title": "Stressprofiel",
+                "question": "Waarom gedraag ik me vreemd onder druk?",
+                "status": "Status",
+                "inDevelopment": "In Ontwikkeling",
+                "underStress": "Onder Stress",
+                "underStressDesc": "Gedragspatronen wanneer overweldigd",
+                "management": "Management",
+                "managementDesc": "Technieken voor balans",
+                "helpText": "Onder stress kun je eigenschappen van andere types aannemen. Het herkennen van deze patronen helpt je ze te beheersen."
+            },
+            "section6": {
+                "goal": "Groei",
+                "title": "Actieplan",
+                "question": "Hoe word ik beter?",
+                "status": "Status",
+                "inDevelopment": "In Ontwikkeling",
+                "immediate": "Directe Acties",
+                "immediateDesc": "Snelle winst die je vandaag kunt implementeren",
+                "thirtyDay": "30-Dagen Uitdaging",
+                "thirtyDayDesc": "Gestructureerd ontwikkelingsplan",
+                "longTerm": "Langetermijndoelen",
+                "longTermDesc": "Strategische groeidoelstellingen",
+                "helpText": "Persoonlijke groei is een reis. Deze aanbevelingen zijn afgestemd op het ontwikkelingspad van jouw type."
+            },
+            "cta": {
+                "button": "Ga verder naar Dashboard",
+                "footer": "Resultaten altijd toegankelijk in profielinstellingen"
+            }
         }
     },
     "dashboard": {
