@@ -46,177 +46,177 @@ export interface ApiError {
     expected_types?: string[];
 }
 
-// Enneagram type definitions with full details
+// Enneagram type definitions with recruitment-specific names
 export const ENNEAGRAM_TYPES: EnneagramType[] = [
     {
         id: '1',
-        name: 'The Reformer',
-        code: 'R',
-        emoji: '⚖️',
-        color: '#DC2626',
-        description: 'Principled, purposeful, self-controlled, and perfectionistic',
+        name: 'The Quality Controller',
+        code: 'Q',
+        emoji: '✓',
+        color: '#2E7D32',
+        description: 'Principled, structured, and detail-oriented. Prioritizes process adherence and precision.',
         coreMotivation: [
-            'To be good, balanced, and right',
-            'To improve things and avoid mistakes',
-            'To maintain integrity'
+            'To maintain high standards and quality',
+            'To improve processes and avoid mistakes',
+            'To ensure integrity in hiring'
         ],
         keyTraits: [
-            'Rational and idealistic',
-            'Strong sense of right and wrong',
-            'Teachers, crusaders, advocates for change'
+            'Exceptional attention to detail',
+            'Strong ethical standards',
+            'Process-oriented and systematic'
         ],
-        atTheirBest: 'Wise, discerning, realistic, and noble. Can be morally heroic.'
+        atTheirBest: 'Creates fair, excellent hiring processes with consistent quality and integrity.'
     },
     {
         id: '2',
-        name: 'The Helper',
-        code: 'H',
-        emoji: '❤️',
-        color: '#DC2626',
-        description: 'Generous, demonstrative, people-pleasing, and possessive',
+        name: 'The Connector',
+        code: 'C',
+        emoji: '🤝',
+        color: '#E91E63',
+        description: 'Relationship-focused, empathetic, and supportive. Values building connections.',
         coreMotivation: [
-            'To be loved and appreciated',
-            'To express their feelings for others',
-            'To be needed'
+            'To be valued and appreciated',
+            'To help candidates and hiring managers succeed',
+            'To build meaningful relationships'
         ],
         keyTraits: [
-            'Caring, generous, and supportive',
-            'Warm, friendly, and empathetic',
-            'Can be sentimental and flattering'
+            'Warm and personable',
+            'Excellent at building rapport',
+            'Naturally supportive and caring'
         ],
-        atTheirBest: 'Unselfish and altruistic with unconditional love for others.'
+        atTheirBest: 'Creates exceptional candidate experiences through genuine care and connection.'
     },
     {
         id: '3',
-        name: 'The Achiever',
-        code: 'A',
+        name: 'The Driver',
+        code: 'D',
         emoji: '🎯',
-        color: '#2563EB',
-        description: 'Success-oriented, pragmatic, adaptive, and image-conscious',
+        color: '#FFC107',
+        description: 'Goal-driven, efficient, and adaptable. Measures success by results.',
         coreMotivation: [
-            'To feel valuable and worthwhile',
-            'To be affirmed and admired',
-            'To distinguish themselves from others'
+            'To achieve targets and be successful',
+            'To be recognized for accomplishments',
+            'To deliver exceptional results'
         ],
         keyTraits: [
-            'Self-assured, attractive, and charming',
-            'Ambitious, competent, and energetic',
-            'Status-conscious and driven for advancement'
+            'Highly efficient and results-focused',
+            'Adaptable and professional',
+            'Driven to exceed expectations'
         ],
-        atTheirBest: 'Self-accepting, authentic, and inspiring role models.'
+        atTheirBest: 'Delivers outstanding results while maintaining authentic connections and quality.'
     },
     {
         id: '4',
-        name: 'The Individualist',
+        name: 'The Innovator',
         code: 'I',
         emoji: '🎨',
-        color: '#7C3AED',
-        description: 'Expressive, dramatic, self-absorbed, and temperamental',
+        color: '#9C27B0',
+        description: 'Creative, authentic, and depth-seeking. Drawn to unique talent.',
         coreMotivation: [
-            'To express themselves and their individuality',
-            'To create and surround themselves with beauty',
-            'To maintain certain moods and feelings'
+            'To find and develop unique talent',
+            'To create meaningful hiring experiences',
+            'To maintain authenticity and depth'
         ],
         keyTraits: [
-            'Self-aware, sensitive, and reserved',
-            'Emotionally honest and creative',
-            'Can be moody and self-conscious'
+            'Creative and insightful',
+            'Values authenticity and cultural fit',
+            'Thinks outside the box'
         ],
-        atTheirBest: 'Inspired and highly creative, able to renew themselves and transform their experiences.'
+        atTheirBest: 'Discovers exceptional talent others miss through creative and authentic engagement.'
     },
     {
         id: '5',
-        name: 'The Investigator',
-        code: 'O',
+        name: 'The Specialist',
+        code: 'S',
         emoji: '🔍',
-        color: '#059669',
-        description: 'Perceptive, innovative, secretive, and isolated',
+        color: '#1565C0',
+        description: 'Analytical, independent, and data-driven. Prefers thorough research.',
         coreMotivation: [
-            'To possess knowledge and understand the environment',
-            'To defend themselves from external intrusion',
-            'To be capable and competent'
+            'To possess deep knowledge and expertise',
+            'To make objective, data-driven decisions',
+            'To be competent and capable'
         ],
         keyTraits: [
-            'Alert, insightful, and curious',
-            'Independent, innovative, and inventive',
-            'Can become preoccupied with their thoughts'
+            'Highly analytical and objective',
+            'Expert in specialized domains',
+            'Thorough and methodical'
         ],
-        atTheirBest: 'Visionary pioneers, often ahead of their time, and able to see the world in an entirely new way.'
+        atTheirBest: 'Makes exceptional hiring decisions through deep expertise and objective analysis.'
     },
     {
         id: '6',
-        name: 'The Loyalist',
-        code: 'L',
+        name: "The Devil's Advocate",
+        code: 'A',
         emoji: '🛡️',
-        color: '#0891B2',
-        description: 'Engaging, responsible, anxious, and suspicious',
+        color: '#5D4037',
+        description: 'Cautious, thorough, and team-oriented. Prioritizes risk mitigation.',
         coreMotivation: [
-            'To have security and support',
-            'To test the attitudes of others toward them',
-            'To fight against anxiety and insecurity'
+            'To ensure security and minimize risks',
+            'To build reliable, trustworthy teams',
+            'To maintain stability and support'
         ],
         keyTraits: [
-            'Committed, security-oriented, and reliable',
-            'Hard-working, responsible, and trustworthy',
-            'Can be defensive and anxious'
+            'Thorough and diligent',
+            'Identifies risks and red flags',
+            'Loyal and committed'
         ],
-        atTheirBest: 'Internally stable and self-reliant, courageously championing themselves and others.'
+        atTheirBest: 'Creates secure, reliable teams through comprehensive vetting and risk awareness.'
     },
     {
         id: '7',
-        name: 'The Enthusiast',
-        code: 'E',
+        name: 'The Visionary',
+        code: 'V',
         emoji: '✨',
-        color: '#F59E0B',
-        description: 'Spontaneous, versatile, acquisitive, and scattered',
+        color: '#FF9800',
+        description: 'Energetic, versatile, and forward-thinking. Thrives on variety.',
         coreMotivation: [
-            'To be satisfied and content',
-            'To have their needs fulfilled',
-            'To avoid being deprived or in pain'
+            'To explore opportunities and possibilities',
+            'To keep work engaging and dynamic',
+            'To sell the vision and excite candidates'
         ],
         keyTraits: [
-            'Extroverted, optimistic, and spontaneous',
-            'Playful, high-spirited, and practical',
-            'Can be undisciplined and impulsive'
+            'Enthusiastic and optimistic',
+            'Excellent at selling opportunities',
+            'Handles multiple priorities well'
         ],
-        atTheirBest: 'Joyous, highly accomplished, and grateful, appreciating life with wonder and delight.'
+        atTheirBest: 'Inspires candidates with vision while maintaining focus on delivering results.'
     },
     {
         id: '8',
-        name: 'The Challenger',
-        code: 'C',
+        name: 'The Leader',
+        code: 'L',
         emoji: '💪',
-        color: '#DC2626',
-        description: 'Self-confident, decisive, willful, and confrontational',
+        color: '#C62828',
+        description: 'Direct, assertive, and leadership-oriented. Comfortable challenging requirements.',
         coreMotivation: [
-            'To be independent and in control',
-            'To protect themselves and those they care about',
-            'To prove their strength and resist weakness'
+            'To be in control and independent',
+            'To drive results and make impact',
+            'To protect their team and candidates'
         ],
         keyTraits: [
-            'Strong, assertive, and resourceful',
-            'Decisive, authoritative, and protective',
-            'Can be dominating and intimidating'
+            'Direct and confident',
+            'Strong negotiator',
+            'Natural leader'
         ],
-        atTheirBest: 'Self-mastering, using their strength to improve others\' lives, becoming heroic and inspiring.'
+        atTheirBest: 'Leads hiring processes with confidence while showing care for people and fairness.'
     },
     {
         id: '9',
-        name: 'The Peacemaker',
-        code: 'P',
+        name: 'The Mediator',
+        code: 'M',
         emoji: '🕊️',
-        color: '#10B981',
-        description: 'Receptive, reassuring, complacent, and resigned',
+        color: '#00897B',
+        description: 'Diplomatic, patient, and harmony-seeking. Excels at mediation.',
         coreMotivation: [
-            'To create harmony in their environment',
-            'To avoid conflict and tension',
-            'To preserve things as they are'
+            'To create harmony and balance',
+            'To avoid conflict and maintain peace',
+            'To facilitate smooth processes'
         ],
         keyTraits: [
-            'Accepting, trusting, and stable',
-            'Creative, supportive, and easygoing',
-            'Can be too willing to go along with others'
+            'Patient and diplomatic',
+            'Excellent listener',
+            'Creates inclusive environments'
         ],
-        atTheirBest: 'Indomitable and all-embracing, able to bring people together and heal conflicts.'
+        atTheirBest: 'Facilitates harmonious hiring processes while asserting needs and making timely decisions.'
     }
 ];
