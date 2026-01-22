@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +33,8 @@ export class AssessmentComponent implements OnInit {
     constructor(
         private onboardingService: OnboardingService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit(): void {
@@ -62,9 +63,37 @@ export class AssessmentComponent implements OnInit {
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
             next: (response) => {
                 console.log('✅ Questions loaded successfully:', response);
+                console.log('📊 Response structure:', {
+                    hasQuestions: !!response.questions,
+                    questionsLength: response.questions?.length,
+                    questionsType: typeof response.questions,
+                    isArray: Array.isArray(response.questions)
+                });
+
                 this.questions = response.questions;
                 this.answers = [];
+
+                console.log('📝 Component state after assignment:', {
+                    questionsLength: this.questions?.length,
+                    isLoading: this.isLoading,
+                    answersLength: this.answers.length
+                });
+
                 this.isLoading = false;
+                console.log('🎯 isLoading set to FALSE');
+                console.log('🔄 Current isLoading value:', this.isLoading);
+
+                // Explicitly trigger change detection
+                this.cdr.detectChanges();
+                console.log('✨ Change detection triggered');
+
+                // Double-check the state
+                setTimeout(() => {
+                    console.log('⏰ After timeout check:', {
+                        isLoading: this.isLoading,
+                        questionsCount: this.questions.length
+                    });
+                }, 100);
             },
             error: (err: any) => {
                 console.error('❌ Failed to load questions:', err);
