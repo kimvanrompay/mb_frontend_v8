@@ -129,24 +129,79 @@
             "readyToSubmit": "You're ready to submit your assessment."
         },
         "success": {
-            "title": "Assessment Complete",
-            "youAre": "You are",
-            "enneagramProfile": "Enneagram Profile",
-            "scoreDistribution": "Your Score Distribution",
-            "topThreeTypes": "Your Top Three Types",
-            "outOf": "out of",
-            "viewAllScores": "View All 9 Type Scores",
-            "whatThisMeans": "What This Means For You",
-            "personalizedExperience": "Personalized Experience",
-            "personalizedDesc": "Dashboard and workflows tailored to your recruiting style",
-            "betterInsights": "Better Insights",
-            "betterInsightsDesc": "AI recommendations that match your decision-making patterns",
-            "optimizedWorkflow": "Optimized Workflow",
-            "optimizedWorkflowDesc": "Communication templates and tools aligned with your style",
-            "growthPath": "Growth Path",
-            "growthPathDesc": "Personalized development suggestions and blind spot awareness",
-            "continueToDashboard": "Continue to Dashboard",
-            "viewResultsAnytime": "You can view your results anytime in your profile settings"
+            "section1": {
+                "goal": "Validation",
+                "title": "Headline & Summary",
+                "question": "Is this accurate?",
+                "youAre": "You are",
+                "typeLabel": "Type",
+                "helpText": "This is your dominant Enneagram type based on your responses. It represents your core motivations and worldview.",
+                "basedOn": "Based on your assessment results in"
+            },
+            "section2": {
+                "goal": "Nuance",
+                "title": "Visual Graph",
+                "question": "How extreme am I?",
+                "dominantScore": "Your Dominant Type Score",
+                "strengthLabel": "strength in this type",
+                "allTypes": "All 9 Enneagram Types",
+                "topLabel": "Top",
+                "helpText": "You have traits from all 9 types, but in different proportions. This shows which types influence you most.",
+                "scoreExplainer": "Each type is scored from 0-15 based on 3 questions per type. Higher scores indicate stronger tendencies."
+            },
+            "section3": {
+                "goal": "Ego/Reflection",
+                "title": "Strengths & Weaknesses",
+                "question": "What am I good/bad at?",
+                "status": "Status",
+                "inDevelopment": "In Development",
+                "strengthsLabel": "Strengths",
+                "strengthsDesc": "Your natural talents and abilities",
+                "growthLabel": "Growth Areas",
+                "growthDesc": "Patterns to develop and refine",
+                "helpText": "Understanding your natural strengths and blind spots helps you leverage what works and grow where needed."
+            },
+            "section4": {
+                "goal": "Utility",
+                "title": "Work & Career",
+                "question": "How do I use this at my job?",
+                "status": "Status",
+                "inDevelopment": "In Development",
+                "communication": "Communication",
+                "interviewStyle": "Interview Style",
+                "evaluation": "Evaluation",
+                "helpText": "Your type influences how you interact with candidates, conduct interviews, and make hiring decisions."
+            },
+            "section5": {
+                "goal": "Awareness",
+                "title": "Stress Profile",
+                "question": "Why do I act weird under pressure?",
+                "status": "Status",
+                "inDevelopment": "In Development",
+                "underStress": "Under Stress",
+                "underStressDesc": "Behavior patterns when overwhelmed",
+                "management": "Management",
+                "managementDesc": "Techniques for balance",
+                "helpText": "When stressed, you may take on traits of other types. Recognizing these patterns helps you manage them."
+            },
+            "section6": {
+                "goal": "Growth",
+                "title": "Action Plan",
+                "question": "How do I get better?",
+                "status": "Status",
+                "inDevelopment": "In Development",
+                "immediate": "Immediate Actions",
+                "immediateDesc": "Quick wins you can implement today",
+                "thirtyDay": "30-Day Challenge",
+                "thirtyDayDesc": "Structured development plan",
+                "longTerm": "Long-term Goals",
+                "longTermDesc": "Strategic growth objectives",
+                "helpText": "Personal growth is a journey. These recommendations are tailored to your type's development path."
+            },
+            "cta": {
+                "button": "Continue to Dashboard",
+                "footer": "Results accessible anytime in profile settings"
+            }
         }
     },
     "dashboard": {

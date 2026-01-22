@@ -1,150 +1,80 @@
-/* Reuse animated dark green gradient background */
-@keyframes cloudyMotion {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-:host {
-    display: block;
-    min-height: 100vh;
-}
-
-.onboarding-container {
-    position: relative;
-    min-height: 100vh;
-    background: linear-gradient(135deg,
-            rgba(6, 78, 59, 0.85),
-            rgba(4, 120, 87, 0.75),
-            rgba(5, 46, 37, 0.9),
-            rgba(6, 95, 70, 0.8),
-            rgba(16, 185, 129, 0.7));
-    background-size: 400% 400%;
-    animation: cloudyMotion 20s ease infinite;
-}
-
-.onboarding-container::before {
-    content: '';
-    position: absolute;
+/* Animated floating shapes background */
+.floating-shapes {
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(100px);
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
 }
 
-.glass-card {
-    position: relative;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow:
-        0 8px 32px 0 rgba(6, 78, 59, 0.2),
-        0 0 80px 0 rgba(16, 185, 129, 0.15),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    animation: float 20s infinite ease-in-out;
 }
 
-/* Bounce in animation for success icon */
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-
-    70% {
-        transform: scale(0.9);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+.shape:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: -5%;
+    animation-delay: 0s;
+    animation-duration: 25s;
 }
 
-.animate-bounce-in {
-    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.shape:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: -3%;
+    animation-delay: 5s;
+    animation-duration: 30s;
 }
 
-/* Profile code letter spacing */
-.letter-spacing-lg {
-    letter-spacing: 0.25em;
+.shape:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 10s;
+    animation-duration: 20s;
 }
 
-/* Shine effect on profile code */
-@keyframes shine {
-    0% {
-        background-position: -200%;
-    }
-
-    100% {
-        background-position: 200%;
-    }
+.shape:nth-child(4) {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    right: 15%;
+    animation-delay: 15s;
+    animation-duration: 35s;
 }
 
-.bg-gradient-to-r {
-    background-size: 200% auto;
-    animation: shine 3s ease-in-out infinite;
-}
-
-/* Card hover effects */
-.hover\:scale-105:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Stagger animation for top 3 cards */
-.grid>div:nth-child(1) {
-    animation: fadeInUp 0.5s ease-out 0.1s both;
-}
-
-.grid>div:nth-child(2) {
-    animation: fadeInUp 0.5s ease-out 0.2s both;
-}
-
-.grid>div:nth-child(3) {
-    animation: fadeInUp 0.5s ease-out 0.3s both;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Rank badge pulse */
-.absolute.w-10.h-10 {
-    animation: badgePulse 2s ease-in-out infinite;
-}
-
-@keyframes badgePulse {
+@keyframes float {
 
     0%,
     100% {
-        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(30px, -30px) scale(1.1);
     }
 
     50% {
-        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+        transform: translate(-20px, 20px) scale(0.9);
     }
+
+    75% {
+        transform: translate(40px, 10px) scale(1.05);
+    }
+}
+
+/* Ensure content stays above shapes */
+.content-wrapper {
+    position: relative;
+    z-index: 1;
 }

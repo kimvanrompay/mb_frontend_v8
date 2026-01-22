@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth';
+import { I18nService } from '../../../services/i18n.service';
 import {
     AssessmentResult,
     TYPE_NAMES,
@@ -27,6 +28,7 @@ interface ProfileSection {
 export class SuccessComponent implements OnInit {
     result: AssessmentResult | null = null;
     isLoading = true;
+    typeColor: string = '#000000';
 
     // Structured sections for the results page
     sections: ProfileSection[] = [
@@ -80,7 +82,8 @@ export class SuccessComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        public i18nService: I18nService
     ) {
         // Get result from navigation state
         const navigation = this.router.getCurrentNavigation();
@@ -88,6 +91,10 @@ export class SuccessComponent implements OnInit {
 
         if (state && state['result']) {
             this.result = state['result'];
+            // Extract type color if available
+            if (this.result && (this.result as any).type_color) {
+                this.typeColor = (this.result as any).type_color;
+            }
         }
     }
 
