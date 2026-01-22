@@ -8,6 +8,15 @@ import {
     EnneagramType
 } from '../../../models/recruiter-assessment.model';
 
+interface ProfileSection {
+    title: string;
+    subtitle: string;
+    userQuestion: string;
+    goal: string;
+    hasData: boolean;
+    placeholder?: string;
+}
+
 @Component({
     selector: 'app-onboarding-success',
     standalone: true,
@@ -19,18 +28,55 @@ export class SuccessComponent implements OnInit {
     result: AssessmentResult | null = null;
     isLoading = true;
 
-    // Type emoji mapping
-    typeEmojis: Record<EnneagramType, string> = {
-        1: '⚖️',
-        2: '❤️',
-        3: '🎯',
-        4: '🎨',
-        5: '🔍',
-        6: '🛡️',
-        7: '✨',
-        8: '💪',
-        9: '🕊️'
-    };
+    // Structured sections for the results page
+    sections: ProfileSection[] = [
+        {
+            title: 'Headline & Summary',
+            subtitle: 'Your core personality type',
+            userQuestion: 'Is this accurate?',
+            goal: 'Validation',
+            hasData: true
+        },
+        {
+            title: 'Visual Graph',
+            subtitle: 'Your score across all 9 types',
+            userQuestion: 'How extreme am I?',
+            goal: 'Nuance',
+            hasData: true
+        },
+        {
+            title: 'Strengths & Weaknesses',
+            subtitle: 'What makes you effective and what holds you back',
+            userQuestion: 'What am I good/bad at?',
+            goal: 'Ego/Reflection',
+            hasData: false,
+            placeholder: 'Detailed strengths and weaknesses will be available soon'
+        },
+        {
+            title: 'Work & Career',
+            subtitle: 'How to apply this in your recruiting role',
+            userQuestion: 'How do I use this at my job?',
+            goal: 'Utility',
+            hasData: false,
+            placeholder: 'Career insights and practical applications coming soon'
+        },
+        {
+            title: 'Stress Profile',
+            subtitle: 'How you behave under pressure',
+            userQuestion: 'Why do I act weird under pressure?',
+            goal: 'Awareness',
+            hasData: false,
+            placeholder: 'Stress behavior patterns will be added in the next update'
+        },
+        {
+            title: 'Action Plan',
+            subtitle: 'Steps for personal development',
+            userQuestion: 'How do I get better?',
+            goal: 'Growth',
+            hasData: false,
+            placeholder: 'Personalized growth recommendations coming soon'
+        }
+    ];
 
     constructor(
         private router: Router,
@@ -66,23 +112,18 @@ export class SuccessComponent implements OnInit {
     }
 
     /**
-     * Get emoji for dominant type
-     */
-    get typeEmoji(): string {
-        return this.result ? this.typeEmojis[this.result.dominant_type] : '✨';
-    }
-
-    /**
      * Get sorted scores array for display
      */
-    get sortedScores(): { type: EnneagramType; score: number; name: string }[] {
+    get sortedScores(): { type: EnneagramType; score: number; name: string; percentage: number }[] {
         if (!this.result) return [];
 
+        const maxScore = 15; // 3 questions × 5 max rating
         return Object.entries(this.result.all_scores)
             .map(([type, score]) => ({
                 type: parseInt(type) as EnneagramType,
                 score,
-                name: TYPE_NAMES[parseInt(type) as EnneagramType][this.result!.locale]
+                name: TYPE_NAMES[parseInt(type) as EnneagramType][this.result!.locale],
+                percentage: Math.round((score / maxScore) * 100)
             }))
             .sort((a, b) => b.score - a.score);
     }
@@ -90,8 +131,18 @@ export class SuccessComponent implements OnInit {
     /**
      * Get top 3 types
      */
-    get topThreeTypes(): { type: EnneagramType; score: number; name: string }[] {
+    get topThreeTypes() {
         return this.sortedScores.slice(0, 3);
+    }
+
+    /**
+     * Get color for score bar based on rank
+     */
+    getScoreBarColor(index: number): string {
+        if (index === 0) return 'bg-black';
+        if (index === 1) return 'bg-gray-600';
+        if (index === 2) return 'bg-gray-400';
+        return 'bg-gray-300';
     }
 
     /**
@@ -99,38 +150,5 @@ export class SuccessComponent implements OnInit {
      */
     continueToDashboard(): void {
         this.router.navigate(['/dashboard']);
-    }
-
-    /**
-     * Get percentage of max score
-     */
-    getScorePercentage(score: number): number {
-        const maxScore = 15; // 3 questions × 5 max value
-        return Math.round((score / maxScore) * 100);
-    }
-
-    /**
-     * Get SVG path for radial chart segment
-     */
-    getSegmentPath(type: EnneagramType, score: number): string {
-        const maxRadius = 140;
-        const radius = (score / 15) * maxRadius;
-        const segmentAngle = 40; // 360 / 9 = 40 degrees per segment
-        const startAngle = ((type - 1) * segmentAngle) * (Math.PI / 180);
-        const endAngle = (type * segmentAngle) * (Math.PI / 180);
-
-        const centerX = 200;
-        const centerY = 200;
-
-        // Calculate arc points
-        const x1 = centerX + radius * Math.cos(startAngle);
-        const y1 = centerY + radius * Math.sin(startAngle);
-        const x2 = centerX + radius * Math.cos(endAngle);
-        const y2 = centerY + radius * Math.sin(endAngle);
-
-        // Create path: Move to center, line to start, arc to end, line back to center
-        const largeArcFlag = segmentAngle > 180 ? 1 : 0;
-
-        return `M ${centerX},${centerY} L ${x1},${y1} A ${radius},${radius} 0 ${largeArcFlag},1 ${x2},${y2} Z`;
     }
 }
