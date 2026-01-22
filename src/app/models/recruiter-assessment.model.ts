@@ -62,8 +62,59 @@ export interface AssessmentResult {
     dominant_type: EnneagramType;
     type_name: string;
     type_description: string;
+    type_image_url?: string;
+    type_color?: string;
     locale: Locale;
     all_scores: ScoreBreakdown;
+    strengths?: string[];
+    weaknesses?: string[];
+    work_insights?: {
+        ideal_environment: string;
+        team_role: string;
+        communication_style: string;
+        interview_approach: {
+            style: string;
+            strengths: string;
+            watch_out: string;
+        };
+        candidate_evaluation: {
+            what_you_notice: string;
+            blind_spots: string;
+            tips: string;
+        };
+        practical_tips: string[];
+    };
+    stress_profile?: {
+        stress_triggers: string[];
+        under_stress_you: string[];
+        stress_management: string[];
+        when_you_feel_safe: string[];
+    };
+    action_plan?: {
+        immediate_actions: Array<{
+            title: string;
+            description: string;
+            time: string;
+        }>;
+        thirty_day_challenge: {
+            title: string;
+            goal: string;
+            week_1: string;
+            week_2: string;
+            week_3: string;
+            week_4: string;
+        };
+        long_term_goals: Array<{
+            goal: string;
+            why: string;
+            how: string;
+        }>;
+    };
+    famous_people?: string[];
+    relationships?: {
+        brings_to_relationship: string;
+        friction_points: string;
+    };
 }
 
 // Response from POST /recruiter_assessment

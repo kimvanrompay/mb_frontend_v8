@@ -14,6 +14,11 @@
 .shape {
     position: absolute;
     border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-width: 3px;
+    border-style: solid;
     animation: float 20s infinite ease-in-out;
 }
 

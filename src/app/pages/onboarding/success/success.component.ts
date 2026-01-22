@@ -31,54 +31,56 @@ export class SuccessComponent implements OnInit {
     typeColor: string = '#000000';
 
     // Structured sections for the results page
-    sections: ProfileSection[] = [
-        {
-            title: 'Headline & Summary',
-            subtitle: 'Your core personality type',
-            userQuestion: 'Is this accurate?',
-            goal: 'Validation',
-            hasData: true
-        },
-        {
-            title: 'Visual Graph',
-            subtitle: 'Your score across all 9 types',
-            userQuestion: 'How extreme am I?',
-            goal: 'Nuance',
-            hasData: true
-        },
-        {
-            title: 'Strengths & Weaknesses',
-            subtitle: 'What makes you effective and what holds you back',
-            userQuestion: 'What am I good/bad at?',
-            goal: 'Ego/Reflection',
-            hasData: false,
-            placeholder: 'Detailed strengths and weaknesses will be available soon'
-        },
-        {
-            title: 'Work & Career',
-            subtitle: 'How to apply this in your recruiting role',
-            userQuestion: 'How do I use this at my job?',
-            goal: 'Utility',
-            hasData: false,
-            placeholder: 'Career insights and practical applications coming soon'
-        },
-        {
-            title: 'Stress Profile',
-            subtitle: 'How you behave under pressure',
-            userQuestion: 'Why do I act weird under pressure?',
-            goal: 'Awareness',
-            hasData: false,
-            placeholder: 'Stress behavior patterns will be added in the next update'
-        },
-        {
-            title: 'Action Plan',
-            subtitle: 'Steps for personal development',
-            userQuestion: 'How do I get better?',
-            goal: 'Growth',
-            hasData: false,
-            placeholder: 'Personalized growth recommendations coming soon'
-        }
-    ];
+    get sections(): ProfileSection[] {
+        return [
+            {
+                title: 'Headline & Summary',
+                subtitle: 'Your core personality type',
+                userQuestion: 'Is this accurate?',
+                goal: 'Validation',
+                hasData: true
+            },
+            {
+                title: 'Visual Graph',
+                subtitle: 'Your score across all 9 types',
+                userQuestion: 'How extreme am I?',
+                goal: 'Nuance',
+                hasData: true
+            },
+            {
+                title: 'Strengths & Weaknesses',
+                subtitle: 'What makes you effective and what holds you back',
+                userQuestion: 'What am I good/bad at?',
+                goal: 'Ego/Reflection',
+                hasData: !!(this.result?.strengths && this.result?.weaknesses),
+                placeholder: 'Detailed strengths and weaknesses will be available soon'
+            },
+            {
+                title: 'Work & Career',
+                subtitle: 'How to apply this in your recruiting role',
+                userQuestion: 'How do I use this at my job?',
+                goal: 'Utility',
+                hasData: !!this.result?.work_insights,
+                placeholder: 'Career insights and practical applications coming soon'
+            },
+            {
+                title: 'Stress Profile',
+                subtitle: 'How you behave under pressure',
+                userQuestion: 'Why do I act weird under pressure?',
+                goal: 'Awareness',
+                hasData: !!this.result?.stress_profile,
+                placeholder: 'Stress behavior patterns will be added in the next update'
+            },
+            {
+                title: 'Action Plan',
+                subtitle: 'Steps for personal development',
+                userQuestion: 'How do I get better?',
+                goal: 'Growth',
+                hasData: !!this.result?.action_plan,
+                placeholder: 'Personalized growth recommendations coming soon'
+            }
+        ];
+    }
 
     constructor(
         private router: Router,
