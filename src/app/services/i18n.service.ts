@@ -12,7 +12,7 @@ export interface TranslationData {
 export class I18nService {
     private translations: { [lang: string]: TranslationData } = {};
     private currentLang$ = new BehaviorSubject<string>('en');
-    private supportedLanguages = ['en', 'nl'];
+    private supportedLanguages = ['en', 'nl', 'fr', 'de', 'es'];
     private defaultLanguage = 'en';
     private initializationPromise: Promise<void> | null = null;
 
