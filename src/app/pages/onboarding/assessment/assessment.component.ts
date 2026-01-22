@@ -41,20 +41,48 @@ export class AssessmentComponent implements OnInit {
     }
 
     loadQuestions(): void {
+        console.log('🔄 Loading assessment questions...');
         this.isLoading = true;
         this.error = null;
 
         const user = this.authService.getCurrentUser();
+        console.log('👤 Current user:', user);
+
+        if (!user) {
+            console.error('❌ No user found - redirecting to login');
+            this.error = 'You must be logged in to access this page.';
+            this.isLoading = false;
+            this.router.navigate(['/login']);
+            return;
+        }
+
         this.currentLocale = (user as any)?.locale || 'en';
+        console.log('🌐 Using locale:', this.currentLocale);
 
         this.onboardingService.getRecruiterQuestions(this.currentLocale).subscribe({
             next: (response) => {
+                console.log('✅ Questions loaded successfully:', response);
                 this.questions = response.questions;
                 this.answers = [];
                 this.isLoading = false;
             },
             error: (err: any) => {
-                this.error = 'Failed to load questions. Please try again.';
+                console.error('❌ Failed to load questions:', err);
+                console.error('Error status:', err.status);
+                console.error('Error message:', err.message);
+
+                // Show specific error message based on status code
+                if (err.status === 401) {
+                    this.error = 'Your session has expired. Please log in again.';
+                    setTimeout(() => this.router.navigate(['/login']), 2000);
+                } else if (err.status === 404) {
+                    this.error = 'Assessment questions not found. Please contact support.';
+                } else if (err.status === 0) {
+                    this.error = 'Cannot connect to server. Please check your internet connection.';
+                } else {
+                    this.error = `Failed to load questions: ${err.error?.message || err.message || 'Unknown error'}`;
+                }
+
                 this.isLoading = false;
             }
         });
