@@ -1,14 +1,105 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TrialBannerComponent } from '../../components/trial-banner/trial-banner.component';
+import { JobService } from '../../services/job.service';
+import { Job } from '../../models/job.model';
+import { finalize } from 'rxjs';
+
+export interface ActivityStat {
+  label: string;
+  value: string;
+  total?: string;
+}
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavbarComponent, TrialBannerComponent],
+  imports: [CommonModule, NavbarComponent, TrialBannerComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class DashboardComponent {
-  constructor() { }
+export class DashboardComponent implements OnInit {
+
+  // Mock Data for Activity Stats (since API for this part wasn't provided yet)
+  activityStats: ActivityStat[] = [
+    { label: 'Assessments Completed', value: '24', total: '/ 100' },
+    { label: 'Candidate Applications', value: '156', total: '/ 500' },
+    { label: 'Interviews Scheduled', value: '8', total: '/ 50' },
+    { label: 'Active Job Posts', value: '3', total: '/ 10' }
+  ];
+
+  jobs: Job[] = [];
+  isLoading = false;
+  error: string | null = null;
+
+  constructor(private jobService: JobService) { }
+
+  ngOnInit(): void {
+    this.loadJobs();
+  }
+
+  loadJobs(): void {
+    this.isLoading = true;
+    this.error = null;
+    this.jobService.getJobs().pipe(
+      finalize(() => this.isLoading = false)
+    ).subscribe({
+      next: (response) => {
+        this.jobs = response.jobs;
+      },
+      error: (err) => {
+        console.error('Failed to load jobs', err);
+        this.error = 'Failed to load jobs. Please try again.';
+      }
+    });
+  }
+
+  // Helpers for view rendering
+  getInitials(title: string): string {
+    return title.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+  }
+
+  getInitialsBg(title: string): string {
+    // Simple deterministic color mapping based on string length or first char
+    const colors = [
+      'bg-gray-900 text-white',
+      'bg-blue-900 text-white',
+      'bg-indigo-900 text-white',
+      'bg-gray-700 text-white'
+    ];
+    return colors[title.length % colors.length];
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'open': return 'bg-green-100 text-green-800';
+      case 'filled': return 'bg-blue-100 text-blue-800';
+      case 'closed': return 'bg-gray-100 text-gray-800';
+      default: return 'bg-gray-100 text-gray-600';
+    }
+  }
+
+  formatTimeAgo(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + "y ago";
+
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + "mo ago";
+
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + "d ago";
+
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + "h ago";
+
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + "m ago";
+
+    return Math.floor(seconds) + "s ago";
+  }
 }

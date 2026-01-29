@@ -52,34 +52,61 @@ export class SuccessComponent implements OnInit {
                 subtitle: 'What makes you effective and what holds you back',
                 userQuestion: 'What am I good/bad at?',
                 goal: 'Ego/Reflection',
-                hasData: !!(this.result?.strengths && this.result?.weaknesses),
-                placeholder: 'Detailed strengths and weaknesses will be available soon'
+                hasData: true
             },
             {
                 title: 'Work & Career',
                 subtitle: 'How to apply this in your recruiting role',
                 userQuestion: 'How do I use this at my job?',
                 goal: 'Utility',
-                hasData: !!this.result?.work_insights,
-                placeholder: 'Career insights and practical applications coming soon'
+                hasData: true
             },
             {
                 title: 'Stress Profile',
                 subtitle: 'How you behave under pressure',
                 userQuestion: 'Why do I act weird under pressure?',
                 goal: 'Awareness',
-                hasData: !!this.result?.stress_profile,
-                placeholder: 'Stress behavior patterns will be added in the next update'
+                hasData: true
             },
             {
                 title: 'Action Plan',
                 subtitle: 'Steps for personal development',
                 userQuestion: 'How do I get better?',
                 goal: 'Growth',
-                hasData: !!this.result?.action_plan,
-                placeholder: 'Personalized growth recommendations coming soon'
+                hasData: true
             }
         ];
+    }
+
+    /**
+     * Track by index for ngFor
+     */
+    trackByIndex(index: number): number {
+        return index;
+    }
+
+    /**
+     * Track long-term goal by index
+     */
+    trackByGoalIndex(index: number): number {
+        return index;
+    }
+
+    /**
+     * Get expandable state for action plan goals
+     */
+    expandedGoals: Set<number> = new Set();
+
+    toggleGoal(index: number): void {
+        if (this.expandedGoals.has(index)) {
+            this.expandedGoals.delete(index);
+        } else {
+            this.expandedGoals.add(index);
+        }
+    }
+
+    isGoalExpanded(index: number): boolean {
+        return this.expandedGoals.has(index);
     }
 
     constructor(
@@ -159,5 +186,62 @@ export class SuccessComponent implements OnInit {
      */
     continueToDashboard(): void {
         this.router.navigate(['/dashboard']);
+    }
+
+    /**
+     * Format time estimate for action cards
+     */
+    formatTime(time: string): string {
+        return time;
+    }
+
+    /**
+     * Get week label for 30-day challenge
+     */
+    getWeekLabel(weekNum: number): string {
+        return `Week ${weekNum}`;
+    }
+
+    /**
+     * Check if specific data sections exist
+     */
+    get hasStrengthsWeaknesses(): boolean {
+        return !!(this.result?.strengths && this.result?.strengths.length > 0) ||
+            !!(this.result?.weaknesses && this.result?.weaknesses.length > 0);
+    }
+
+    get hasWorkInsights(): boolean {
+        return !!this.result?.work_insights;
+    }
+
+    get hasStressProfile(): boolean {
+        return !!this.result?.stress_profile;
+    }
+
+    get hasActionPlan(): boolean {
+        return !!this.result?.action_plan;
+    }
+
+    get hasFamousPeople(): boolean {
+        return !!(this.result?.famous_people && this.result?.famous_people.length > 0);
+    }
+
+    get hasRelationships(): boolean {
+        return !!this.result?.relationships;
+    }
+
+    /**
+     * Get weeks array for 30-day challenge
+     */
+    get challengeWeeks(): Array<{ weekNum: number; content: string }> {
+        if (!this.result?.action_plan?.thirty_day_challenge) return [];
+
+        const challenge = this.result.action_plan.thirty_day_challenge;
+        return [
+            { weekNum: 1, content: challenge.week_1 },
+            { weekNum: 2, content: challenge.week_2 },
+            { weekNum: 3, content: challenge.week_3 },
+            { weekNum: 4, content: challenge.week_4 }
+        ];
     }
 }
