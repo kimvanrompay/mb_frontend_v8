@@ -6,12 +6,6 @@ import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
 import { finalize } from 'rxjs';
 
-export interface ActivityStat {
-  label: string;
-  value: string;
-  total?: string;
-}
-
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,14 +14,6 @@ export interface ActivityStat {
   styleUrl: './dashboard.css',
 })
 export class DashboardComponent implements OnInit {
-
-  // Mock Data for Activity Stats (since API for this part wasn't provided yet)
-  activityStats: ActivityStat[] = [
-    { label: 'Assessments Completed', value: '24', total: '/ 100' },
-    { label: 'Candidate Applications', value: '156', total: '/ 500' },
-    { label: 'Interviews Scheduled', value: '8', total: '/ 50' },
-    { label: 'Active Job Posts', value: '3', total: '/ 10' }
-  ];
 
   jobs: Job[] = [];
   isLoading = false;
