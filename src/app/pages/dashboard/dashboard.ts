@@ -4,7 +4,11 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { TrialBannerComponent } from '../../components/trial-banner/trial-banner.component';
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
-import { finalize } from 'rxjs';
+import { TenantService } from '../../services/tenant.service';
+import { AssessmentService } from '../../services/assessment.service';
+import { TenantStats, Subscription } from '../../models/tenant.model';
+import { AssessmentStats } from '../../models/assessment.model';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,27 +20,43 @@ import { finalize } from 'rxjs';
 export class DashboardComponent implements OnInit {
 
   jobs: Job[] = [];
+  tenantStats: TenantStats | null = null;
+  subscription: Subscription | null = null;
+  assessmentStats: AssessmentStats | null = null;
+
   isLoading = false;
   error: string | null = null;
 
-  constructor(private jobService: JobService) { }
+  constructor(
+    private jobService: JobService,
+    private tenantService: TenantService,
+    private assessmentService: AssessmentService
+  ) { }
 
   ngOnInit(): void {
-    this.loadJobs();
+    this.loadDashboardData();
   }
 
-  loadJobs(): void {
+  loadDashboardData(): void {
     this.isLoading = true;
     this.error = null;
-    this.jobService.getJobs().pipe(
+
+    forkJoin({
+      jobsResponse: this.jobService.getJobs(),
+      tenantResponse: this.tenantService.getTenant(),
+      assessmentStats: this.assessmentService.getStats()
+    }).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
-      next: (response) => {
-        this.jobs = response.jobs;
+      next: (results) => {
+        this.jobs = results.jobsResponse.jobs;
+        this.tenantStats = results.tenantResponse.tenant.stats;
+        this.subscription = results.tenantResponse.tenant.subscription;
+        this.assessmentStats = results.assessmentStats;
       },
       error: (err) => {
-        console.error('Failed to load jobs', err);
-        this.error = 'Failed to load jobs. Please try again.';
+        console.error('Failed to load dashboard data', err);
+        this.error = 'Failed to load dashboard data. Please try again.';
       }
     });
   }
