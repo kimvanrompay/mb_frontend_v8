@@ -60,6 +60,9 @@ export class JobsComponent implements OnInit {
     }
 
     applyFilters() {
+        console.log('Applying filters. Total jobs:', this.jobs.length);
+        console.log('Filters:', { searchQuery: this.searchQuery, statusFilter: this.statusFilter, departmentFilter: this.departmentFilter });
+
         this.filteredJobs = this.jobs.filter(job => {
             const matchesSearch = job.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 (job.description && job.description.toLowerCase().includes(this.searchQuery.toLowerCase()));
@@ -68,6 +71,8 @@ export class JobsComponent implements OnInit {
 
             return matchesSearch && matchesStatus && matchesDepartment;
         });
+
+        console.log('Filtered jobs:', this.filteredJobs.length);
 
         // Apply sorting
         this.filteredJobs.sort((a, b) => {
