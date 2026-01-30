@@ -26,31 +26,27 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
             <!-- Left Column (Charts) -->
-            <div class="lg:col-span-2 space-y-6">
+            <div class="lg:col-span-2 space-y-4">
 
-                <!-- Skill & Trust Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Skill Breakdown -->
-                    <div class="meribas-card">
-                        <h3 class="text-lg font-bold mb-4">Skill Capability</h3>
+                    <div class="meribas-card h-64">
+                        <h3 class="text-sm font-bold border-b border-gray-100 pb-2 mb-2">Capability</h3>
                         <app-skill-breakdown></app-skill-breakdown>
                     </div>
 
-                    <!-- NEW Radar Chart (Team Culture/Skills) -->
-                    <div class="meribas-card">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-lg font-bold">Team Balance</h3>
-                            <span class="text-xs text-gray-400">Current Hires</span>
-                        </div>
+                    <!-- Radar Chart -->
+                    <div class="meribas-card h-64">
+                        <h3 class="text-sm font-bold border-b border-gray-100 pb-2 mb-2">Team Balance</h3>
                         <app-radar-chart></app-radar-chart>
                     </div>
                 </div>
 
                 <!-- Trust Gauge -->
                 <div class="meribas-card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold">Overall System Trust</h3>
-                        <span class="integrity-badge verified">Verified</span>
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                        <h3 class="text-sm font-bold">System Trust</h3>
+                        <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
                     </div>
                     <app-gauge-trust></app-gauge-trust>
                 </div>
@@ -58,38 +54,37 @@
             </div>
 
             <!-- Right Column (Feed/Lists) -->
-            <div class="space-y-6">
+            <div class="space-y-4">
 
                 <!-- Recent Candidates -->
                 <div class="meribas-card">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold">Recent Candidates</h3>
-                        <a routerLink="/candidates"
-                            class="text-sm text-[var(--accent-green-600)] font-medium hover:underline">View All</a>
+                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                        <h3 class="text-sm font-bold">Candidates</h3>
+                        <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black">VIEW
+                            ALL</a>
                     </div>
-                    <div class="space-y-4">
+                    <div class="space-y-2">
                         <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role"
                             [score]="c.score" [status]="c.status"></app-card-candidate-row>
                     </div>
                 </div>
 
-                <!-- Cheating Flag Alert -->
-                <div class="meribas-card border-l-4 border-[var(--status-flagged)]">
+                <!-- Alert -->
+                <div class="meribas-card border-l-4 border-black">
                     <div class="flex items-start gap-3">
-                        <div class="p-2 bg-red-50 rounded-full text-[var(--status-flagged)]">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <!-- Icon omitted for brutality or kept simple? Kept simple SVG -->
+                        <div class="mt-0.5">
+                            <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                                 </path>
                             </svg>
                         </div>
                         <div>
-                            <h4 class="font-bold text-[var(--meribas-black)]">Security Alert</h4>
-                            <p class="text-sm text-gray-600 mt-1">2 candidates flagged for tab switching during
-                                assessment.</p>
+                            <h4 class="text-sm font-bold text-black">Security Alert</h4>
+                            <p class="text-xs text-gray-600 mt-1">2 candidates flagged for tab switching.</p>
                             <button
-                                class="mt-3 text-sm font-semibold text-[var(--status-flagged)] hover:underline">Review
-                                Flags ></button>
+                                class="mt-2 text-xs font-bold underline decoration-1 underline-offset-2">Review</button>
                         </div>
                     </div>
                 </div>

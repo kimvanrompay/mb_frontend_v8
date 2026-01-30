@@ -22,10 +22,10 @@ import { CommonModule } from '@angular/common';
         <line x1="50" y1="50" x2="10" y2="30" stroke="#e5e7eb" stroke-width="1" />
 
         <!-- Data Shape -->
-        <polygon [attr.points]="getPoints()" fill="rgba(21, 128, 61, 0.2)" stroke="var(--accent-green-600)" stroke-width="2" class="transition-all duration-1000 ease-out" />
+        <polygon [attr.points]="getPoints()" fill="rgba(0, 0, 0, 0.1)" stroke="var(--meribas-black)" stroke-width="2" class="transition-all duration-1000 ease-out" />
         
         <!-- Plot Points -->
-        <circle *ngFor="let p of points" [attr.cx]="p.x" [attr.cy]="p.y" r="2" fill="var(--accent-green-600)" />
+        <circle *ngFor="let p of points" [attr.cx]="p.x" [attr.cy]="p.y" r="2" fill="var(--meribas-black)" />
         
         <!-- Labels -->
         <text x="50" y="5" text-anchor="middle" class="text-[8px] font-bold fill-gray-500">Technical</text>

@@ -4,36 +4,36 @@
 
 :root {
   /* --- BRAND ANCHORS --- */
-  --meribas-black: #0F1115;
+  --meribas-black: #000000;
   /* Sidebar, Primary Text, Modal Backdrops */
-  --meribas-charcoal: #1A1D23;
+  --meribas-charcoal: #171717;
   /* Sidebar Active States, Tooltips */
-  --meribas-smoke: #F4F4F5;
+  --meribas-smoke: #FAFAFA;
   /* Page Background (Light Mode) */
   --meribas-white: #FFFFFF;
   /* Card Surfaces */
 
-  /* --- ACCENT: "VERIFIED GREEN" --- */
-  --accent-green-900: #052e16;
+  /* --- ACCENT: "VERIFIED GREEN" -> MONOCHROME --- */
+  --accent-green-900: #171717;
   /* Deep Forest - Hover States */
-  --accent-green-600: #15803d;
-  /* Primary Action / "Passed" */
-  --accent-green-400: #4ade80;
-  /* Success Icons / Charts */
-  --accent-green-100: #f0fdf4;
-  /* Light Green Backgrounds (Safe Zones) */
+  --accent-green-600: #000000;
+  /* Primary Action / "Passed" -> Black */
+  --accent-green-400: #525252;
+  /* Success Icons / Charts -> Dark Gray */
+  --accent-green-100: #F5F5F5;
+  /* Light Green Backgrounds (Safe Zones) -> Light Gray */
 
   /* --- ASSESSMENT STATES (The "Proctored" Logic) --- */
-  --status-flagged: #BE123C;
-  /* Red: Cheating/Violation Flag */
-  --status-warning: #D97706;
-  /* Amber: Suspicious Activity */
-  --status-neutral: #6B7280;
+  --status-flagged: #000000;
+  /* Red -> Black (maybe with underline or style diff) */
+  --status-warning: #525252;
+  /* Amber -> Dark Gray */
+  --status-neutral: #A3A3A3;
   /* Grey: Not Started */
 
   /* --- SHADOWS (The "Floating" Look) --- */
-  --shadow-card: 0px 4px 24px rgba(0, 0, 0, 0.06);
-  --shadow-lift: 0px 12px 32px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-lift: 0px 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Global styles */
@@ -44,11 +44,9 @@ body {
 
 body {
   margin: 0;
-  font-family: var(--font-family-body);
-  /* Light Mode Gradient: Light Yellow to White */
-  background: linear-gradient(180deg, #FEFCE8 0%, #FFFFFF 100%);
-  background-attachment: fixed;
-  /* Ensure gradient covers full scroll */
+  font-family: "IBM Plex Mono", monospace;
+  /* Light Mode: Pure White */
+  background-color: #FFFFFF;
   color: var(--meribas-black);
   text-wrap: balance;
   /* Balanced text as requested */
@@ -154,20 +152,21 @@ h2 {
   letter-spacing: -0.3px;
 }
 
-/* Meribas Card Class */
+/* Meribas Card Class (Brutal Minimalist) */
 .meribas-card {
   background-color: var(--meribas-white);
-  border-radius: 20px;
-  box-shadow: var(--shadow-card);
-  padding: 24px;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  box-shadow: none;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .meribas-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lift);
+  border-color: #000000;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Integrity Badge (Pills) */
