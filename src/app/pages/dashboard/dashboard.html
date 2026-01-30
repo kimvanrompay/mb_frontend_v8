@@ -6,7 +6,7 @@
     <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
 </div>
 
-<!-- KPI Grid - Expanded to 6 metrics -->
+<!-- KPI Grid - Expanded to 6 metrics with color accents -->
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
     <app-card-kpi title="Active Positions" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
     <app-card-kpi title="Total Candidates" value="{{ stats.totalCandidates }}" [trend]="8"></app-card-kpi>
@@ -18,35 +18,43 @@
         variant="success"></app-card-kpi>
 </div>
 
-<!-- Symmetric 3-Column Grid -->
+<!-- Symmetric 3-Column Grid with Color Accents -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
 
-    <!-- Column 1: Capability Assessment -->
-    <div class="meribas-card h-80">
-        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4">Capability Assessment</h3>
+    <!-- Column 1: Capability Assessment (Green Accent) -->
+    <div class="meribas-card h-80 border-l-2 border-l-green-600">
+        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+            Capability Assessment
+        </h3>
         <app-skill-breakdown></app-skill-breakdown>
     </div>
 
-    <!-- Column 2: System Trust Score -->
+    <!-- Column 2: System Trust Score (Neutral with badge) -->
     <div class="meribas-card h-80">
         <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
             <h3 class="text-sm font-medium">System Trust</h3>
-            <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
+            <span
+                class="text-xs font-mono px-2 py-0.5 bg-green-50 text-green-700 rounded border border-green-200">VERIFIED</span>
         </div>
         <app-gauge-trust></app-gauge-trust>
     </div>
 
-    <!-- Column 3: Application Sources -->
-    <div class="meribas-card h-80">
-        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4">Application Sources</h3>
+    <!-- Column 3: Application Sources (Orange Accent) -->
+    <div class="meribas-card h-80 border-l-2 border-l-orange-500">
+        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+            Application Sources
+        </h3>
         <div class="flex flex-col justify-center h-full space-y-4 px-2">
             <div class="space-y-2">
                 <div class="flex justify-between items-center text-xs">
                     <span class="font-mono text-gray-600">LinkedIn</span>
                     <span class="font-medium text-black">45%</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full">
-                    <div class="bg-black h-2 rounded-full transition-all" style="width: 45%"></div>
+                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all"
+                        style="width: 45%"></div>
                 </div>
             </div>
 
@@ -55,8 +63,9 @@
                     <span class="font-mono text-gray-600">Direct Application</span>
                     <span class="font-medium text-black">30%</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full">
-                    <div class="bg-gray-400 h-2 rounded-full transition-all" style="width: 30%"></div>
+                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-orange-400 to-orange-500 h-2 rounded-full transition-all"
+                        style="width: 30%"></div>
                 </div>
             </div>
 
@@ -65,8 +74,9 @@
                     <span class="font-mono text-gray-600">Referral</span>
                     <span class="font-medium text-black">25%</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full">
-                    <div class="bg-gray-300 h-2 rounded-full transition-all" style="width: 25%"></div>
+                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                    <div class="bg-gradient-to-r from-orange-300 to-orange-400 h-2 rounded-full transition-all"
+                        style="width: 25%"></div>
                 </div>
             </div>
         </div>
@@ -74,15 +84,18 @@
 
 </div>
 
-<!-- Two-Column Bottom Row -->
+<!-- Two-Column Bottom Row with Color Balance -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-    <!-- Recent Candidates -->
-    <div class="meribas-card">
+    <!-- Recent Candidates (Green Accent) -->
+    <div class="meribas-card border-l-2 border-l-green-600">
         <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-            <h3 class="text-sm font-medium">Recent Candidates</h3>
-            <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black transition-colors">VIEW
-                ALL</a>
+            <h3 class="text-sm font-medium flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+                Recent Candidates
+            </h3>
+            <a routerLink="/candidates"
+                class="text-xs font-mono text-gray-500 hover:text-green-700 transition-colors">VIEW ALL →</a>
         </div>
         <div class="space-y-2">
             <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role" [score]="c.score"
@@ -90,43 +103,51 @@
         </div>
     </div>
 
-    <!-- Proctoring Alerts & Activity -->
+    <!-- Proctoring Alerts & Activity (Orange Accent Column) -->
     <div class="space-y-4">
-        <!-- Security Alert -->
-        <div class="meribas-card border-l-4 border-black">
+        <!-- Security Alert with Orange -->
+        <div class="meribas-card border-l-4 border-orange-500 bg-orange-50/30">
             <div class="flex items-start gap-3">
                 <div class="mt-0.5">
-                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                         </path>
                     </svg>
                 </div>
                 <div class="flex-1">
-                    <h4 class="text-sm font-medium text-black">Security Alert</h4>
-                    <p class="text-xs text-gray-600 mt-1">2 candidates flagged for suspicious activity</p>
-                    <button class="mt-2 text-xs font-medium text-black hover:underline">Review Incidents →</button>
+                    <h4 class="text-sm font-medium text-orange-900">Security Alert</h4>
+                    <p class="text-xs text-orange-700 mt-1">2 candidates flagged for suspicious activity</p>
+                    <button
+                        class="mt-2 text-xs font-medium text-orange-600 hover:text-orange-700 hover:underline">Review
+                        Incidents →</button>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="meribas-card">
-            <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-3">Today's Activity</h3>
+        <!-- Today's Activity with Green Accents -->
+        <div class="meribas-card border-l-2 border-l-green-600">
+            <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-3 flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+                Today's Activity
+            </h3>
             <div class="grid grid-cols-2 gap-4">
-                <div>
+                <div class="p-3 bg-gray-50 rounded">
                     <div class="text-xs text-gray-500 uppercase font-mono mb-1">Tests Started</div>
                     <div class="text-2xl font-medium font-mono text-black">{{ stats.testsStarted }}</div>
                 </div>
-                <div>
+                <div class="p-3 bg-gray-50 rounded">
                     <div class="text-xs text-gray-500 uppercase font-mono mb-1">Completed</div>
                     <div class="text-2xl font-medium font-mono text-black">{{ stats.testsCompleted }}</div>
                 </div>
-                <div>
-                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Live Now</div>
-                    <div class="text-2xl font-medium font-mono text-green-700">{{ stats.liveNow }}</div>
+                <div class="p-3 bg-green-50 rounded border border-green-200">
+                    <div class="text-xs text-green-700 uppercase font-mono mb-1">Live Now</div>
+                    <div class="text-2xl font-medium font-mono text-green-700 flex items-center gap-1">
+                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        {{ stats.liveNow }}
+                    </div>
                 </div>
-                <div>
+                <div class="p-3 bg-gray-50 rounded">
                     <div class="text-xs text-gray-500 uppercase font-mono mb-1">Avg. Duration</div>
                     <div class="text-2xl font-medium font-mono text-black">{{ stats.avgDuration }}m</div>
                 </div>
