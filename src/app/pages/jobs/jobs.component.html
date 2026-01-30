@@ -128,51 +128,66 @@
                             </div>
                         </div>
 
-                        <!-- Action Dropdown -->
-                        <div class="relative">
-                            <button class="p-2 hover:bg-gray-100 rounded-md transition-colors">
-                                <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                </svg>
-                            </button>
+                    </div>
 
-                            <!-- Quick Actions (shown on hover) -->
-                            <div
-                                class="hidden group-hover:block absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
-                                <button *ngIf="job.status === 'open'" (click)="closeJob(job, $event)"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Close Position
-                                </button>
-                                <button *ngIf="job.status === 'closed'" (click)="reopenJob(job, $event)"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Reopen Position
-                                </button>
-                                <button *ngIf="job.status === 'open' || job.status === 'closed'"
-                                    (click)="markFilled(job, $event)"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Mark as Filled
-                                </button>
-                                <a [routerLink]="['/jobs', job.id, 'edit']"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Edit
-                                </a>
-                            </div>
+                    <!-- Star Button -->
+                    <button (click)="toggleStar(job, $event)"
+                        class="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-md text-sm hover:bg-gray-100 transition-colors"
+                        [class.bg-yellow-50]="job.starred" [class.border-yellow-300]="job.starred">
+                        <svg class="w-4 h-4" [class.fill-yellow-400]="job.starred"
+                            [class.stroke-yellow-500]="job.starred" [class.fill-none]="!job.starred"
+                            [class.stroke-gray-500]="!job.starred" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                        </svg>
+                        <span>{{ job.starred ? 'Starred' : 'Star' }}</span>
+                    </button>
+
+                    <!-- Action Dropdown -->
+                    <div class="relative">
+                        <button class="p-2 hover:bg-gray-100 rounded-md transition-colors">
+                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+                            </svg>
+                        </button>
+
+                        <!-- Quick Actions (shown on hover) -->
+                        <div
+                            class="hidden group-hover:block absolute right-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-10">
+                            <button *ngIf="job.status === 'open'" (click)="closeJob(job, $event)"
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Close Position
+                            </button>
+                            <button *ngIf="job.status === 'closed'" (click)="reopenJob(job, $event)"
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Reopen Position
+                            </button>
+                            <button *ngIf="job.status === 'open' || job.status === 'closed'"
+                                (click)="markFilled(job, $event)"
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Mark as Filled
+                            </button>
+                            <a [routerLink]="['/jobs', job.id, 'edit']"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Edit
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Empty State -->
-        <div *ngIf="filteredJobs.length === 0" class="px-6 py-12 text-center">
-            <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            <h3 class="text-sm font-medium text-gray-900 mb-1">No positions found</h3>
-            <p class="text-sm text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
-        </div>
     </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredJobs.length === 0" class="px-6 py-12 text-center">
+        <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        <h3 class="text-sm font-medium text-gray-900 mb-1">No positions found</h3>
+        <p class="text-sm text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+    </div>
+</div>
 
 </div>

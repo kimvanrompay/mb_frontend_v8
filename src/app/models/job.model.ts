@@ -14,6 +14,7 @@ export interface Job {
     hired_count: number;
     deadline?: string;
     needs_attention: boolean;
+    starred: boolean;
 
     // Culture & Preferences
     work_style?: 'remote' | 'hybrid' | 'on-site' | 'flexible';

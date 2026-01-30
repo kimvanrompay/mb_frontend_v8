@@ -144,4 +144,16 @@ export class JobsComponent implements OnInit {
             });
         }
     }
+
+    toggleStar(job: Job, event: Event) {
+        event.stopPropagation();
+        const action = job.starred ? this.jobService.unstarJob(job.id) : this.jobService.starJob(job.id);
+
+        action.subscribe({
+            next: (response) => {
+                job.starred = response.job.starred;
+            },
+            error: (err) => console.error('Error toggling star:', err)
+        });
+    }
 }

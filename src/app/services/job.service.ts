@@ -65,4 +65,18 @@ export class JobService {
     markFilled(id: string): Observable<Job> {
         return this.http.post<Job>(`${this.apiUrl}/${id}/mark_filled`, {});
     }
+
+    /**
+     * POST /api/v1/jobs/:id/star - Star job
+     */
+    starJob(id: string): Observable<{ job: Job; message: string }> {
+        return this.http.post<{ job: Job; message: string }>(`${this.apiUrl}/${id}/star`, {});
+    }
+
+    /**
+     * POST /api/v1/jobs/:id/unstar - Unstar job
+     */
+    unstarJob(id: string): Observable<{ job: Job; message: string }> {
+        return this.http.post<{ job: Job; message: string }>(`${this.apiUrl}/${id}/unstar`, {});
+    }
 }
