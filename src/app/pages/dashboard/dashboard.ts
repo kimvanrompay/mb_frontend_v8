@@ -1,4 +1,3 @@
-```typescript
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
@@ -25,7 +24,8 @@ import { RouterModule } from '@angular/router';
     CardKpiComponent,
     GaugeTrustComponent,
     SkillBreakdownComponent,
-    CardCandidateRowComponent
+    CardCandidateRowComponent,
+    ActivityHeatmapComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
