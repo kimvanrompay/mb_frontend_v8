@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
-import { GaugeTrustComponent } from '../../components/gauge-trust/gauge-trust.component';
-import { SkillBreakdownComponent } from '../../components/skill-breakdown/skill-breakdown.component';
+import { GaugeTrustComponent } from '../../components/charts/gauge-trust/gauge-trust.component';
+import { SkillBreakdownComponent } from '../../components/charts/skill-breakdown/skill-breakdown.component';
 import { CardCandidateRowComponent } from '../../components/cards/card-candidate-row/card-candidate-row.component';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
 
