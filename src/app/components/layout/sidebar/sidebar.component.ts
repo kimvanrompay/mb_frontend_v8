@@ -55,27 +55,6 @@ import { RouterModule } from '@angular/router';
           </a>
         </div>
 
-        <!-- PROCTORING Section -->
-        <div>
-          <div class="px-3 mb-2">
-            <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Proctoring</h3>
-          </div>
-          <div class="space-y-1">
-            <a routerLink="/metrics" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
-              <svg class="mr-3 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              Live Sessions
-            </a>
-            <a routerLink="/events" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
-              <svg class="mr-3 h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-              Flagged Events
-            </a>
-          </div>
-        </div>
-
         <!-- ASSESSMENT TOOLS Section -->
         <div>
           <div class="px-3 mb-2">
