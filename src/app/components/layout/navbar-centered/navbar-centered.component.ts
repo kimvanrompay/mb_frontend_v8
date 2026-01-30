@@ -24,7 +24,7 @@ import { filter, map } from 'rxjs/operators';
 
              <div class="flex flex-col">
                 <div class="flex items-center text-xs font-mono text-gray-500 gap-2">
-                    <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png" alt="Logo" class="h-5 w-auto">
+                    <img src="assets/meribas-logo.png" alt="Meribas" class="h-5 w-auto">
                     <span *ngIf="currentPage" class="flex items-center gap-2">
                         <span>/</span>
                         <span class="text-black font-medium">{{ currentPage }}</span>
