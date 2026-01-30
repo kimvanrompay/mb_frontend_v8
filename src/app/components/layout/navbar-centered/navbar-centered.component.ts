@@ -47,21 +47,25 @@ import { filter, map } from 'rxjs/operators';
                                             </button>
 
                                             < !--User Profile-- >
-                                              <div class="relative flex items-center gap-2 cursor-pointer group" >
-                                                <img class="h-7 w-7 rounded-full border border-gray-200"
-                                                [src] = "'https://ui-avatars.com/api/?name=' + (user.full_name || 'User') + '&background=000&color=fff&size=64'"
+                                              <!--User Profile-- >
+                                                <div class="relative flex items-center gap-2 cursor-pointer group" >
+                                                  <img class="h-7 w-7 rounded-full border border-gray-200"
+                                                  [src] = "'https://ui-avatars.com/api/?name=' + (user.full_name || 'User') + '&background=000&color=fff&size=64'"
 alt = "" >
-  <span class="text-sm font-medium text-gray-700 hidden md:block group-hover:text-black transition-colors" > {{ user.first_name }}</span>
-    < svg class="h-4 w-4 text-gray-400 hidden md:block" fill = "none" viewBox = "0 0 24 24" stroke = "currentColor" >
-      <path stroke - linecap="round" stroke - linejoin="round" stroke - width="2" d = "M19 9l-7 7-7-7" />
-        </svg>
+  <div class="hidden md:flex flex-col" >
+    <span class="text-sm font-medium text-gray-700 group-hover:text-black transition-colors" > {{ user.first_name }}</span>
+      < span class="text-[10px] text-gray-400 font-mono" > {{ user.email }}</span>
         </div>
-        </div>
+        < svg class="h-4 w-4 text-gray-400 hidden md:block" fill = "none" viewBox = "0 0 24 24" stroke = "currentColor" >
+          <path stroke - linecap="round" stroke - linejoin="round" stroke - width="2" d = "M19 9l-7 7-7-7" />
+            </svg>
+            </div>
+            </div>
 
-        </div>
-        </div>
-        </nav>
-          `,
+            </div>
+            </div>
+            </nav>
+              `,
   styles: []
 })
 export class NavbarCenteredComponent {
