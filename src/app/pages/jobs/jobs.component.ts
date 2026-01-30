@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarCenteredComponent } from '../../components/layout/navbar-centered/navbar-centered.component';
-import { CardBaseComponent } from '../../components/cards/card-base/card-base.component';
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
 import { finalize } from 'rxjs';
@@ -13,7 +12,6 @@ import { RouterModule } from '@angular/router';
     imports: [
         CommonModule,
         NavbarCenteredComponent, // New Nav
-        CardBaseComponent,
         RouterModule
     ],
     templateUrl: './jobs.component.html',

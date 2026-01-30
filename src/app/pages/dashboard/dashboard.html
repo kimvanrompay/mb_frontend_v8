@@ -12,12 +12,13 @@
 
         <!-- KPI Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <app-card-kpi title="Total Active Jobs" [value]="stats.activeJobs" trend="+12%" icon="work"></app-card-kpi>
-            <app-card-kpi title="Pending Reviews" [value]="stats.pendingReviews" trend="-5%" icon="pending_actions"
+            <app-card-kpi title="Total Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"
+                icon="work"></app-card-kpi>
+            <app-card-kpi title="Pending Reviews" value="{{ stats.pendingReviews }}" [trend]="-5" icon="pending_actions"
                 variant="warning"></app-card-kpi>
-            <app-card-kpi title="Interviews Today" [value]="stats.interviewsToday" trend="+2"
+            <app-card-kpi title="Interviews Today" value="{{ stats.interviewsToday }}" [trend]="2"
                 icon="event"></app-card-kpi>
-            <app-card-kpi title="Avg. Integrity Score" [value]="stats.avgIntegrity + '%'" trend="+4%" icon="shield"
+            <app-card-kpi title="Avg. Integrity Score" value="{{ stats.avgIntegrity }}%" [trend]="4" icon="shield"
                 variant="success"></app-card-kpi>
         </div>
 
