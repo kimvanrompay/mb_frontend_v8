@@ -11,8 +11,8 @@ import { RouterModule } from '@angular/router';
       <!-- Logo Area -->
       <div class="h-16 flex items-center px-6 border-b border-gray-200">
         <a routerLink="/dashboard" class="flex items-center gap-2 group">
-            <div class="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white font-bold font-mono group-hover:bg-gray-800 transition-colors">M</div>
-            <span class="text-lg font-bold tracking-tight text-black">Meribas</span>
+            <div class="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white font-medium font-mono group-hover:bg-gray-800 transition-colors">M</div>
+            <span class="text-base font-medium tracking-tight text-black">Meribas</span>
         </a>
       </div>
 
@@ -20,28 +20,28 @@ import { RouterModule } from '@angular/router';
       <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
         <!-- Core Assessment Tools -->
         <div class="space-y-1">
-          <a routerLink="/dashboard" routerLinkActive="bg-gray-100 text-black font-semibold" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
+          <a routerLink="/dashboard" routerLinkActive="bg-gray-100 text-black font-medium" class="flex items-center px-3 py-2 text-sm font-normal text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
             <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
             Overview
           </a>
           
-          <a routerLink="/jobs" routerLinkActive="bg-green-50 text-green-800 font-semibold" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
+          <a routerLink="/jobs" routerLinkActive="bg-green-50 text-green-800 font-medium" class="flex items-center px-3 py-2 text-sm font-normal text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
             <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             Positions
           </a>
 
-          <a routerLink="/applications" routerLinkActive="bg-gray-100 text-black font-semibold" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
+          <a routerLink="/applications" routerLinkActive="bg-gray-100 text-black font-medium" class="flex items-center px-3 py-2 text-sm font-normal text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
              <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
              </svg>
              Assessments
           </a>
 
-          <a routerLink="/candidates" routerLinkActive="bg-gray-100 text-black font-semibold" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
+          <a routerLink="/candidates" routerLinkActive="bg-gray-100 text-black font-medium" class="flex items-center px-3 py-2 text-sm font-normal text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
              <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
              </svg>
@@ -52,7 +52,7 @@ import { RouterModule } from '@angular/router';
         <!-- PROCTORING Section -->
         <div>
           <div class="px-3 mb-2">
-            <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Proctoring</h3>
+            <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Proctoring</h3>
           </div>
           <div class="space-y-1">
             <a routerLink="/metrics" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
@@ -73,7 +73,7 @@ import { RouterModule } from '@angular/router';
         <!-- ASSESSMENT TOOLS Section -->
         <div>
           <div class="px-3 mb-2">
-            <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Assessment Tools</h3>
+            <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Assessment Tools</h3>
           </div>
           <div class="space-y-1">
             <a routerLink="/environment" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
@@ -94,7 +94,7 @@ import { RouterModule } from '@angular/router';
         <!-- ORGANIZATION Section -->
         <div>
           <div class="px-3 mb-2">
-            <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Organization</h3>
+            <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Organization</h3>
           </div>
           <div class="space-y-1">
             <a routerLink="/team" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
