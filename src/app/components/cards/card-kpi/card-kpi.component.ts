@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { CardBaseComponent } from '../card-base/card-base.component';
 
 @Component({
-    selector: 'app-card-kpi',
-    standalone: true,
-    imports: [CommonModule, CardBaseComponent],
-    template: `
+  selector: 'app-card-kpi',
+  standalone: true,
+  imports: [CommonModule, CardBaseComponent],
+  template: `
     <app-card-base [title]="title">
-      <div class="flex flex-col items-center justify-center h-full pb-4">
-         <div class="text-[42px] font-[800] tracking-tight leading-none mb-2" 
+      <div class="flex flex-col items-center justify-center h-full pb-2">
+         <div class="text-4xl font-[800] tracking-tight leading-none mb-1" 
               [ngClass]="{'text-[var(--meribas-black)]': !isAlert, 'text-[var(--status-flagged)]': isAlert}">
             {{ value }}
          </div>
@@ -23,12 +23,12 @@ import { CardBaseComponent } from '../card-base/card-base.component';
       </div>
     </app-card-base>
   `,
-    styles: []
+  styles: []
 })
 export class CardKpiComponent {
-    @Input() title: string = '';
-    @Input() value: string = '0';
-    @Input() subtext: string = '';
-    @Input() trend: number | null = null;
-    @Input() isAlert: boolean = false;
+  @Input() title: string = '';
+  @Input() value: string = '0';
+  @Input() subtext: string = '';
+  @Input() trend: number | null = null;
+  @Input() isAlert: boolean = false;
 }

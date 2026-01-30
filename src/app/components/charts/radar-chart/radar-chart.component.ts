@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
     template: `
     <div class="relative w-full aspect-square flex items-center justify-center">
-      <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible">
+      <svg viewBox="-20 -20 140 140" class="w-full h-full overflow-visible">
         <!-- Grid Polygons (Background) -->
         <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="#e5e7eb" stroke-width="1" />
         <polygon points="50,25 75,37.5 75,62.5 50,75 25,62.5 25,37.5" fill="none" stroke="#e5e7eb" stroke-width="1" />
