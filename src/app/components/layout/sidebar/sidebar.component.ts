@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
       <!-- Logo Area -->
       <div class="h-16 flex items-center px-6 border-b border-gray-200">
         <a routerLink="/dashboard" class="flex items-center gap-2 group">
-            <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png" alt="Meribas" class="h-8 w-auto">
+            <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png" alt="Meribas" class="h-6 w-auto">
         </a>
       </div>
 
