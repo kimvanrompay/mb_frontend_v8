@@ -66,6 +66,16 @@ export class DashboardComponent implements OnInit {
     private assessmentService: AssessmentService
   ) { }
 
+  isDropdownOpen = false;
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen = false;
+  }
+
   ngOnInit(): void {
     this.loadDashboardData();
   }
