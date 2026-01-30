@@ -176,7 +176,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(user => {
-      this.tenantId = user?.tenant_id || null;
+      this.tenantId = user?.tenant?.id || null;
     });
   }
 }
