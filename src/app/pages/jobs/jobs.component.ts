@@ -55,7 +55,7 @@ export class JobsComponent implements OnInit {
     }
 
     extractDepartments() {
-        const deptSet = new Set(this.jobs.map(j => j.department).filter(d => d));
+        const deptSet = new Set(this.jobs.map(j => j.department).filter((d): d is string => !!d));
         this.departments = Array.from(deptSet).sort();
     }
 
@@ -77,7 +77,7 @@ export class JobsComponent implements OnInit {
                 case 'title':
                     return a.title.localeCompare(b.title);
                 case 'applications':
-                    return b.total_applications - a.total_applications;
+                    return b.applications_count - a.applications_count;
                 case 'deadline':
                     if (!a.deadline && !b.deadline) return 0;
                     if (!a.deadline) return 1;
@@ -115,7 +115,7 @@ export class JobsComponent implements OnInit {
     getActivityData(job: Job): number[] {
         // Generate mock activity data based on applications
         // In real implementation, this would come from API
-        const dailyAvg = job.total_applications / 7;
+        const dailyAvg = job.applications_count / 7;
         return Array.from({ length: 7 }, () => Math.floor(Math.random() * dailyAvg * 2));
     }
 
