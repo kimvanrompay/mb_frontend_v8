@@ -5,7 +5,6 @@ import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.compo
 import { GaugeTrustComponent } from '../../components/charts/gauge-trust/gauge-trust.component';
 import { SkillBreakdownComponent } from '../../components/charts/skill-breakdown/skill-breakdown.component';
 import { CardCandidateRowComponent } from '../../components/cards/card-candidate-row/card-candidate-row.component';
-import { RadarChartComponent } from '../../components/charts/radar-chart/radar-chart.component';
 
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
@@ -26,8 +25,7 @@ import { RouterModule } from '@angular/router';
     CardKpiComponent,
     GaugeTrustComponent,
     SkillBreakdownComponent,
-    CardCandidateRowComponent,
-    RadarChartComponent
+    CardCandidateRowComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

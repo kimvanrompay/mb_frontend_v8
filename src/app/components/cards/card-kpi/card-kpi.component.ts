@@ -4,29 +4,23 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-card-kpi',
   standalone: true,
-  imports: [CommonModule, CardBaseComponent],
+  imports: [CommonModule],
   template: `
-    <app-card-base [title]="title">
-      <div class="flex flex-col items-center justify-center h-full pb-2">
-         <div class="text-3xl font-[800] tracking-tight leading-none mb-1" 
-              [ngClass]="{'text-[var(--meribas-black)]': !isAlert, 'text-[var(--status-flagged)]': isAlert}">
-            {{ value }}
-         </div>
-         <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">{{ subtext }}</div>
-         
-         <div *ngIf="trend" class="mt-4 flex items-center text-xs font-medium text-[var(--meribas-black)]">
-            <span *ngIf="trend > 0">↑</span><span *ngIf="trend < 0">↓</span>
-            <span class="ml-1">{{ trend }}% vs last month</span>
-         </div>
-      </div>
-    </app-card-base>
+    <div class="meribas-card h-full justify-between">
+       <span class="text-[10px] uppercase font-semibold text-gray-500 tracking-wider mb-1">{{ title }}</span>
+       <div class="flex items-baseline gap-2">
+          <span class="text-2xl font-semibold font-mono text-black leading-none">{{ value }}</span>
+          <span *ngIf="trend" class="text-xs font-mono" [ngClass]="trend > 0 ? 'text-black' : 'text-gray-400'">
+             {{ trend > 0 ? '+' : ''}}{{ trend }}%
+          </span>
+       </div>
+    </div>
   `,
   styles: []
 })
 export class CardKpiComponent {
   @Input() title: string = '';
   @Input() value: string = '0';
-  @Input() subtext: string = '';
   @Input() trend: number | null = null;
-  @Input() isAlert: boolean = false;
+  @Input() variant: 'default' | 'warning' | 'success' = 'default';
 }
