@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
 import { GaugeTrustComponent } from '../../components/gauge-trust/gauge-trust.component';
 import { SkillBreakdownComponent } from '../../components/skill-breakdown/skill-breakdown.component';
@@ -20,6 +21,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     CardKpiComponent,
     GaugeTrustComponent,
@@ -67,6 +69,14 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   isDropdownOpen = false;
+  isNewPositionModalOpen = false;
+
+  newPosition = {
+    title: '',
+    department: '',
+    location: '',
+    employmentType: ''
+  };
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -74,6 +84,35 @@ export class DashboardComponent implements OnInit {
 
   closeDropdown(): void {
     this.isDropdownOpen = false;
+  }
+
+  openNewPositionModal(): void {
+    this.isNewPositionModalOpen = true;
+    this.closeDropdown();
+  }
+
+  closeNewPositionModal(): void {
+    this.isNewPositionModalOpen = false;
+    this.resetNewPosition();
+  }
+
+  resetNewPosition(): void {
+    this.newPosition = {
+      title: '',
+      department: '',
+      location: '',
+      employmentType: ''
+    };
+  }
+
+  createPosition(): void {
+    if (!this.newPosition.title) return;
+
+    console.log('Creating position:', this.newPosition);
+    // TODO: Implement API call to create position
+    // this.jobService.createJob(this.newPosition).subscribe(...)
+
+    this.closeNewPositionModal();
   }
 
   ngOnInit(): void {
