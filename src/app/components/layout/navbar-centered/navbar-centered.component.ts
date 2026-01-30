@@ -71,49 +71,34 @@ export class NavbarCenteredComponent {
   router = inject(Router);
   currentPage = '';
 
-  '/invite-friend': 'Invite a Friend',
-  '/settings': 'Settings'
-};
+  private readonly routeNames: { [key: string]: string } = {
+    'dashboard': 'Dashboard',
+    'jobs': 'Jobs',
+    'candidates': 'Candidates',
+    'assessments': 'Assessments',
+    'integrations': 'Integrations',
+    'invite-friend': 'Invite a Friend',
+    'settings': 'Settings'
+  };
 
-constructor() {
-  // Set initial page
-  this.updateBreadcrumb(this.router.url);
+  ngOnInit() {
+    // Update current page on route changes
+    this.router.events.subscribe(() => {
+      this.updateCurrentPage();
+    });
 
-  // Listen to route changes
-  this.router.events
-    .pipe(
-      filter(event => event instanceof NavigationEnd),
-      map((event: any) => event.url)
-    )
-    .subscribe(url => this.updateBreadcrumb(url));
-}
-
-  private updateBreadcrumb(url: string): void {
-  // Remove query params and fragments
-  const path = url.split('?')[0].split('#')[0];
-
-  // Check for exact match first
-  if(this.routeNames[path]) {
-  this.currentPage = this.routeNames[path];
-  return;
-}
-
-// Check for partial matches (e.g., /jobs/123)
-for (const route in this.routeNames) {
-  if (path.startsWith(route) && route !== '/') {
-    // For detail pages, add the context
-    if (path.includes('/edit')) {
-      this.currentPage = `${this.routeNames[route]} / Edit`;
-    } else if (path !== route) {
-      this.currentPage = `${this.routeNames[route]} / Details`;
-    } else {
-      this.currentPage = this.routeNames[route];
-    }
-    return;
+    this.updateCurrentPage();
   }
-}
 
-// Default fallback
-this.currentPage = '';
+  private updateCurrentPage() {
+    const path = this.router.url;
+    const segments = path.split('/').filter(s => s);
+
+    if (segments.length > 1) {
+      const mainRoute = segments[1];
+      this.currentPage = this.routeNames[mainRoute] || mainRoute;
+    } else {
+      this.currentPage = '';
+    }
   }
 }
