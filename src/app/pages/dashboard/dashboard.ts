@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarCenteredComponent } from '../../components/layout/navbar-centered/navbar-centered.component';
 import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
 import { GaugeTrustComponent } from '../../components/charts/gauge-trust/gauge-trust.component';
 import { SkillBreakdownComponent } from '../../components/charts/skill-breakdown/skill-breakdown.component';
@@ -21,7 +20,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
-    NavbarCenteredComponent,
     CardKpiComponent,
     GaugeTrustComponent,
     SkillBreakdownComponent,

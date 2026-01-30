@@ -1,118 +1,108 @@
-<div class="min-h-screen bg-transparent"> <!-- Transparent to show body gradient -->
+<!-- Dashboard Content -->
 
-    <app-navbar-centered></app-navbar-centered>
-
-    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-
-        <!-- Header -->
-        <div class="mb-4 flex items-center justify-between">
-            <h1 class="text-xl font-bold text-[var(--meribas-black)] tracking-tight">Overview</h1>
-            <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
-        </div>
-
-        <!-- KPI Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-            <app-card-kpi title="Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
-            <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-5"
-                variant="warning"></app-card-kpi>
-            <app-card-kpi title="Interviews" value="{{ stats.interviewsToday }}" [trend]="2"></app-card-kpi>
-            <app-card-kpi title="Integrity Avg" value="{{ stats.avgIntegrity }}%" [trend]="4"
-                variant="success"></app-card-kpi>
-        </div>
-
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-
-            <!-- Left Column (Charts) -->
-            <div class="lg:col-span-2 space-y-4">
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Skill Breakdown -->
-                    <div class="meribas-card h-64">
-                        <h3 class="text-sm font-semibold border-b border-gray-100 pb-2 mb-2">Capability</h3>
-                        <app-skill-breakdown></app-skill-breakdown>
-                    </div>
-
-                    <!-- Application Sources (Replaces Radar) -->
-                    <div class="meribas-card h-64">
-                        <h3 class="text-sm font-semibold border-b border-gray-100 pb-2 mb-2">Sources</h3>
-                        <div class="flex flex-col justify-center h-full space-y-3 px-2">
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="font-mono text-gray-600">LinkedIn</span>
-                                <span class="font-bold text-black">45%</span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-1 rounded-full">
-                                <div class="bg-black h-1 rounded-full" style="width: 45%"></div>
-                            </div>
-
-                            <div class="flex justify-between items-center text-xs mt-1">
-                                <span class="font-mono text-gray-600">Direct</span>
-                                <span class="font-bold text-black">30%</span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-1 rounded-full">
-                                <div class="bg-gray-400 h-1 rounded-full" style="width: 30%"></div>
-                            </div>
-
-                            <div class="flex justify-between items-center text-xs mt-1">
-                                <span class="font-mono text-gray-600">Referral</span>
-                                <span class="font-bold text-black">25%</span>
-                            </div>
-                            <div class="w-full bg-gray-100 h-1 rounded-full">
-                                <div class="bg-gray-300 h-1 rounded-full" style="width: 25%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trust Gauge -->
-                <div class="meribas-card">
-                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                        <h3 class="text-sm font-semibold">System Trust</h3>
-                        <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
-                    </div>
-                    <app-gauge-trust></app-gauge-trust>
-                </div>
-
-            </div>
-
-            <!-- Right Column (Feed/Lists) -->
-            <div class="space-y-4">
-
-                <!-- Recent Candidates -->
-                <div class="meribas-card">
-                    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                        <h3 class="text-sm font-semibold">Candidates</h3>
-                        <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black">VIEW
-                            ALL</a>
-                    </div>
-                    <div class="space-y-2">
-                        <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role"
-                            [score]="c.score" [status]="c.status"></app-card-candidate-row>
-                    </div>
-                </div>
-
-                <!-- Alert -->
-                <div class="meribas-card border-l-4 border-black">
-                    <div class="flex items-start gap-3">
-                        <!-- Icon omitted for brutality or kept simple? Kept simple SVG -->
-                        <div class="mt-0.5">
-                            <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                </path>
-                            </svg>
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-semibold text-black">Security Alert</h4>
-                            <p class="text-xs text-gray-600 mt-1">2 candidates flagged for tab switching.</p>
-                            <button
-                                class="mt-2 text-xs font-bold underline decoration-1 underline-offset-2">Review</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </main>
+<!-- Header -->
+<div class="mb-4 flex items-center justify-between">
+    <h1 class="text-xl font-bold text-[var(--meribas-black)] tracking-tight">Overview</h1>
+    <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
 </div>
+
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <app-card-kpi title="Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
+    <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-5"
+        variant="warning"></app-card-kpi>
+    <app-card-kpi title="Interviews" value="{{ stats.interviewsToday }}" [trend]="2"></app-card-kpi>
+    <app-card-kpi title="Integrity Avg" value="{{ stats.avgIntegrity }}%" [trend]="4" variant="success"></app-card-kpi>
+</div>
+
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+    <!-- Left Column (Charts) -->
+    <div class="lg:col-span-2 space-y-4">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Skill Breakdown -->
+            <div class="meribas-card h-64">
+                <h3 class="text-sm font-semibold border-b border-gray-100 pb-2 mb-2">Capability</h3>
+                <app-skill-breakdown></app-skill-breakdown>
+            </div>
+
+            <!-- Application Sources (Replaces Radar) -->
+            <div class="meribas-card h-64">
+                <h3 class="text-sm font-semibold border-b border-gray-100 pb-2 mb-2">Sources</h3>
+                <div class="flex flex-col justify-center h-full space-y-3 px-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-mono text-gray-600">LinkedIn</span>
+                        <span class="font-bold text-black">45%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 h-1 rounded-full">
+                        <div class="bg-black h-1 rounded-full" style="width: 45%"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-xs mt-1">
+                        <span class="font-mono text-gray-600">Direct</span>
+                        <span class="font-bold text-black">30%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 h-1 rounded-full">
+                        <div class="bg-gray-400 h-1 rounded-full" style="width: 30%"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center text-xs mt-1">
+                        <span class="font-mono text-gray-600">Referral</span>
+                        <span class="font-bold text-black">25%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 h-1 rounded-full">
+                        <div class="bg-gray-300 h-1 rounded-full" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Gauge -->
+        <div class="meribas-card">
+            <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                <h3 class="text-sm font-semibold">System Trust</h3>
+                <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
+            </div>
+            <app-gauge-trust></app-gauge-trust>
+        </div>
+
+    </div>
+
+    <!-- Right Column (Feed/Lists) -->
+    <div class="space-y-4">
+
+        <!-- Recent Candidates -->
+        <div class="meribas-card">
+            <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                <h3 class="text-sm font-semibold">Candidates</h3>
+                <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black">VIEW
+                    ALL</a>
+            </div>
+            <div class="space-y-2">
+                <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role"
+                    [score]="c.score" [status]="c.status"></app-card-candidate-row>
+            </div>
+        </div>
+
+        <!-- Alert -->
+        <div class="meribas-card border-l-4 border-black">
+            <div class="flex items-start gap-3">
+                <!-- Icon omitted for brutality or kept simple? Kept simple SVG -->
+                <div class="mt-0.5">
+                    <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-sm font-semibold text-black">Security Alert</h4>
+                    <p class="text-xs text-gray-600 mt-1">2 candidates flagged for tab switching.</p>
+                    <button class="mt-2 text-xs font-bold underline decoration-1 underline-offset-2">Review</button>
+                </div>
+            </div>
+        </div>
+        </main>
+    </div>
