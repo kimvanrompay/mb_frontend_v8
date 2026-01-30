@@ -1,207 +1,124 @@
-<div class="min-h-screen bg-white">
-    <!-- Navbar -->
-    <app-navbar></app-navbar>
-    <app-trial-banner></app-trial-banner>
+<div class="flex h-screen overflow-hidden bg-[var(--meribas-smoke)]">
 
-    <!-- Main Layout -->
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- 1. Sidebar -->
+    <app-sidebar-black></app-sidebar-black>
 
+    <!-- 2. Main Content Wrapper -->
+    <div class="flex flex-1 flex-col overflow-hidden">
 
-        <!-- Main Content -->
-        <main class="w-full">
+        <!-- 3. Topbar -->
+        <app-topbar-white></app-topbar-white>
 
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
-                *ngIf="tenantStats && assessmentStats">
-                <!-- Active Jobs -->
-                <div
-                    class="relative overflow-hidden rounded-lg bg-white px-4 pt-5 shadow ring-1 ring-inset ring-gray-300 sm:px-6 sm:pt-6">
-                    <dt>
-                        <div class="absolute rounded-md bg-black p-3">
-                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a4.483 4.483 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-                            </svg>
-                        </div>
-                        <p class="ml-16 truncate text-sm font-medium text-gray-500">Active Jobs</p>
-                    </dt>
-                    <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
-                        <p class="text-2xl font-semibold text-gray-900">{{ tenantStats.total_jobs }}</p>
-                    </dd>
+        <!-- 4. Scrollable Content Area -->
+        <main class="flex-1 overflow-y-auto p-8">
+            <div class="mx-auto max-w-7xl">
+
+                <!-- Header -->
+                <div class="mb-8 flex items-baseline justify-between">
+                    <h1 class="text-3xl font-bold text-[var(--meribas-black)]">Dashboard</h1>
+                    <span class="text-sm text-gray-500">Last updated: Just now</span>
                 </div>
 
-                <!-- Candidates -->
-                <div
-                    class="relative overflow-hidden rounded-lg bg-white px-4 pt-5 shadow ring-1 ring-inset ring-gray-300 sm:px-6 sm:pt-6">
-                    <dt>
-                        <div class="absolute rounded-md bg-black p-3">
-                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-                            </svg>
-                        </div>
-                        <p class="ml-16 truncate text-sm font-medium text-gray-500">Candidates</p>
-                    </dt>
-                    <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
-                        <p class="text-2xl font-semibold text-gray-900">{{ tenantStats.total_candidates }}</p>
-                    </dd>
-                </div>
+                <!-- Metric Grid -->
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 h-auto lg:h-[400px]">
 
-                <!-- Completion Rate -->
-                <div
-                    class="relative overflow-hidden rounded-lg bg-white px-4 pt-5 shadow ring-1 ring-inset ring-gray-300 sm:px-6 sm:pt-6">
-                    <dt>
-                        <div class="absolute rounded-md bg-black p-3">
-                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-                            </svg>
-                        </div>
-                        <p class="ml-16 truncate text-sm font-medium text-gray-500">Test Completion</p>
-                    </dt>
-                    <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
-                        <p class="text-2xl font-semibold text-gray-900">{{ assessmentStats.completion_rate }}%</p>
-                    </dd>
-                </div>
-
-                <!-- Pending Assessments -->
-                <div
-                    class="relative overflow-hidden rounded-lg bg-white px-4 pt-5 shadow ring-1 ring-inset ring-gray-300 sm:px-6 sm:pt-6">
-                    <dt>
-                        <div class="absolute rounded-md bg-black p-3">
-                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <p class="ml-16 truncate text-sm font-medium text-gray-500">Pending Tests</p>
-                    </dt>
-                    <dd class="ml-16 flex items-baseline pb-1 sm:pb-2">
-                        <p class="text-2xl font-semibold text-gray-900">{{ assessmentStats.pending }}</p>
-                    </dd>
-                </div>
-            </div>
-
-            <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl font-bold text-black text-gray-900">Jobs</h1>
-                    <p class="text-sm text-gray-500 mt-1">Manage your recruitment assessments and job postings</p>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                    <div class="flex rounded-md shadow-sm">
-                        <button type="button"
-                            class="relative inline-flex items-center rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-                            <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
-                        <button type="button"
-                            class="relative -ml-px inline-flex items-center rounded-r-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10">
-                            <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                            </svg>
-                        </button>
-                    </div>
-                    <button type="button"
-                        class="inline-flex items-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black">
-                        Add New...
-                    </button>
-                </div>
-            </div>
-
-            <!-- Search -->
-            <div class="relative mb-8">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <input type="text" name="search" id="search"
-                    class="block w-full rounded-md border-0 py-3 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
-                    placeholder="Search jobs...">
-            </div>
-
-            <!-- Jobs List -->
-            <div class="space-y-4">
-                <!-- Loading State -->
-                <div *ngIf="isLoading" class="text-center py-4 text-gray-500">
-                    Loading jobs...
-                </div>
-
-                <!-- Error State -->
-                <div *ngIf="error" class="text-center py-4 text-red-600">
-                    {{ error }}
-                </div>
-
-                <div *ngFor="let job of jobs"
-                    class="group relative flex items-center space-x-3 rounded-lg border border-gray-200 bg-white px-6 py-5 shadow-sm hover:border-gray-400 transition-colors focus-within:ring-2 focus-within:ring-black focus-within:ring-offset-2">
-
-                    <!-- Initials Icon -->
-                    <div class="flex-shrink-0">
-                        <span
-                            class="inline-flex h-10 w-10 items-center justify-center rounded-md {{ getInitialsBg(job.title) }}">
-                            <span class="font-medium text-xs leading-none">{{ getInitials(job.title) }}</span>
-                        </span>
+                    <!-- Skill Breakdown (Top Left) -->
+                    <div class="lg:col-span-1 lg:row-span-2">
+                        <app-card-base title="Skill Breakdown" actionLabel="View Report">
+                            <app-skill-breakdown></app-skill-breakdown>
+                        </app-card-base>
                     </div>
 
-                    <div class="min-w-0 flex-1">
-                        <div class="focus:outline-none">
-                            <span class="absolute inset-0" aria-hidden="true"></span>
-                            <div class="flex items-center justify-between">
-                                <p class="text-sm font-medium text-gray-900">{{ job.title }}</p>
-                                <div class="flex items-center text-xs text-gray-500">
-                                    <span class="mr-2">Last activity</span>
-                                    <span class="font-medium text-gray-900">{{ formatTimeAgo(job.updated_at)
-                                        }}</span>
+                    <!-- Trust Score (Mid) -->
+                    <div class="lg:col-span-1 lg:row-span-1">
+                        <app-card-base title="Trust Score">
+                            <app-gauge-trust [score]="trustScore" label="Platform Integrity"></app-gauge-trust>
+                        </app-card-base>
+                    </div>
+
+                    <!-- Active Candidates (Top Right) -->
+                    <div class="lg:col-span-1 lg:row-span-1">
+                        <app-card-kpi title="Active Candidates" [value]="activeCandidatesCount.toString()"
+                            subtext="Invited vs Completed" [trend]="12">
+                        </app-card-kpi>
+                    </div>
+
+                    <!-- Live Feed (Far Right / Tall) -->
+                    <div class="lg:col-span-1 lg:row-span-2">
+                        <app-card-base title="Live Proctoring Feed" actionLabel="Monitor All">
+                            <div class="space-y-1">
+                                <app-card-candidate-row *ngFor="let c of liveCandidates" [name]="c.name"
+                                    [testName]="c.test" [status]="c.status" [isLive]="c.isLive">
+                                </app-card-candidate-row>
+                            </div>
+                        </app-card-base>
+                    </div>
+
+                    <!-- Bottom Row Middle items (Filling the gaps if needed, or specific widgets) -->
+                    <!-- New: Cheating Flags / Alerts (Bottom Middle) -->
+                    <div class="lg:col-span-2 lg:row-span-1">
+                        <app-card-base title="Cheating Flag Distribution">
+                            <div class="flex items-center justify-around h-full">
+                                <div class="text-center">
+                                    <span class="block text-2xl font-bold text-[var(--status-flagged)]">3</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Tab Switch</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="block text-2xl font-bold text-gray-800">12</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Suspicious Gaze</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="block text-2xl font-bold text-[var(--meribas-black)]">0</span>
+                                    <span class="text-xs font-bold text-gray-400 uppercase">Impersonation</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-x-2 mt-1">
-                                <p class="truncate text-sm text-gray-500">{{ job.location }}</p>
-                                <span class="text-gray-300">•</span>
-                                <p class="text-sm text-gray-500">{{ job.applications_count }} applications</p>
-                                <span class="text-gray-300">•</span>
-                                <span class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
-                                    [ngClass]="getStatusClass(job.status)">
-                                    {{ job.status }}
-                                </span>
-                            </div>
+                        </app-card-base>
+                    </div>
+
+                </div> <!-- End Grid -->
+
+                <!-- Jobs Table Section (Below Grid) -->
+                <div class="mt-8">
+                    <app-card-base title="Recent Job Postings" actionLabel="View All Jobs">
+                        <!-- Reusing a simple table structure here, or can be a new list component -->
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-left text-sm whitespace-nowrap">
+                                <thead class="border-b border-gray-100 text-gray-500">
+                                    <tr>
+                                        <th class="px-4 py-3 font-semibold">Job Title</th>
+                                        <th class="px-4 py-3 font-semibold">Location</th>
+                                        <th class="px-4 py-3 font-semibold">Applications</th>
+                                        <th class="px-4 py-3 font-semibold">Status</th>
+                                        <th class="px-4 py-3 font-semibold text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    <tr *ngFor="let job of jobs" class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-3 font-medium text-[var(--meribas-black)]">{{ job.title }}
+                                        </td>
+                                        <td class="px-4 py-3 text-gray-500">{{ job.location }}</td>
+                                        <td class="px-4 py-3 text-gray-500">{{ job.applications_count }}</td>
+                                        <td class="px-4 py-3">
+                                            <span class="integrity-badge"
+                                                [ngClass]="job.status === 'open' ? 'verified' : ''">
+                                                {{ job.status }}
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-3 text-right">
+                                            <a href="#"
+                                                class="text-[var(--meribas-black)] font-medium hover:underline">Manage</a>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="jobs.length === 0">
+                                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No jobs found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                    </div>
-
-                    <!-- Graph Placeholder -->
-                    <div class="hidden sm:block flex-shrink-0 ml-4">
-                        <div class="flex items-end space-x-1 h-6">
-                            <div class="w-1 bg-gray-200 rounded-t" style="height: 40%"></div>
-                            <div class="w-1 bg-gray-200 rounded-t" style="height: 70%"></div>
-                            <div class="w-1 bg-gray-300 rounded-t" style="height: 50%"></div>
-                            <div class="w-1 bg-gray-400 rounded-t" style="height: 80%"></div>
-                            <div class="w-1 bg-gray-900 rounded-t" style="height: 60%"></div>
-                        </div>
-                    </div>
-
-                    <!-- Menu Button -->
-                    <div class="flex-shrink-0 self-center ml-2">
-                        <button type="button" class="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
-                            <span class="sr-only">Open options</span>
-                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path
-                                    d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-                            </svg>
-                        </button>
-                    </div>
-
+                    </app-card-base>
                 </div>
-            </div>
 
+            </div>
         </main>
     </div>
 </div>

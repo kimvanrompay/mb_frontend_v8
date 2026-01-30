@@ -22,4 +22,20 @@ export const routes: Routes = [
         ]
     },
     { path: 'dashboard', component: DashboardComponent },
+    {
+        path: 'jobs',
+        loadComponent: () => import('./pages/jobs/jobs.component').then(m => m.JobsComponent)
+    },
+    {
+        path: 'jobs/new',
+        loadComponent: () => import('./pages/jobs/job-edit/job-edit.component').then(m => m.JobEditComponent)
+    },
+    {
+        path: 'jobs/:id',
+        loadComponent: () => import('./pages/jobs/job-detail/job-detail.component').then(m => m.JobDetailComponent)
+    },
+    {
+        path: 'jobs/:id/edit',
+        loadComponent: () => import('./pages/jobs/job-edit/job-edit.component').then(m => m.JobEditComponent)
+    },
 ];

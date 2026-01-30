@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { TrialBannerComponent } from '../../components/trial-banner/trial-banner.component';
+import { SidebarBlackComponent } from '../../components/layout/sidebar-black/sidebar-black.component';
+import { TopbarWhiteComponent } from '../../components/layout/topbar-white/topbar-white.component';
+import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
+import { CardBaseComponent } from '../../components/cards/card-base/card-base.component';
+import { GaugeTrustComponent } from '../../components/charts/gauge-trust/gauge-trust.component';
+import { SkillBreakdownComponent } from '../../components/charts/skill-breakdown/skill-breakdown.component';
+import { CardCandidateRowComponent } from '../../components/cards/card-candidate-row/card-candidate-row.component';
+
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
 import { TenantService } from '../../services/tenant.service';
@@ -13,7 +19,16 @@ import { finalize, forkJoin } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, NavbarComponent, TrialBannerComponent],
+  imports: [
+    CommonModule,
+    SidebarBlackComponent,
+    TopbarWhiteComponent,
+    CardKpiComponent,
+    CardBaseComponent,
+    GaugeTrustComponent,
+    SkillBreakdownComponent,
+    CardCandidateRowComponent
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -26,6 +41,17 @@ export class DashboardComponent implements OnInit {
 
   isLoading = false;
   error: string | null = null;
+
+  // Mock Data for new widgets (Replace with real API data later)
+  trustScore = 98;
+  activeCandidatesCount = 620;
+  completedCandidatesCount = 420;
+  liveCandidates = [
+    { name: 'Alice Freeman', test: 'Python Advanced', status: 'Verify', avatar: null, isLive: true },
+    { name: 'Bob Smith', test: 'Cognitive Ability', status: 'Flagged', avatar: null, isLive: true },
+    { name: 'Charlie Davis', test: 'Personality Fit', status: 'Verified', avatar: null, isLive: false },
+    { name: 'Diana Prince', test: 'Java Backend', status: 'Suspicious', avatar: null, isLive: true }
+  ];
 
   constructor(
     private jobService: JobService,
@@ -53,59 +79,16 @@ export class DashboardComponent implements OnInit {
         this.tenantStats = results.tenantResponse.tenant.stats;
         this.subscription = results.tenantResponse.tenant.subscription;
         this.assessmentStats = results.assessmentStats;
+
+        // Map API data to view models if needed
+        if (this.tenantStats) {
+          this.activeCandidatesCount = this.tenantStats.total_candidates || 0;
+        }
       },
       error: (err) => {
         console.error('Failed to load dashboard data', err);
         this.error = 'Failed to load dashboard data. Please try again.';
       }
     });
-  }
-
-  // Helpers for view rendering
-  getInitials(title: string): string {
-    return title.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
-  }
-
-  getInitialsBg(title: string): string {
-    // Simple deterministic color mapping based on string length or first char
-    const colors = [
-      'bg-gray-900 text-white',
-      'bg-blue-900 text-white',
-      'bg-indigo-900 text-white',
-      'bg-gray-700 text-white'
-    ];
-    return colors[title.length % colors.length];
-  }
-
-  getStatusClass(status: string): string {
-    switch (status) {
-      case 'open': return 'bg-green-100 text-green-800';
-      case 'filled': return 'bg-blue-100 text-blue-800';
-      case 'closed': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-600';
-    }
-  }
-
-  formatTimeAgo(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    let interval = seconds / 31536000;
-    if (interval > 1) return Math.floor(interval) + "y ago";
-
-    interval = seconds / 2592000;
-    if (interval > 1) return Math.floor(interval) + "mo ago";
-
-    interval = seconds / 86400;
-    if (interval > 1) return Math.floor(interval) + "d ago";
-
-    interval = seconds / 3600;
-    if (interval > 1) return Math.floor(interval) + "h ago";
-
-    interval = seconds / 60;
-    if (interval > 1) return Math.floor(interval) + "m ago";
-
-    return Math.floor(seconds) + "s ago";
   }
 }
