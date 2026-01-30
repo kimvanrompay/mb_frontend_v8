@@ -1,74 +1,68 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Job, JobResponse, JobsResponse } from '../models/job.model';
+import { Job, CreateJobRequest } from '../models/job.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: 'root'
 })
 export class JobService {
-    private readonly API_URL = 'https://api.meribas.app/api/v1';
+    private apiUrl = `${environment.apiUrl}/jobs`;
 
     constructor(private http: HttpClient) { }
 
     /**
-     * Fetch all jobs
-     * @param status Optional filter by status ('open', 'closed', etc.)
+     * GET /api/v1/jobs - List all jobs
+     * @param status Optional filter by status
      */
-    getJobs(status?: string): Observable<JobsResponse> {
-        const params: any = {};
+    getJobs(status?: 'open' | 'closed' | 'filled'): Observable<Job[]> {
+        let params = new HttpParams();
         if (status) {
-            params.status = status;
+            params = params.set('status', status);
         }
-        return this.http.get<JobsResponse>(`${this.API_URL}/jobs`, { params });
+        return this.http.get<Job[]>(this.apiUrl, { params });
     }
 
     /**
-     * Get a single job by ID
-     * @param id Job ID
+     * GET /api/v1/jobs/:id - Get job details
      */
-    getJob(id: number): Observable<JobResponse> {
-        return this.http.get<JobResponse>(`${this.API_URL}/jobs/${id}`);
+    getJob(id: string): Observable<Job> {
+        return this.http.get<Job>(`${this.apiUrl}/${id}`);
     }
 
     /**
-     * Create a new job
-     * @param job Job data
+     * POST /api/v1/jobs - Create job (Admin only)
      */
-    createJob(job: Partial<Job>): Observable<JobResponse> {
-        return this.http.post<JobResponse>(`${this.API_URL}/jobs`, { job });
+    createJob(job: CreateJobRequest): Observable<Job> {
+        return this.http.post<Job>(this.apiUrl, job);
     }
 
     /**
-     * Update an existing job
-     * @param id Job ID
-     * @param job Partial job data to update
+     * PATCH /api/v1/jobs/:id - Update job (Admin only)
      */
-    updateJob(id: number, job: Partial<Job>): Observable<JobResponse> {
-        return this.http.patch<JobResponse>(`${this.API_URL}/jobs/${id}`, { job });
+    updateJob(id: string, job: Partial<CreateJobRequest>): Observable<Job> {
+        return this.http.patch<Job>(`${this.apiUrl}/${id}`, job);
     }
 
     /**
-     * Close a job
-     * @param id Job ID
+     * POST /api/v1/jobs/:id/close - Close job (Admin only)
      */
-    closeJob(id: number): Observable<JobResponse> {
-        return this.http.post<JobResponse>(`${this.API_URL}/jobs/${id}/close`, {});
+    closeJob(id: string): Observable<Job> {
+        return this.http.post<Job>(`${this.apiUrl}/${id}/close`, {});
     }
 
     /**
-     * Reopen a job
-     * @param id Job ID
+     * POST /api/v1/jobs/:id/reopen - Reopen job
      */
-    reopenJob(id: number): Observable<JobResponse> {
-        return this.http.post<JobResponse>(`${this.API_URL}/jobs/${id}/reopen`, {});
+    reopenJob(id: string): Observable<Job> {
+        return this.http.post<Job>(`${this.apiUrl}/${id}/reopen`, {});
     }
 
     /**
-     * Mark a job as filled
-     * @param id Job ID
+     * POST /api/v1/jobs/:id/mark_filled - Mark as filled (Admin only)
      */
-    markJobFilled(id: number): Observable<JobResponse> {
-        return this.http.post<JobResponse>(`${this.API_URL}/jobs/${id}/mark_filled`, {});
+    markFilled(id: string): Observable<Job> {
+        return this.http.post<Job>(`${this.apiUrl}/${id}/mark_filled`, {});
     }
 }

@@ -2,19 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-interface Position {
-    id: string;
-    title: string;
-    description: string;
-    department: string;
-    location: string;
-    status: 'open' | 'closed' | 'draft';
-    applicants: number;
-    starred: boolean;
-    postedDate: Date;
-    activityData: number[]; // Last 7 days of applications
-}
+import { Job } from '../../models/job.model';
+import { JobService } from '../../services/job.service';
 
 @Component({
     selector: 'app-jobs',
@@ -24,105 +13,78 @@ interface Position {
     styleUrl: './jobs.component.css'
 })
 export class JobsComponent implements OnInit {
-    positions: Position[] = [];
-    filteredPositions: Position[] = [];
+    jobs: Job[] = [];
+    filteredJobs: Job[] = [];
+    loading = false;
+    error: string | null = null;
 
     searchQuery = '';
-    statusFilter = 'all';
+    statusFilter: 'all' | 'open' | 'closed' | 'filled' = 'all';
     departmentFilter = 'all';
-    sortBy = 'updated';
+    sortBy: 'updated' | 'title' | 'applications' | 'deadline' = 'updated';
 
-    departments = ['Engineering', 'Product', 'Design', 'Marketing', 'Sales', 'Operations'];
+    departments: string[] = [];
+
+    constructor(private jobService: JobService) { }
 
     ngOnInit() {
-        this.loadPositions();
+        this.loadJobs();
     }
 
-    loadPositions() {
-        // Mock data - replace with API call
-        this.positions = [
-            {
-                id: '1',
-                title: 'Senior Frontend Developer',
-                description: 'Building the face of the Meribas assessment platform',
-                department: 'Engineering',
-                location: 'Remote',
-                status: 'open',
-                applicants: 24,
-                starred: true,
-                postedDate: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
-                activityData: [2, 3, 5, 8, 6, 4, 7]
-            },
-            {
-                id: '2',
-                title: 'Product Designer',
-                description: 'Creating intuitive and beautiful user experiences',
-                department: 'Design',
-                location: 'New York, NY',
-                status: 'open',
-                applicants: 18,
-                starred: false,
-                postedDate: new Date(Date.now() - 13 * 60 * 1000), // 13 minutes ago
-                activityData: [1, 2, 4, 3, 5, 2, 3]
-            },
-            {
-                id: '3',
-                title: 'Backend Engineer',
-                description: 'Scaling our assessment engine to handle millions of users',
-                department: 'Engineering',
-                location: 'Remote',
-                status: 'open',
-                applicants: 32,
-                starred: false,
-                postedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days ago
-                activityData: [3, 4, 6, 5, 7, 8, 6]
-            },
-            {
-                id: '4',
-                title: 'Marketing Manager',
-                description: 'Leading our growth marketing initiatives',
-                department: 'Marketing',
-                location: 'London, UK',
-                status: 'draft',
-                applicants: 0,
-                starred: true,
-                postedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), // 1 week ago
-                activityData: [0, 0, 0, 0, 0, 0, 0]
-            }
-        ];
+    loadJobs() {
+        this.loading = true;
+        this.error = null;
 
-        this.applyFilters();
+        const statusParam = this.statusFilter === 'all' ? undefined : this.statusFilter;
+
+        this.jobService.getJobs(statusParam).subscribe({
+            next: (jobs) => {
+                this.jobs = jobs;
+                this.extractDepartments();
+                this.applyFilters();
+                this.loading = false;
+            },
+            error: (err) => {
+                this.error = 'Failed to load jobs. Please try again.';
+                this.loading = false;
+                console.error('Error loading jobs:', err);
+            }
+        });
+    }
+
+    extractDepartments() {
+        const deptSet = new Set(this.jobs.map(j => j.department).filter(d => d));
+        this.departments = Array.from(deptSet).sort();
     }
 
     applyFilters() {
-        this.filteredPositions = this.positions.filter(pos => {
-            const matchesSearch = pos.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                pos.description.toLowerCase().includes(this.searchQuery.toLowerCase());
-            const matchesStatus = this.statusFilter === 'all' || pos.status === this.statusFilter;
-            const matchesDepartment = this.departmentFilter === 'all' || pos.department === this.departmentFilter;
+        this.filteredJobs = this.jobs.filter(job => {
+            const matchesSearch = job.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                (job.description && job.description.toLowerCase().includes(this.searchQuery.toLowerCase()));
+            const matchesStatus = this.statusFilter === 'all' || job.status === this.statusFilter;
+            const matchesDepartment = this.departmentFilter === 'all' || job.department === this.departmentFilter;
 
             return matchesSearch && matchesStatus && matchesDepartment;
         });
 
         // Apply sorting
-        this.filteredPositions.sort((a, b) => {
+        this.filteredJobs.sort((a, b) => {
             switch (this.sortBy) {
                 case 'updated':
-                    return b.postedDate.getTime() - a.postedDate.getTime();
-                case 'name':
+                    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                case 'title':
                     return a.title.localeCompare(b.title);
-                case 'applicants':
-                    return b.applicants - a.applicants;
-                case 'starred':
-                    return (b.starred ? 1 : 0) - (a.starred ? 1 : 0);
+                case 'applications':
+                    return b.total_applications - a.total_applications;
+                case 'deadline':
+                    if (!a.deadline && !b.deadline) return 0;
+                    if (!a.deadline) return 1;
+                    if (!b.deadline) return -1;
+                    return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
                 default:
                     return 0;
             }
         });
-    }
-
-    toggleStar(position: Position) {
-        position.starred = !position.starred;
     }
 
     getStatusBadgeClass(status: string): string {
@@ -131,20 +93,55 @@ export class JobsComponent implements OnInit {
                 return 'bg-green-100 text-green-800 border-green-200';
             case 'closed':
                 return 'bg-gray-100 text-gray-800 border-gray-200';
-            case 'draft':
-                return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+            case 'filled':
+                return 'bg-blue-100 text-blue-800 border-blue-200';
             default:
                 return 'bg-gray-100 text-gray-800 border-gray-200';
         }
     }
 
-    getTimeAgo(date: Date): string {
-        const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    getTimeAgo(date: string): string {
+        const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
 
-        if (seconds < 60) return `Updated ${seconds} seconds ago`;
-        if (seconds < 3600) return `Updated ${Math.floor(seconds / 60)} minutes ago`;
-        if (seconds < 86400) return `Updated ${Math.floor(seconds / 3600)} hours ago`;
-        if (seconds < 604800) return `Updated ${Math.floor(seconds / 86400)} days ago`;
-        return `Updated ${Math.floor(seconds / 604800)} weeks ago`;
+        if (seconds < 60) return `Updated ${seconds}s ago`;
+        if (seconds < 3600) return `Updated ${Math.floor(seconds / 60)}m ago`;
+        if (seconds < 86400) return `Updated ${Math.floor(seconds / 3600)}h ago`;
+        if (seconds < 604800) return `Updated ${Math.floor(seconds / 86400)}d ago`;
+        return `Updated ${Math.floor(seconds / 604800)}w ago`;
+    }
+
+    getActivityData(job: Job): number[] {
+        // Generate mock activity data based on applications
+        // In real implementation, this would come from API
+        const dailyAvg = job.total_applications / 7;
+        return Array.from({ length: 7 }, () => Math.floor(Math.random() * dailyAvg * 2));
+    }
+
+    closeJob(job: Job, event: Event) {
+        event.stopPropagation();
+        if (confirm(`Close position "${job.title}"? This will stop accepting new applications.`)) {
+            this.jobService.closeJob(job.id).subscribe({
+                next: () => this.loadJobs(),
+                error: (err) => console.error('Error closing job:', err)
+            });
+        }
+    }
+
+    reopenJob(job: Job, event: Event) {
+        event.stopPropagation();
+        this.jobService.reopenJob(job.id).subscribe({
+            next: () => this.loadJobs(),
+            error: (err) => console.error('Error reopening job:', err)
+        });
+    }
+
+    markFilled(job: Job, event: Event) {
+        event.stopPropagation();
+        if (confirm(`Mark "${job.title}" as filled?`)) {
+            this.jobService.markFilled(job.id).subscribe({
+                next: () => this.loadJobs(),
+                error: (err) => console.error('Error marking filled:', err)
+            });
+        }
     }
 }
