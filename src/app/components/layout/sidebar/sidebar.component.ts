@@ -1,7 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-sidebar',
@@ -102,7 +101,6 @@ import { AuthService } from '../../../services/auth';
         <div>
           <div class="px-3 mb-2">
             <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Organization</h3>
-            <p *ngIf="tenantId" class="text-[9px] text-gray-400 font-mono mt-0.5">ID: {{ tenantId }}</p>
           </div>
           <div class="space-y-1">
             <a routerLink="/team" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
@@ -170,13 +168,4 @@ import { AuthService } from '../../../services/auth';
     </div>
   `
 })
-export class SidebarComponent implements OnInit {
-  authService = inject(AuthService);
-  tenantId: string | null = null;
-
-  ngOnInit() {
-    this.authService.currentUser$.subscribe(user => {
-      this.tenantId = user?.tenant?.id || null;
-    });
-  }
-}
+export class SidebarComponent { }
