@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
         </div>
         <div class="ml-3">
           <p class="text-sm font-medium text-[var(--meribas-black)]">{{ name }}</p>
-          <p class="text-xs text-gray-500">{{ testName }}</p>
+          <p class="text-xs text-gray-500">{{ role }}</p>
         </div>
       </div>
       <div>
@@ -34,7 +34,7 @@ import { CommonModule } from '@angular/common';
 })
 export class CardCandidateRowComponent {
   @Input() name: string = '';
-  @Input() testName: string = '';
+  @Input() role: string = '';
   @Input() status: string = 'Active';
   @Input() isLive: boolean = false;
   @Input() avatarUrl: string | null = null;
