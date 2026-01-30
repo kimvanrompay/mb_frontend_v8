@@ -44,26 +44,42 @@ export const routes: Routes = [
                 path: 'jobs/:id/edit',
                 loadComponent: () => import('./pages/jobs/job-edit/job-edit.component').then(m => m.JobEditComponent)
             },
-            // Fallback for other potential routes in the future
+            // Feature pages with Coming Soon fallback
             {
                 path: 'applications',
-                loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) // Placeholder
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
                 path: 'candidates',
-                loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) // Placeholder
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
-                path: 'collections',
-                loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) // Placeholder
+                path: 'metrics',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
-                path: 'certs',
-                loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) // Placeholder
+                path: 'events',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
+                path: 'environment',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
+                path: 'deployments',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
+                path: 'team',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
+                path: 'billing',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
                 path: 'settings',
-                loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) // Placeholder
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
         ]
     }
