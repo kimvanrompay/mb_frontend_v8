@@ -33,22 +33,34 @@ interface DayActivity {
 
       <!-- Heatmap Grid -->
       <div class="flex gap-1 overflow-x-auto pb-2">
-        <!-- Month Labels (vertical) -->
+        <!-- Day Labels (vertical) -->
         <div class="flex flex-col justify-around text-[9px] text-gray-400 font-mono pr-2 pt-4">
           <span>Mon</span>
           <span>Wed</span>
           <span>Fri</span>
         </div>
 
-        <!-- Weeks Grid -->
-        <div class="flex gap-1">
-          <div *ngFor="let week of weeks" class="flex flex-col gap-1">
-            <div 
-              *ngFor="let day of week"
-              [title]="getTooltip(day)"
-              class="w-3 h-3 rounded-sm border cursor-pointer transition-all hover:ring-2 hover:ring-black hover:ring-offset-1"
-              [ngClass]="getColorClass(day)"
-            ></div>
+        <!-- Weeks Grid with Month Labels -->
+        <div class="flex flex-col gap-1">
+          <!-- Month Labels Row -->
+          <div class="flex gap-1 mb-1">
+            <div *ngFor="let month of monthLabels" 
+                 class="text-[9px] text-gray-400 font-mono"
+                 [style.width.px]="month.width * 14">
+              {{ month.name }}
+            </div>
+          </div>
+          
+          <!-- Weeks Grid -->
+          <div class="flex gap-1">
+            <div *ngFor="let week of weeks" class="flex flex-col gap-1">
+              <div 
+                *ngFor="let day of week"
+                [title]="getTooltip(day)"
+                class="w-3 h-3 rounded-sm border cursor-pointer transition-all hover:ring-2 hover:ring-black hover:ring-offset-1"
+                [ngClass]="getColorClass(day)"
+              ></div>
+            </div>
           </div>
         </div>
       </div>
@@ -66,11 +78,51 @@ interface DayActivity {
 })
 export class ActivityHeatmapComponent {
   weeks: DayActivity[][] = [];
+  monthLabels: { name: string; width: number }[] = [];
   totalActivities = 0;
   busiestDay: DayActivity = { date: new Date(), count: 0, level: 0 };
 
   ngOnInit() {
     this.generateHeatmapData();
+    this.generateMonthLabels();
+  }
+
+  private generateMonthLabels(): void {
+    const labels: { name: string; width: number }[] = [];
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    if (this.weeks.length === 0) return;
+
+    let currentMonth = -1;
+    let weekCount = 0;
+
+    this.weeks.forEach((week, index) => {
+      const firstDay = week[0];
+      const month = firstDay.date.getMonth();
+
+      if (month !== currentMonth) {
+        if (currentMonth !== -1) {
+          labels.push({
+            name: monthNames[currentMonth],
+            width: weekCount
+          });
+        }
+        currentMonth = month;
+        weekCount = 1;
+      } else {
+        weekCount++;
+      }
+    });
+
+    // Add last month
+    if (currentMonth !== -1) {
+      labels.push({
+        name: monthNames[currentMonth],
+        width: weekCount
+      });
+    }
+
+    this.monthLabels = labels;
   }
 
   private generateHeatmapData(): void {
