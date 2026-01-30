@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-    selector: 'app-navbar-centered',
-    standalone: true,
-    imports: [CommonModule, RouterModule],
-    template: `
-    <nav class="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20">
+  selector: 'app-navbar-centered',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  template: `
+    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           
@@ -54,6 +54,6 @@ import { RouterModule } from '@angular/router';
       </div>
     </nav>
   `,
-    styles: []
+  styles: []
 })
 export class NavbarCenteredComponent { }

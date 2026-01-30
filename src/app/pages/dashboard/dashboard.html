@@ -4,26 +4,24 @@
 
     <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- Welcome Header -->
-        <div class="mb-6">
-            <h1 class="text-2xl font-bold text-[var(--meribas-black)]">Executive Overview</h1>
-            <p class="text-gray-500 mt-1">Real-time insights into recruitment performance and candidate quality.</p>
+        <!-- Header -->
+        <div class="mb-4 flex items-center justify-between">
+            <h1 class="text-xl font-bold text-[var(--meribas-black)] tracking-tight">Overview</h1>
+            <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
         </div>
 
         <!-- KPI Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
-            <app-card-kpi title="Total Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"
-                icon="work"></app-card-kpi>
-            <app-card-kpi title="Pending Reviews" value="{{ stats.pendingReviews }}" [trend]="-5" icon="pending_actions"
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+            <app-card-kpi title="Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
+            <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-5"
                 variant="warning"></app-card-kpi>
-            <app-card-kpi title="Interviews Today" value="{{ stats.interviewsToday }}" [trend]="2"
-                icon="event"></app-card-kpi>
-            <app-card-kpi title="Avg. Integrity Score" value="{{ stats.avgIntegrity }}%" [trend]="4" icon="shield"
+            <app-card-kpi title="Interviews" value="{{ stats.interviewsToday }}" [trend]="2"></app-card-kpi>
+            <app-card-kpi title="Integrity Avg" value="{{ stats.avgIntegrity }}%" [trend]="4"
                 variant="success"></app-card-kpi>
         </div>
 
         <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
             <!-- Left Column (Charts) -->
             <div class="lg:col-span-2 space-y-4">

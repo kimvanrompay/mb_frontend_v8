@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CardBaseComponent } from '../card-base/card-base.component';
 
 @Component({
   selector: 'app-card-kpi',
