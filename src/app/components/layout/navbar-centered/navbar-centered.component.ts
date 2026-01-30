@@ -71,62 +71,49 @@ export class NavbarCenteredComponent {
   router = inject(Router);
   currentPage = '';
 
-  private routeNames: { [key: string]: string } = {
-    '/dashboard': 'Overview',
-    '/jobs': 'Positions',
-    '/applications': 'Assessments',
-    '/candidates': 'Candidates',
-    '/invitations': 'Invitations',
-    '/metrics': 'Live Sessions',
-    '/events': 'Flagged Events',
-    '/environment': 'Test Library',
-    '/deployments': 'Interview Scheduler',
-    '/team': 'Team & Permissions',
-    '/billing': 'Billing & Subscription',
-    '/integrations': 'Integrations',
-    '/invite-friend': 'Invite a Friend',
-    '/settings': 'Settings'
-  };
+  '/invite-friend': 'Invite a Friend',
+  '/settings': 'Settings'
+};
 
-  constructor() {
-    // Set initial page
-    this.updateBreadcrumb(this.router.url);
+constructor() {
+  // Set initial page
+  this.updateBreadcrumb(this.router.url);
 
-    // Listen to route changes
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        map((event: any) => event.url)
-      )
-      .subscribe(url => this.updateBreadcrumb(url));
-  }
+  // Listen to route changes
+  this.router.events
+    .pipe(
+      filter(event => event instanceof NavigationEnd),
+      map((event: any) => event.url)
+    )
+    .subscribe(url => this.updateBreadcrumb(url));
+}
 
   private updateBreadcrumb(url: string): void {
-    // Remove query params and fragments
-    const path = url.split('?')[0].split('#')[0];
+  // Remove query params and fragments
+  const path = url.split('?')[0].split('#')[0];
 
-    // Check for exact match first
-    if (this.routeNames[path]) {
-      this.currentPage = this.routeNames[path];
-      return;
+  // Check for exact match first
+  if(this.routeNames[path]) {
+  this.currentPage = this.routeNames[path];
+  return;
+}
+
+// Check for partial matches (e.g., /jobs/123)
+for (const route in this.routeNames) {
+  if (path.startsWith(route) && route !== '/') {
+    // For detail pages, add the context
+    if (path.includes('/edit')) {
+      this.currentPage = `${this.routeNames[route]} / Edit`;
+    } else if (path !== route) {
+      this.currentPage = `${this.routeNames[route]} / Details`;
+    } else {
+      this.currentPage = this.routeNames[route];
     }
+    return;
+  }
+}
 
-    // Check for partial matches (e.g., /jobs/123)
-    for (const route in this.routeNames) {
-      if (path.startsWith(route) && route !== '/') {
-        // For detail pages, add the context
-        if (path.includes('/edit')) {
-          this.currentPage = `${this.routeNames[route]} / Edit`;
-        } else if (path !== route) {
-          this.currentPage = `${this.routeNames[route]} / Details`;
-        } else {
-          this.currentPage = this.routeNames[route];
-        }
-        return;
-      }
-    }
-
-    // Default fallback
-    this.currentPage = '';
+// Default fallback
+this.currentPage = '';
   }
 }

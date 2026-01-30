@@ -1,148 +1,145 @@
-<div class="flex h-screen overflow-hidden bg-transparent">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <!-- Main Content Wrapper -->
-    <div class="flex flex-1 flex-col overflow-hidden">
+    <!-- Header with Search and Filters -->
+    <div class="mb-6 flex flex-col md:flex-row gap-4">
+        <!-- Search Bar -->
+        <div class="flex-1">
+            <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()"
+                placeholder="Find a position..."
+                class="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black" />
+        </div>
 
-        <!-- Topbar (New Centered) -->
-        <app-navbar-centered></app-navbar-centered>
+        <!-- Filters -->
+        <div class="flex gap-3">
+            <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()"
+                class="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black">
+                <option value="all">Status</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+                <option value="draft">Draft</option>
+            </select>
 
-        <!-- Scrollable Content -->
-        <main class="flex-1 overflow-y-auto p-8">
-            <div class="mx-auto max-w-7xl">
+            <select [(ngModel)]="departmentFilter" (ngModelChange)="applyFilters()"
+                class="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black">
+                <option value="all">Department</option>
+                <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+            </select>
 
-                <!-- Header Section -->
-                <div class="mb-8">
-                    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-                        <div>
-                            <h1 class="text-3xl font-bold text-[var(--meribas-black)] tracking-tight">Welcome back,
-                                Admin! ☀️</h1>
+            <select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()"
+                class="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black">
+                <option value="updated">Sort: Last updated</option>
+                <option value="name">Sort: Name</option>
+                <option value="applicants">Sort: Applicants</option>
+                <option value="starred">Sort: Starred</option>
+            </select>
+
+            <button
+                class="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                New
+            </button>
+        </div>
+    </div>
+
+    <!-- Positions List -->
+    <div class="space-y-0 border border-gray-200 rounded-lg overflow-hidden">
+        <div *ngFor="let position of filteredPositions; let last = last"
+            class="bg-white hover:bg-gray-50 transition-colors" [class.border-b]="!last"
+            [class.border-gray-200]="!last">
+
+            <div class="px-6 py-4">
+                <div class="flex items-start justify-between">
+                    <!-- Left: Position Info -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-3 mb-2">
+                            <a [routerLink]="['/jobs', position.id]"
+                                class="text-base font-medium text-blue-600 hover:underline">
+                                {{ position.title }}
+                            </a>
+                            <span class="px-2 py-0.5 text-[10px] font-medium rounded border"
+                                [ngClass]="getStatusBadgeClass(position.status)">
+                                {{ position.status | titlecase }}
+                            </span>
                         </div>
 
-                        <!-- Search & Filter Bar -->
-                        <div class="flex items-center gap-3">
-                            <div class="search-input-wrapper w-64">
-                                <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        <p class="text-sm text-gray-600 mb-3">{{ position.description }}</p>
+
+                        <div class="flex items-center gap-4 text-xs text-gray-500">
+                            <div class="flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                                    <circle cx="10" cy="10" r="3" class="text-orange-500" />
                                 </svg>
-                                <input type="text" placeholder="Search.."
-                                    class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-gray-400">
+                                <span>{{ position.department }}</span>
                             </div>
-                            <button
-                                class="bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors flex items-center gap-2">
-                                Filter
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            <div class="flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
-                                    </path>
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                            </button>
-                            <!-- View Toggle -->
-                            <div class="flex bg-gray-100 rounded-full p-1">
-                                <button (click)="toggleView('grid')" class="p-1.5 rounded-full transition-all"
-                                    [ngClass]="viewMode === 'grid' ? 'bg-white shadow-sm text-black' : 'text-gray-400 hover:text-gray-600'">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
-                                        </path>
-                                    </svg>
-                                </button>
-                                <button (click)="toggleView('list')" class="p-1.5 rounded-full transition-all"
-                                    [ngClass]="viewMode === 'list' ? 'bg-white shadow-sm text-black' : 'text-gray-400 hover:text-gray-600'">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 6h16M4 12h16M4 18h16"></path>
-                                    </svg>
-                                </button>
+                                <span>{{ position.location }}</span>
                             </div>
+                            <div class="flex items-center gap-1.5">
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                <span>{{ position.applicants }} applicants</span>
+                            </div>
+                            <span>{{ getTimeAgo(position.postedDate) }}</span>
                         </div>
                     </div>
-                </div>
 
-                <!-- Loading / Error -->
-                <div *ngIf="isLoading" class="p-12 text-center text-gray-500">Loading jobs...</div>
-                <div *ngIf="error" class="p-12 text-center text-red-500">{{ error }}</div>
-
-                <!-- === GRID VIEW === -->
-                <div *ngIf="!isLoading && !error && viewMode === 'grid'"
-                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div *ngFor="let job of jobs"
-                        class="bg-white rounded-[24px] shadow-sm hover:shadow-md transition-shadow p-6 cursor-pointer border border-transparent hover:border-gray-200"
-                        [routerLink]="['/jobs', job.id]">
-
-                        <!-- Card Header -->
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="flex items-center gap-3">
-                                <div class="p-2 rounded-full bg-blue-50 text-blue-600">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <h3 class="font-bold text-[var(--meribas-black)] text-base">{{ job.title }}</h3>
+                    <!-- Right: Actions & Graph -->
+                    <div class="flex items-center gap-4 ml-4">
+                        <!-- Mini Activity Graph -->
+                        <div class="flex items-end gap-0.5 h-8">
+                            <div *ngFor="let value of position.activityData"
+                                class="w-2 bg-green-400 rounded-sm transition-all hover:bg-green-500"
+                                [style.height]="(value / 10 * 100) + '%'" [style.min-height]="value > 0 ? '4px' : '2px'"
+                                [title]="value + ' applications'">
                             </div>
-                            <span class="text-xs font-semibold text-blue-500 hover:text-blue-700">View more</span>
                         </div>
 
-                        <!-- Main Content Row -->
-                        <div class="flex justify-between items-end mb-4">
-                            <!-- Big Metric (Left) -->
-                            <div>
-                                <div class="flex items-baseline gap-2">
-                                    <span class="text-4xl font-[800] text-[var(--meribas-black)]">{{
-                                        job.applications_count }}</span>
-                                    <span
-                                        class="px-1.5 py-0.5 rounded bg-green-50 text-[10px] font-bold text-green-600">+{{
-                                        job.new_applications_count }}</span>
-                                </div>
-                                <div class="flex items-center gap-2 mt-2">
-                                    <span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
-                                    <span class="text-xs text-gray-500 font-medium">Candidates</span>
+                        <!-- Star Button -->
+                        <button (click)="toggleStar(position)"
+                            class="flex items-center gap-2 px-3 py-1.5 border border-gray-300 rounded-md text-sm hover:bg-gray-100 transition-colors"
+                            [class.bg-yellow-50]="position.starred" [class.border-yellow-300]="position.starred">
+                            <svg class="w-4 h-4" [class.fill-yellow-400]="position.starred"
+                                [class.stroke-yellow-500]="position.starred" [class.fill-none]="!position.starred"
+                                [class.stroke-gray-500]="!position.starred" viewBox="0 0 24 24" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                            <span>Star</span>
+                        </button>
 
-                                    <span class="inline-block w-2 h-2 rounded-full bg-gray-300 ml-2"></span>
-                                    <span class="text-xs text-gray-500 font-medium">Hired</span>
-                                </div>
-                            </div>
-
-                            <!-- Semi-Circle Gauge (Right) -->
-                            <div class="relative w-32 h-16 flex items-end justify-center">
-                                <svg viewBox="0 0 100 55" class="w-full h-full overflow-visible">
-                                    <!-- Ticks (Background) -->
-                                    <g class="gauge-ticks text-gray-200">
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(0 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(22.5 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(45 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(67.5 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(90 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(112.5 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(135 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(157.5 50 50)" />
-                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(180 50 50)" />
-                                    </g>
-
-                                    <!-- Arc Background -->
-                                    <path d="M 15 50 A 35 35 0 0 1 85 50" fill="none" stroke="#f3f4f6" stroke-width="8"
-                                        stroke-linecap="round" />
-
-                                    <!-- Arc Value -->
-                                    <path d="M 15 50 A 35 35 0 0 1 85 50" fill="none"
-                                        [attr.stroke]="getIntegrityColor(getIntegrityScore(job))" stroke-width="8"
-                                        stroke-linecap="round" stroke-dasharray="110"
-                                        [attr.stroke-dashoffset]="110 - (110 * getIntegrityScore(job) / 100)"
-                                        class="transition-all duration-1000 ease-out" />
+                        <!-- More Actions -->
+                        <div class="relative">
+                            <button class="p-2 hover:bg-gray-100 rounded-md transition-colors">
+                                <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                                 </svg>
-                                <div class="absolute bottom-0 text-center">
-                                    <div class="text-xl font-bold text-[var(--meribas-black)]">{{ getIntegrityScore(job)
-                                        }}%</div>
-                                </div>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="filteredPositions.length === 0" class="px-6 py-12 text-center">
+            <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <h3 class="text-sm font-medium text-gray-900 mb-1">No positions found</h3>
+            <p class="text-sm text-gray-500">Try adjusting your search or filter to find what you're looking for.</p>
+        </div>
     </div>
+
 </div>
