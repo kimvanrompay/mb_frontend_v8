@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Job, CreateJobRequest } from '../models/job.model';
 import { environment } from '../../environments/environment';
 
@@ -21,7 +22,9 @@ export class JobService {
         if (status) {
             params = params.set('status', status);
         }
-        return this.http.get<Job[]>(this.apiUrl, { params });
+        return this.http.get<{ jobs: Job[] }>(this.apiUrl, { params }).pipe(
+            map(response => response.jobs)
+        );
     }
 
     /**
