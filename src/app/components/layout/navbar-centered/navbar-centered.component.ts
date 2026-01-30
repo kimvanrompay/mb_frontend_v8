@@ -21,7 +21,7 @@ import { AuthService } from '../../../services/auth';
 
              <div class="flex flex-col">
                 <div class="flex items-center text-xs font-mono text-gray-500 gap-2">
-                    <span>{{ user.tenant?.name || 'Meribas' }}</span>
+                    <span>{{ user.tenant.name || 'Meribas' }}</span>
                     <span>/</span>
                     <span class="text-black font-semibold">Production</span>
                 </div>
