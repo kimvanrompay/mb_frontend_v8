@@ -38,13 +38,13 @@ import { CardBaseComponent } from '../../../components/cards/card-base/card-base
                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                   <app-card-base>
                      <div class="text-center py-4">
-                        <div class="text-4xl font-extrabold text-[var(--meribas-black)]">{{ job.applications_count }}</div>
+                        <div class="text-4xl font-extrabold text-[var(--meribas-black)]">{{ job.total_applications }}</div>
                         <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">Total Applicants</div>
                      </div>
                   </app-card-base>
                    <app-card-base>
                      <div class="text-center py-4">
-                        <div class="text-4xl font-extrabold text-[var(--accent-green-600)]">{{ job.new_applications_count }}</div>
+                        <div class="text-4xl font-extrabold text-[var(--accent-green-600)]">{{ job.pending_applications }}</div>
                         <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">New Candidates</div>
                      </div>
                   </app-card-base>

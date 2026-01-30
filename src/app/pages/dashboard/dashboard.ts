@@ -137,7 +137,7 @@ export class DashboardComponent implements OnInit {
       finalize(() => this.isLoading = false)
     ).subscribe({
       next: (results) => {
-        this.jobs = results.jobsResponse.jobs;
+        this.jobs = results.jobsResponse;
         this.tenantStats = results.tenantResponse.tenant.stats;
         this.subscription = results.tenantResponse.tenant.subscription;
         this.assessmentStats = results.assessmentStats;
