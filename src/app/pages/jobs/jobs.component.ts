@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarBlackComponent } from '../../components/layout/sidebar-black/sidebar-black.component';
-import { TopbarWhiteComponent } from '../../components/layout/topbar-white/topbar-white.component';
+import { NavbarCenteredComponent } from '../../components/layout/navbar-centered/navbar-centered.component';
 import { CardBaseComponent } from '../../components/cards/card-base/card-base.component';
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
@@ -13,8 +12,7 @@ import { RouterModule } from '@angular/router';
     standalone: true,
     imports: [
         CommonModule,
-        SidebarBlackComponent,
-        TopbarWhiteComponent,
+        NavbarCenteredComponent, // New Nav
         CardBaseComponent,
         RouterModule
     ],

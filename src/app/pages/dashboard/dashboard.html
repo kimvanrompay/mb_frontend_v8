@@ -1,124 +1,100 @@
-<div class="flex h-screen overflow-hidden bg-[var(--meribas-smoke)]">
+<div class="min-h-screen bg-transparent"> <!-- Transparent to show body gradient -->
 
-    <!-- 1. Sidebar -->
-    <app-sidebar-black></app-sidebar-black>
+    <app-navbar-centered></app-navbar-centered>
 
-    <!-- 2. Main Content Wrapper -->
-    <div class="flex flex-1 flex-col overflow-hidden">
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
 
-        <!-- 3. Topbar -->
-        <app-topbar-white></app-topbar-white>
+        <!-- Welcome Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-[var(--meribas-black)]">Executive Overview</h1>
+            <p class="text-gray-500 mt-1">Real-time insights into recruitment performance and candidate quality.</p>
+        </div>
 
-        <!-- 4. Scrollable Content Area -->
-        <main class="flex-1 overflow-y-auto p-8">
-            <div class="mx-auto max-w-7xl">
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <app-card-kpi title="Total Active Jobs" [value]="stats.activeJobs" trend="+12%" icon="work"></app-card-kpi>
+            <app-card-kpi title="Pending Reviews" [value]="stats.pendingReviews" trend="-5%" icon="pending_actions"
+                variant="warning"></app-card-kpi>
+            <app-card-kpi title="Interviews Today" [value]="stats.interviewsToday" trend="+2"
+                icon="event"></app-card-kpi>
+            <app-card-kpi title="Avg. Integrity Score" [value]="stats.avgIntegrity + '%'" trend="+4%" icon="shield"
+                variant="success"></app-card-kpi>
+        </div>
 
-                <!-- Header -->
-                <div class="mb-8 flex items-baseline justify-between">
-                    <h1 class="text-3xl font-bold text-[var(--meribas-black)]">Dashboard</h1>
-                    <span class="text-sm text-gray-500">Last updated: Just now</span>
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column (Charts) -->
+            <div class="lg:col-span-2 space-y-8">
+
+                <!-- Skill & Trust Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Skill Breakdown -->
+                    <div class="meribas-card">
+                        <h3 class="text-lg font-bold mb-4">Skill Capability</h3>
+                        <app-skill-breakdown></app-skill-breakdown>
+                    </div>
+
+                    <!-- NEW Radar Chart (Team Culture/Skills) -->
+                    <div class="meribas-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold">Team Balance</h3>
+                            <span class="text-xs text-gray-400">Current Hires</span>
+                        </div>
+                        <app-radar-chart></app-radar-chart>
+                    </div>
                 </div>
 
-                <!-- Metric Grid -->
-                <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 h-auto lg:h-[400px]">
-
-                    <!-- Skill Breakdown (Top Left) -->
-                    <div class="lg:col-span-1 lg:row-span-2">
-                        <app-card-base title="Skill Breakdown" actionLabel="View Report">
-                            <app-skill-breakdown></app-skill-breakdown>
-                        </app-card-base>
+                <!-- Trust Gauge -->
+                <div class="meribas-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold">Overall System Trust</h3>
+                        <span class="integrity-badge verified">Verified</span>
                     </div>
-
-                    <!-- Trust Score (Mid) -->
-                    <div class="lg:col-span-1 lg:row-span-1">
-                        <app-card-base title="Trust Score">
-                            <app-gauge-trust [score]="trustScore" label="Platform Integrity"></app-gauge-trust>
-                        </app-card-base>
-                    </div>
-
-                    <!-- Active Candidates (Top Right) -->
-                    <div class="lg:col-span-1 lg:row-span-1">
-                        <app-card-kpi title="Active Candidates" [value]="activeCandidatesCount.toString()"
-                            subtext="Invited vs Completed" [trend]="12">
-                        </app-card-kpi>
-                    </div>
-
-                    <!-- Live Feed (Far Right / Tall) -->
-                    <div class="lg:col-span-1 lg:row-span-2">
-                        <app-card-base title="Live Proctoring Feed" actionLabel="Monitor All">
-                            <div class="space-y-1">
-                                <app-card-candidate-row *ngFor="let c of liveCandidates" [name]="c.name"
-                                    [testName]="c.test" [status]="c.status" [isLive]="c.isLive">
-                                </app-card-candidate-row>
-                            </div>
-                        </app-card-base>
-                    </div>
-
-                    <!-- Bottom Row Middle items (Filling the gaps if needed, or specific widgets) -->
-                    <!-- New: Cheating Flags / Alerts (Bottom Middle) -->
-                    <div class="lg:col-span-2 lg:row-span-1">
-                        <app-card-base title="Cheating Flag Distribution">
-                            <div class="flex items-center justify-around h-full">
-                                <div class="text-center">
-                                    <span class="block text-2xl font-bold text-[var(--status-flagged)]">3</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase">Tab Switch</span>
-                                </div>
-                                <div class="text-center">
-                                    <span class="block text-2xl font-bold text-gray-800">12</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase">Suspicious Gaze</span>
-                                </div>
-                                <div class="text-center">
-                                    <span class="block text-2xl font-bold text-[var(--meribas-black)]">0</span>
-                                    <span class="text-xs font-bold text-gray-400 uppercase">Impersonation</span>
-                                </div>
-                            </div>
-                        </app-card-base>
-                    </div>
-
-                </div> <!-- End Grid -->
-
-                <!-- Jobs Table Section (Below Grid) -->
-                <div class="mt-8">
-                    <app-card-base title="Recent Job Postings" actionLabel="View All Jobs">
-                        <!-- Reusing a simple table structure here, or can be a new list component -->
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full text-left text-sm whitespace-nowrap">
-                                <thead class="border-b border-gray-100 text-gray-500">
-                                    <tr>
-                                        <th class="px-4 py-3 font-semibold">Job Title</th>
-                                        <th class="px-4 py-3 font-semibold">Location</th>
-                                        <th class="px-4 py-3 font-semibold">Applications</th>
-                                        <th class="px-4 py-3 font-semibold">Status</th>
-                                        <th class="px-4 py-3 font-semibold text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-50">
-                                    <tr *ngFor="let job of jobs" class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-4 py-3 font-medium text-[var(--meribas-black)]">{{ job.title }}
-                                        </td>
-                                        <td class="px-4 py-3 text-gray-500">{{ job.location }}</td>
-                                        <td class="px-4 py-3 text-gray-500">{{ job.applications_count }}</td>
-                                        <td class="px-4 py-3">
-                                            <span class="integrity-badge"
-                                                [ngClass]="job.status === 'open' ? 'verified' : ''">
-                                                {{ job.status }}
-                                            </span>
-                                        </td>
-                                        <td class="px-4 py-3 text-right">
-                                            <a href="#"
-                                                class="text-[var(--meribas-black)] font-medium hover:underline">Manage</a>
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="jobs.length === 0">
-                                        <td colspan="5" class="px-4 py-6 text-center text-gray-500">No jobs found.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </app-card-base>
+                    <app-gauge-trust></app-gauge-trust>
                 </div>
 
             </div>
-        </main>
-    </div>
+
+            <!-- Right Column (Feed/Lists) -->
+            <div class="space-y-8">
+
+                <!-- Recent Candidates -->
+                <div class="meribas-card">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold">Recent Candidates</h3>
+                        <a routerLink="/candidates"
+                            class="text-sm text-[var(--accent-green-600)] font-medium hover:underline">View All</a>
+                    </div>
+                    <div class="space-y-4">
+                        <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role"
+                            [score]="c.score" [status]="c.status"></app-card-candidate-row>
+                    </div>
+                </div>
+
+                <!-- Cheating Flag Alert -->
+                <div class="meribas-card border-l-4 border-[var(--status-flagged)]">
+                    <div class="flex items-start gap-3">
+                        <div class="p-2 bg-red-50 rounded-full text-[var(--status-flagged)]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-[var(--meribas-black)]">Security Alert</h4>
+                            <p class="text-sm text-gray-600 mt-1">2 candidates flagged for tab switching during
+                                assessment.</p>
+                            <button
+                                class="mt-3 text-sm font-semibold text-[var(--status-flagged)] hover:underline">Review
+                                Flags ></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
 </div>

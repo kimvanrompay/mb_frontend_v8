@@ -45,7 +45,10 @@ body {
 body {
   margin: 0;
   font-family: var(--font-family-body);
-  background-color: var(--meribas-smoke);
+  /* Light Mode Gradient: Light Yellow to White */
+  background: linear-gradient(180deg, #FEFCE8 0%, #FFFFFF 100%);
+  background-attachment: fixed;
+  /* Ensure gradient covers full scroll */
   color: var(--meribas-black);
   text-wrap: balance;
   /* Balanced text as requested */

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarBlackComponent } from '../../components/layout/sidebar-black/sidebar-black.component';
-import { TopbarWhiteComponent } from '../../components/layout/topbar-white/topbar-white.component';
+import { NavbarCenteredComponent } from '../../components/layout/navbar-centered/navbar-centered.component';
 import { CardKpiComponent } from '../../components/cards/card-kpi/card-kpi.component';
 import { CardBaseComponent } from '../../components/cards/card-base/card-base.component';
 import { GaugeTrustComponent } from '../../components/charts/gauge-trust/gauge-trust.component';
 import { SkillBreakdownComponent } from '../../components/charts/skill-breakdown/skill-breakdown.component';
 import { CardCandidateRowComponent } from '../../components/cards/card-candidate-row/card-candidate-row.component';
+import { RadarChartComponent } from '../../components/charts/radar-chart/radar-chart.component';
 
 import { JobService } from '../../services/job.service';
 import { Job } from '../../models/job.model';
@@ -15,19 +15,21 @@ import { AssessmentService } from '../../services/assessment.service';
 import { TenantStats, Subscription } from '../../models/tenant.model';
 import { AssessmentStats } from '../../models/assessment.model';
 import { finalize, forkJoin } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     CommonModule,
-    SidebarBlackComponent,
-    TopbarWhiteComponent,
+    RouterModule,
+    NavbarCenteredComponent,
     CardKpiComponent,
     CardBaseComponent,
     GaugeTrustComponent,
     SkillBreakdownComponent,
-    CardCandidateRowComponent
+    CardCandidateRowComponent,
+    RadarChartComponent
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -42,15 +44,17 @@ export class DashboardComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
 
-  // Mock Data for new widgets (Replace with real API data later)
-  trustScore = 98;
-  activeCandidatesCount = 620;
-  completedCandidatesCount = 420;
-  liveCandidates = [
-    { name: 'Alice Freeman', test: 'Python Advanced', status: 'Verify', avatar: null, isLive: true },
-    { name: 'Bob Smith', test: 'Cognitive Ability', status: 'Flagged', avatar: null, isLive: true },
-    { name: 'Charlie Davis', test: 'Personality Fit', status: 'Verified', avatar: null, isLive: false },
-    { name: 'Diana Prince', test: 'Java Backend', status: 'Suspicious', avatar: null, isLive: true }
+  stats = {
+    activeJobs: 12,
+    pendingReviews: 5,
+    interviewsToday: 3,
+    avgIntegrity: 94
+  };
+
+  recentCandidates = [
+    { name: 'Alice Freeman', role: 'Senior Python Engineer', score: 92, status: 'Active' },
+    { name: 'Bob Smith', role: 'Product Manager', score: 88, status: 'Review' },
+    { name: 'Charlie Davis', role: 'UX Designer', score: 95, status: 'Verified' },
   ];
 
   constructor(
@@ -82,7 +86,8 @@ export class DashboardComponent implements OnInit {
 
         // Map API data to view models if needed
         if (this.tenantStats) {
-          this.activeCandidatesCount = this.tenantStats.total_candidates || 0;
+          // this.stats.activeJobs = this.tenantStats.active_jobs || 0;
+          // Keep mock stats for now as requested unless API has them all
         }
       },
       error: (err) => {
