@@ -43,18 +43,24 @@ export class DashboardComponent implements OnInit {
   error: string | null = null;
 
   stats = {
-    activeJobs: 12,
+    activePositions: 1, // Start with 1 position
     totalCandidates: 248,
     inAssessment: 34,
-    pendingReviews: 5,
-    interviewsToday: 3,
-    avgIntegrity: 94,
     completionRate: 87,
-    testsStarted: 18,
-    testsCompleted: 12,
+    avgIntegrity: 94,
+    reviewsPending: 5,
+    testsStarted: 156,
+    testsCompleted: 142,
     liveNow: 3,
     avgDuration: 42
   };
+
+  isTrialMode = true; // Track if user is in trial mode
+  maxPositionsInTrial = 1;
+
+  get canCreatePosition(): boolean {
+    return !this.isTrialMode || this.stats.activePositions < this.maxPositionsInTrial;
+  }
 
   recentCandidates = [
     { name: 'Alice Freeman', role: 'Senior Python Engineer', score: 92, status: 'Active' },
