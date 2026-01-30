@@ -82,6 +82,14 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
+                path: 'integrations',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
+                path: 'invite-friend',
+                loadComponent: () => import('./pages/invite-friend/invite-friend.component').then(m => m.InviteFriendComponent)
+            },
+            {
                 path: 'settings',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },

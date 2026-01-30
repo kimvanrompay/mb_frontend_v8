@@ -118,6 +118,28 @@ import { RouterModule } from '@angular/router';
             </a>
           </div>
         </div>
+
+        <!-- INTEGRATIONS Section -->
+        <div>
+          <div class="px-3 mb-2">
+            <h3 class="text-[10px] font-medium text-gray-400 uppercase tracking-wider">Integrations</h3>
+          </div>
+          <div class="space-y-1">
+            <a routerLink="/integrations" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black transition-colors">
+               <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+               </svg>
+               Integrations
+            </a>
+
+            <a routerLink="/invite-friend" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50 hover:text-black group transition-colors">
+               <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+               </svg>
+               <span class="group-hover:text-green-600">Invite a Friend</span>
+            </a>
+          </div>
+        </div>
       </nav>
 
       <!-- Bottom Actions -->

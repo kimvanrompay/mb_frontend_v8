@@ -85,6 +85,8 @@ export class NavbarCenteredComponent {
     '/deployments': 'Interview Scheduler',
     '/team': 'Team & Permissions',
     '/billing': 'Billing & Subscription',
+    '/integrations': 'Integrations',
+    '/invite-friend': 'Invite a Friend',
     '/settings': 'Settings'
   };
 
