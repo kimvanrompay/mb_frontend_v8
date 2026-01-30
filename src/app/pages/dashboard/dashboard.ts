@@ -13,7 +13,7 @@ import { TenantService } from '../../services/tenant.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { TenantStats, Subscription } from '../../models/tenant.model';
 import { AssessmentStats } from '../../models/assessment.model';
-import { finalize, forkJoin } from 'rxjs';
+import { finalize, forkJoin, catchError, of } from 'rxjs';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -132,7 +132,14 @@ export class DashboardComponent implements OnInit {
     forkJoin({
       jobsResponse: this.jobService.getJobs(),
       tenantResponse: this.tenantService.getTenant(),
-      assessmentStats: this.assessmentService.getStats()
+      assessmentStats: this.assessmentService.getStats().pipe(
+        // Make assessment stats optional - catch error and return null
+        // This prevents the entire dashboard from failing if the endpoint doesn't exist
+        catchError((err) => {
+          console.warn('Assessment stats not available:', err);
+          return of(null);
+        })
+      )
     }).pipe(
       finalize(() => this.isLoading = false)
     ).subscribe({
