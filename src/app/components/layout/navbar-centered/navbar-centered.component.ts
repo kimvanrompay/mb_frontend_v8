@@ -74,6 +74,7 @@ export class NavbarCenteredComponent {
     '/jobs': 'Positions',
     '/applications': 'Assessments',
     '/candidates': 'Candidates',
+    '/invitations': 'Invitations',
     '/metrics': 'Live Sessions',
     '/events': 'Flagged Events',
     '/environment': 'Test Library',

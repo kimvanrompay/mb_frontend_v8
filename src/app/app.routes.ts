@@ -54,6 +54,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
+                path: 'invitations',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
                 path: 'metrics',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
