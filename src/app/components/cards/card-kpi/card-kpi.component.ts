@@ -6,7 +6,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="meribas-card h-full justify-between">
+    <div class="meribas-card h-full justify-between"
+         [ngClass]="{
+           'border-black border-[1.5px]': variant === 'warning', 
+           'border-gray-400': variant === 'success',
+           'border-gray-200': variant === 'default'
+         }">
        <span class="text-[10px] uppercase font-semibold text-gray-500 tracking-wider mb-1">{{ title }}</span>
        <div class="flex items-baseline gap-2">
           <span class="text-2xl font-semibold font-mono text-black leading-none">{{ value }}</span>
