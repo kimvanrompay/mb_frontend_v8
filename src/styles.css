@@ -4,37 +4,136 @@
 
 :root {
   /* --- BRAND ANCHORS --- */
-  --meribas-black: #0F1115;       /* Sidebar, Primary Text, Modal Backdrops */
-  --meribas-charcoal: #1A1D23;    /* Sidebar Active States, Tooltips */
-  --meribas-smoke: #F4F4F5;       /* Page Background (Light Mode) */
-  --meribas-white: #FFFFFF;       /* Card Surfaces */
+  --meribas-black: #0F1115;
+  /* Sidebar, Primary Text, Modal Backdrops */
+  --meribas-charcoal: #1A1D23;
+  /* Sidebar Active States, Tooltips */
+  --meribas-smoke: #F4F4F5;
+  /* Page Background (Light Mode) */
+  --meribas-white: #FFFFFF;
+  /* Card Surfaces */
 
   /* --- ACCENT: "VERIFIED GREEN" --- */
-  --accent-green-900: #052e16;    /* Deep Forest - Hover States */
-  --accent-green-600: #15803d;    /* Primary Action / "Passed" */
-  --accent-green-400: #4ade80;    /* Success Icons / Charts */
-  --accent-green-100: #f0fdf4;    /* Light Green Backgrounds (Safe Zones) */
+  --accent-green-900: #052e16;
+  /* Deep Forest - Hover States */
+  --accent-green-600: #15803d;
+  /* Primary Action / "Passed" */
+  --accent-green-400: #4ade80;
+  /* Success Icons / Charts */
+  --accent-green-100: #f0fdf4;
+  /* Light Green Backgrounds (Safe Zones) */
 
   /* --- ASSESSMENT STATES (The "Proctored" Logic) --- */
-  --status-flagged: #BE123C;      /* Red: Cheating/Violation Flag */
-  --status-warning: #D97706;      /* Amber: Suspicious Activity */
-  --status-neutral: #6B7280;      /* Grey: Not Started */
-  
+  --status-flagged: #BE123C;
+  /* Red: Cheating/Violation Flag */
+  --status-warning: #D97706;
+  /* Amber: Suspicious Activity */
+  --status-neutral: #6B7280;
+  /* Grey: Not Started */
+
   /* --- SHADOWS (The "Floating" Look) --- */
   --shadow-card: 0px 4px 24px rgba(0, 0, 0, 0.06);
   --shadow-lift: 0px 12px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* Global styles */
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', 'Roboto', sans-serif; /* Updated Font Family */
+  font-family: var(--font-family-body);
   background-color: var(--meribas-smoke);
   color: var(--meribas-black);
+  text-wrap: balance;
+  /* Balanced text as requested */
+}
+
+/* IBM Plex Mono Utility Classes */
+.ibm-plex-mono-thin {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.ibm-plex-mono-extralight {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.ibm-plex-mono-light {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.ibm-plex-mono-regular {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ibm-plex-mono-medium {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.ibm-plex-mono-semibold {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.ibm-plex-mono-bold {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.ibm-plex-mono-thin-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.ibm-plex-mono-extralight-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.ibm-plex-mono-light-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.ibm-plex-mono-regular-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.ibm-plex-mono-medium-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.ibm-plex-mono-semibold-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ibm-plex-mono-bold-italic {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+  font-style: italic;
 }
 
 /* Typography Defaults */
@@ -84,8 +183,10 @@ h2 {
 }
 
 .integrity-badge.suspicious {
-  background-color: #FEF2F2; /* Red-50 equivalent */
-  color: #B91C1C; /* Red-700 equivalent */
+  background-color: #FEF2F2;
+  /* Red-50 equivalent */
+  color: #B91C1C;
+  /* Red-700 equivalent */
 }
 
 .integrity-badge svg {

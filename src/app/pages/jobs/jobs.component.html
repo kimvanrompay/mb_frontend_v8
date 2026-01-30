@@ -6,46 +6,61 @@
     <!-- Main Content Wrapper -->
     <div class="flex flex-1 flex-col overflow-hidden">
 
-        <!-- Topbar -->
+        <!-- Topbar (Standard) -->
         <app-topbar-white></app-topbar-white>
 
         <!-- Scrollable Content -->
         <main class="flex-1 overflow-y-auto p-8">
             <div class="mx-auto max-w-7xl">
 
-                <!-- Page Header -->
-                <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                        <h1 class="text-3xl font-bold text-[var(--meribas-black)]">Job Positions</h1>
-                        <p class="text-sm text-gray-500 mt-1">Manage current openings and track candidate pipelines</p>
-                    </div>
+                <!-- Header Section (Matching "Welcome back, Dr. Robert!") -->
+                <div class="mb-8">
+                    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                        <div>
+                            <h1 class="text-3xl font-bold text-[var(--meribas-black)] tracking-tight">Welcome back,
+                                Admin! ☀️</h1>
+                        </div>
 
-                    <div class="flex items-center gap-4">
-                        <!-- View Toggle -->
-                        <div class="flex rounded-md shadow-sm bg-white border border-gray-200">
-                            <button (click)="toggleView('grid')"
-                                class="p-2 text-gray-500 hover:text-black hover:bg-gray-50 rounded-l-md transition-colors"
-                                [ngClass]="{'bg-gray-100 text-black': viewMode === 'grid'}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <!-- Search & Filter Bar (Replicating Image 2) -->
+                        <div class="flex items-center gap-3">
+                            <div class="search-input-wrapper w-64">
+                                <svg class="w-4 h-4 text-gray-400 mr-2" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                                <input type="text" placeholder="Search.."
+                                    class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder-gray-400">
+                            </div>
+                            <button
+                                class="bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors flex items-center gap-2">
+                                Filter
+                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
                                     </path>
                                 </svg>
                             </button>
-                            <button (click)="toggleView('list')"
-                                class="p-2 text-gray-500 hover:text-black hover:bg-gray-50 rounded-r-md transition-colors"
-                                [ngClass]="{'bg-gray-100 text-black': viewMode === 'list'}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
-                            </button>
+                            <!-- View Toggle -->
+                            <div class="flex bg-gray-100 rounded-full p-1">
+                                <button (click)="toggleView('grid')" class="p-1.5 rounded-full transition-all"
+                                    [ngClass]="viewMode === 'grid' ? 'bg-white shadow-sm text-black' : 'text-gray-400 hover:text-gray-600'">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                                        </path>
+                                    </svg>
+                                </button>
+                                <button (click)="toggleView('list')" class="p-1.5 rounded-full transition-all"
+                                    [ngClass]="viewMode === 'list' ? 'bg-white shadow-sm text-black' : 'text-gray-400 hover:text-gray-600'">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
-
-                        <a routerLink="/jobs/new"
-                            class="inline-flex items-center rounded-md bg-[var(--accent-green-600)] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[var(--accent-green-900)] transition-colors">
-                            + Create Assessment
-                        </a>
                     </div>
                 </div>
 
@@ -53,152 +68,83 @@
                 <div *ngIf="isLoading" class="p-12 text-center text-gray-500">Loading jobs...</div>
                 <div *ngIf="error" class="p-12 text-center text-red-500">{{ error }}</div>
 
-                <!-- === GRID VIEW === -->
+                <!-- === GRID VIEW (Replicating "Top Treatment" Cards) === -->
                 <div *ngIf="!isLoading && !error && viewMode === 'grid'"
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div *ngFor="let job of jobs"
-                        class="meribas-card job-card relative group cursor-pointer hover:shadow-lg transition-all"
+                        class="bg-white rounded-[24px] shadow-sm hover:shadow-md transition-shadow p-6 cursor-pointer border border-transparent hover:border-gray-200"
                         [routerLink]="['/jobs', job.id]">
 
                         <!-- Card Header -->
-                        <div class="flex justify-between items-start mb-6">
-                            <h3 class="text-lg font-semibold text-[var(--meribas-black)] leading-tight pr-4">{{
-                                job.title }}</h3>
-                            <span class="relative flex h-3 w-3 mt-1">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent-green-400)] opacity-75"></span>
-                                <span
-                                    class="relative inline-flex rounded-full h-3 w-3 bg-[var(--accent-green-600)]"></span>
-                            </span>
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="p-2 rounded-full bg-blue-50 text-blue-600">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h3 class="font-bold text-[var(--meribas-black)] text-base">{{ job.title }}</h3>
+                            </div>
+                            <span class="text-xs font-semibold text-blue-500 hover:text-blue-700">View more</span>
                         </div>
 
-                        <!-- Card Body -->
-                        <div class="flex justify-between items-center mb-6">
-                            <!-- Left: KPI -->
+                        <!-- Main Content Row -->
+                        <div class="flex justify-between items-end mb-4">
+                            <!-- Big Metric (Left) -->
                             <div>
-                                <div class="text-[36px] font-[800] text-[var(--meribas-black)] leading-none">{{
-                                    job.applications_count }}</div>
-                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mt-1">
-                                    Candidates</div>
+                                <div class="flex items-baseline gap-2">
+                                    <span class="text-4xl font-[800] text-[var(--meribas-black)]">{{
+                                        job.applications_count }}</span>
+                                    <span
+                                        class="px-1.5 py-0.5 rounded bg-green-50 text-[10px] font-bold text-green-600">+{{
+                                        job.new_applications_count }}</span>
+                                </div>
+                                <div class="flex items-center gap-2 mt-2">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-blue-500"></span>
+                                    <span class="text-xs text-gray-500 font-medium">Candidates</span>
+
+                                    <span class="inline-block w-2 h-2 rounded-full bg-gray-300 ml-2"></span>
+                                    <span class="text-xs text-gray-500 font-medium">Hired</span>
+                                </div>
                             </div>
 
-                            <!-- Right: Donut -->
-                            <div class="relative w-16 h-16">
-                                <svg viewBox="0 0 36 36" class="w-full h-full transform -rotate-90">
-                                    <!-- Background Ring -->
-                                    <path class="text-gray-200"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                        fill="none" stroke="currentColor" stroke-width="4" />
-                                    <!-- Value Ring -->
-                                    <path [attr.stroke]="getIntegrityColor(getIntegrityScore(job))"
-                                        [attr.stroke-dasharray]="getDonutStroke(getIntegrityScore(job))"
-                                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                        fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+                            <!-- Semi-Circle Gauge (Right) -->
+                            <div class="relative w-32 h-16 flex items-end justify-center">
+                                <svg viewBox="0 0 100 55" class="w-full h-full overflow-visible">
+                                    <!-- Ticks (Background) -->
+                                    <g class="gauge-ticks text-gray-200">
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(0 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(22.5 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(45 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(67.5 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(90 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(112.5 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(135 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(157.5 50 50)" />
+                                        <line x1="10" y1="50" x2="16" y2="50" transform="rotate(180 50 50)" />
+                                    </g>
+
+                                    <!-- Arc Background -->
+                                    <path d="M 15 50 A 35 35 0 0 1 85 50" fill="none" stroke="#f3f4f6" stroke-width="8"
+                                        stroke-linecap="round" />
+
+                                    <!-- Arc Value -->
+                                    <!-- Calculate dasharray: circumference of semi-circle (PI * R). R=35 -> ~110. -->
+                                    <!-- We want to fill only X%. stroke-dasharray = filled, total. -->
+                                    <path d="M 15 50 A 35 35 0 0 1 85 50" fill="none"
+                                        [attr.stroke]="getIntegrityColor(getIntegrityScore(job))" stroke-width="8"
+                                        stroke-linecap="round" stroke-dasharray="110"
+                                        [attr.stroke-dashoffset]="110 - (110 * getIntegrityScore(job) / 100)"
+                                        class="transition-all duration-1000 ease-out" />
                                 </svg>
-                                <div
-                                    class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-[var(--meribas-black)]">
-                                    {{ getIntegrityScore(job) }}%
+                                <div class="absolute bottom-0 text-center">
+                                    <div class="text-xl font-bold text-[var(--meribas-black)]">{{ getIntegrityScore(job)
+                                        }}%</div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Card Footer -->
-                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
-                            <div
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[var(--accent-green-100)] text-[var(--accent-green-900)]">
-                                ● Live
-                            </div>
-                            <span class="text-sm font-medium text-[var(--meribas-black)] group-hover:underline">View
-                                Pipeline ></span>
-                        </div>
-                    </div>
-
-                    <!-- Create New Card Placeholder -->
-                    <a routerLink="/jobs/new"
-                        class="meribas-card flex flex-col items-center justify-center border-2 border-dashed border-gray-200 !shadow-none hover:border-gray-400 hover:bg-gray-50 cursor-pointer min-h-[200px]">
-                        <div class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v16m8-8H4"></path>
-                            </svg>
-                        </div>
-                        <span class="text-sm font-medium text-gray-500">Create Assessment</span>
-                    </a>
-                </div>
-
-
-                <!-- === LIST VIEW === -->
-                <div *ngIf="!isLoading && !error && viewMode === 'list'"
-                    class="bg-white rounded-[20px] shadow-[var(--shadow-card)] overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-left text-sm whitespace-nowrap">
-                            <thead class="bg-gray-50 border-b border-gray-100">
-                                <tr>
-                                    <th class="px-6 py-4 font-bold text-[var(--meribas-black)]">Job Role</th>
-                                    <th class="px-6 py-4 font-bold text-[var(--meribas-black)]">Department</th>
-                                    <th class="px-6 py-4 font-bold text-[var(--meribas-black)]">Stage</th>
-                                    <th class="px-6 py-4 font-bold text-[var(--meribas-black)]">Security Level</th>
-                                    <th class="px-6 py-4 font-bold text-[var(--meribas-black)] text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50">
-                                <tr *ngFor="let job of jobs"
-                                    class="hover:bg-gray-50 transition-colors cursor-pointer group"
-                                    [routerLink]="['/jobs', job.id]">
-                                    <td class="px-6 py-4 font-bold text-[var(--meribas-black)]">{{ job.title }}</td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
-                                            Engineering <!-- Mock Data -->
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-1">
-                                            <!-- 4 segment progress bar visual -->
-                                            <div class="w-8 h-2 rounded-sm bg-[var(--accent-green-600)]"></div>
-                                            <div class="w-8 h-2 rounded-sm bg-[var(--accent-green-600)]"></div>
-                                            <div class="w-8 h-2 rounded-sm bg-gray-200"></div>
-                                            <div class="w-8 h-2 rounded-sm bg-gray-200"></div>
-                                            <span class="ml-3 text-xs font-medium text-gray-500">Interviewing</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center text-gray-500">
-                                            <svg class="w-4 h-4 mr-2 text-[var(--accent-green-600)]" fill="none"
-                                                stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                                </path>
-                                            </svg>
-                                            <span class="text-xs font-medium">Proctoring ON</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
-                                        <button
-                                            class="p-2 text-gray-400 hover:text-[var(--meribas-black)] opacity-0 group-hover:opacity-100 transition-opacity"
-                                            title="Edit">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                        <button
-                                            class="p-2 text-gray-400 hover:text-[var(--meribas-black)] opacity-0 group-hover:opacity-100 transition-opacity"
-                                            title="Pause">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
-
             </div>
-        </main>
-    </div>
-</div>
