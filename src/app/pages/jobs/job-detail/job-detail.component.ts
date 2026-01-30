@@ -8,10 +8,10 @@ import { TopbarWhiteComponent } from '../../../components/layout/topbar-white/to
 import { CardBaseComponent } from '../../../components/cards/card-base/card-base.component';
 
 @Component({
-    selector: 'app-job-detail',
-    standalone: true,
-    imports: [CommonModule, RouterModule, SidebarBlackComponent, TopbarWhiteComponent, CardBaseComponent],
-    template: `
+   selector: 'app-job-detail',
+   standalone: true,
+   imports: [CommonModule, RouterModule, SidebarBlackComponent, TopbarWhiteComponent, CardBaseComponent],
+   template: `
     <div class="flex h-screen overflow-hidden bg-[var(--meribas-smoke)]">
       <app-sidebar-black></app-sidebar-black>
       <div class="flex flex-1 flex-col overflow-hidden">
@@ -96,26 +96,26 @@ import { CardBaseComponent } from '../../../components/cards/card-base/card-base
       </div>
     </div>
   `,
-    styles: [`
+   styles: [`
     .btn-secondary {
        @apply inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50;
     }
   `]
 })
 export class JobDetailComponent implements OnInit {
-    job: Job | null = null;
+   job: Job | null = null;
 
-    constructor(
-        private route: ActivatedRoute,
-        private jobService: JobService
-    ) { }
+   constructor(
+      private route: ActivatedRoute,
+      private jobService: JobService
+   ) { }
 
-    ngOnInit() {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id) {
-            this.jobService.getJob(+id).subscribe(res => {
-                this.job = res.job;
-            });
-        }
-    }
+   ngOnInit() {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+         this.jobService.getJob(id).subscribe(res => {
+            this.job = res;
+         });
+      }
+   }
 }

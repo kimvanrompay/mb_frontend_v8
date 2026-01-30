@@ -79,7 +79,7 @@ export class JobEditComponent implements OnInit {
     jobForm: FormGroup;
     isEditMode = false;
     isSubmitting = false;
-    jobId: number | null = null;
+    jobId: string | null = null;
 
     constructor(
         private fb: FormBuilder,
@@ -96,14 +96,16 @@ export class JobEditComponent implements OnInit {
     }
 
     ngOnInit() {
-        const id = this.route.snapshot.paramMap.get('id');
-        if (id) {
-            this.isEditMode = true;
-            this.jobId = +id;
-            this.jobService.getJob(this.jobId).subscribe(res => {
-                this.jobForm.patchValue(res.job);
-            });
-        }
+        this.route.paramMap.subscribe(params => {
+            const id = params.get('id');
+            if (id) {
+                this.isEditMode = true;
+                this.jobId = id;
+                this.jobService.getJob(id).subscribe(res => {
+                    this.jobForm.patchValue(res);
+                });
+            }
+        });
     }
 
     onSubmit() {
@@ -111,14 +113,14 @@ export class JobEditComponent implements OnInit {
             this.isSubmitting = true;
             const jobData = this.jobForm.value;
 
-            const request = this.isEditMode && this.jobId
+            const request = this.jobId
                 ? this.jobService.updateJob(this.jobId, jobData)
                 : this.jobService.createJob(jobData);
 
             request.subscribe({
                 next: () => this.router.navigate(['/jobs']),
                 error: (err) => {
-                    console.error(err);
+                    console.error('Error saving job:', err);
                     this.isSubmitting = false;
                 }
             });
