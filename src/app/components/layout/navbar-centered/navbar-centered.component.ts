@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-navbar-centered',
@@ -12,34 +12,24 @@ import { AuthService } from '../../../services/auth.service';
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           
-          <!-- Logo (Left) -->
-          <div class="flex-shrink-0">
-             <a routerLink="/dashboard" class="flex items-center gap-2 group">
-                <div class="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white font-bold font-mono group-hover:bg-gray-800 transition-colors">
-                    {{ user.tenant?.name?.charAt(0) || 'M' }}
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-sm font-bold tracking-tight text-black leading-none">{{ user.tenant?.name || 'Meribas' }}</span>
-                    <span class="text-[10px] uppercase font-mono text-gray-500 leading-none mt-0.5">Production</span>
-                </div>
-             </a>
-          </div>
+          <!-- Context/Breadcrumb (Left) -->
+          <div class="flex items-center gap-4">
+             <!-- Mobile Menu Button (Visible only on small screens) -->
+             <button class="md:hidden text-gray-500 hover:text-black">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+             </button>
 
-          <!-- Centered Navigation -->
-          <div class="hidden md:block">
-            <div class="flex items-baseline space-x-1">
-              <a routerLink="/dashboard" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Dashboard</a>
-              <a routerLink="/jobs" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Jobs</a>
-              <a routerLink="/applications" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Applications</a>
-              <a routerLink="/candidates" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Candidates</a>
-              <a routerLink="/collections" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Collections</a>
-              <a routerLink="/certs" routerLinkActive="bg-black/5 text-black font-semibold" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:text-black hover:bg-black/5 transition-all">Certs</a>
-            </div>
+             <div class="flex flex-col">
+                <div class="flex items-center text-xs font-mono text-gray-500 gap-2">
+                    <span>{{ user.tenant?.name || 'Meribas' }}</span>
+                    <span>/</span>
+                    <span class="text-black font-semibold">Production</span>
+                </div>
+             </div>
           </div>
 
           <!-- User Profile (Right) -->
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6 gap-4">
+          <div class="flex items-center gap-4">
               <button class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none">
                 <span class="sr-only">View notifications</span>
                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,9 +42,8 @@ import { AuthService } from '../../../services/auth.service';
                   <img class="h-6 w-6 rounded-full border border-gray-200" 
                        [src]="'https://ui-avatars.com/api/?name=' + (user.full_name || 'User') + '&background=000&color=fff&size=64'" 
                        alt="">
-                  <span class="text-sm font-medium text-gray-700">{{ user.first_name }}</span>
+                  <span class="text-sm font-medium text-gray-700 hidden md:block">{{ user.first_name }}</span>
               </div>
-            </div>
           </div>
         </div>
       </div>
