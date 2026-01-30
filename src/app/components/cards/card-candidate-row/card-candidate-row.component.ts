@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-card-candidate-row',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-card-candidate-row',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="flex items-center justify-between py-3 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer px-2 rounded-md">
       <div class="flex items-center">
         <!-- Status Dot aka Live Feed Pulse -->
@@ -30,22 +30,23 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-    styles: []
+  styles: []
 })
 export class CardCandidateRowComponent {
-    @Input() name: string = '';
-    @Input() testName: string = '';
-    @Input() status: string = 'Active';
-    @Input() isLive: boolean = false;
-    @Input() avatarUrl: string | null = null;
+  @Input() name: string = '';
+  @Input() testName: string = '';
+  @Input() status: string = 'Active';
+  @Input() isLive: boolean = false;
+  @Input() avatarUrl: string | null = null;
+  @Input() score: number = 0;
 
-    get initials(): string {
-        return this.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-    }
+  get initials(): string {
+    return this.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  }
 
-    get statusClass(): string {
-        if (this.status === 'Verified' || this.status === 'Passed') return 'verified';
-        if (this.status === 'Suspicious' || this.status === 'Flagged') return 'suspicious';
-        return '';
-    }
+  get statusClass(): string {
+    if (this.status === 'Verified' || this.status === 'Passed') return 'verified';
+    if (this.status === 'Suspicious' || this.status === 'Flagged') return 'suspicious';
+    return '';
+  }
 }
