@@ -95,7 +95,7 @@
                 Recent Candidates
             </h3>
             <a routerLink="/candidates"
-                class="text-xs font-mono text-gray-500 hover:text-green-700 transition-colors">VIEW ALL →</a>
+                class="text-xs font-mono text-green-600 hover:text-green-700 transition-colors">VIEW ALL →</a>
         </div>
         <div class="space-y-2">
             <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role" [score]="c.score"
@@ -118,8 +118,7 @@
                 <div class="flex-1">
                     <h4 class="text-sm font-medium text-orange-900">Security Alert</h4>
                     <p class="text-xs text-orange-700 mt-1">2 candidates flagged for suspicious activity</p>
-                    <button
-                        class="mt-2 text-xs font-medium text-orange-600 hover:text-orange-700 hover:underline">Review
+                    <button class="mt-2 text-xs font-medium text-green-600 hover:text-green-700 hover:underline">Review
                         Incidents →</button>
                 </div>
             </div>
