@@ -115,10 +115,10 @@
 
 <!-- KPI Grid - Expanded to 6 metrics with color accents -->
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-    <app-card-kpi title="Active Positions" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
+    <app-card-kpi title="Active Positions" value="{{ stats.activePositions }}" [trend]="12"></app-card-kpi>
     <app-card-kpi title="Total Candidates" value="{{ stats.totalCandidates }}" [trend]="8"></app-card-kpi>
     <app-card-kpi title="In Assessment" value="{{ stats.inAssessment }}" [trend]="5"></app-card-kpi>
-    <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-3"
+    <app-card-kpi title="Reviews Pending" value="{{ stats.reviewsPending }}" [trend]="-3"
         variant="warning"></app-card-kpi>
     <app-card-kpi title="Avg. Integrity" value="{{ stats.avgIntegrity }}%" [trend]="4" variant="success"></app-card-kpi>
     <app-card-kpi title="Completion Rate" value="{{ stats.completionRate }}%" [trend]="6"
