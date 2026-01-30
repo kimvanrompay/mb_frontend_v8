@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap, catchError } from 'rxjs/operators';
 import { Job, CreateJobRequest } from '../models/job.model';
 import { environment } from '../../environments/environment';
 
@@ -23,7 +23,12 @@ export class JobService {
             params = params.set('status', status);
         }
         return this.http.get<{ jobs: Job[] }>(this.apiUrl, { params }).pipe(
-            map(response => response.jobs)
+            tap(response => console.log('Jobs API response:', response)),
+            map(response => response.jobs || []),
+            catchError(error => {
+                console.error('Jobs API error:', error);
+                throw error;
+            })
         );
     }
 
