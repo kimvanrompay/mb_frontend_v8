@@ -45,6 +45,8 @@ export class JobsComponent implements OnInit {
                 this.loading = false;
             },
             error: (err) => {
+                this.jobs = []; // Ensure jobs is always an array
+                this.filteredJobs = [];
                 this.error = 'Failed to load jobs. Please try again.';
                 this.loading = false;
                 console.error('Error loading jobs:', err);
