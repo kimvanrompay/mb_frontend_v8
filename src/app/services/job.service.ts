@@ -22,7 +22,15 @@ export class JobService {
         if (status) {
             params = params.set('status', status);
         }
-        return this.http.get<{ jobs: Job[] }>(this.apiUrl, { params }).pipe(
+
+        // Add cache-busting headers to prevent 304 responses
+        const headers = {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        };
+
+        return this.http.get<{ jobs: Job[] }>(this.apiUrl, { params, headers }).pipe(
             tap(response => console.log('Jobs API response:', response)),
             map(response => response.jobs || []),
             catchError(error => {
