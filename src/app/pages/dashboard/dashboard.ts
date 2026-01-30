@@ -40,9 +40,16 @@ export class DashboardComponent implements OnInit {
 
   stats = {
     activeJobs: 12,
+    totalCandidates: 248,
+    inAssessment: 34,
     pendingReviews: 5,
     interviewsToday: 3,
-    avgIntegrity: 94
+    avgIntegrity: 94,
+    completionRate: 87,
+    testsStarted: 18,
+    testsCompleted: 12,
+    liveNow: 3,
+    avgDuration: 42
   };
 
   recentCandidates = [

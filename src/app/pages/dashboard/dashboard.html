@@ -1,95 +1,100 @@
 <!-- Dashboard Content -->
 
 <!-- Header -->
-<div class="mb-4 flex items-center justify-between">
+<div class="mb-6 flex items-center justify-between">
     <h1 class="text-lg font-medium text-[var(--meribas-black)] tracking-tight">Overview</h1>
     <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
 </div>
 
-<!-- KPI Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-    <app-card-kpi title="Active Jobs" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
-    <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-5"
+<!-- KPI Grid - Expanded to 6 metrics -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
+    <app-card-kpi title="Active Positions" value="{{ stats.activeJobs }}" [trend]="12"></app-card-kpi>
+    <app-card-kpi title="Total Candidates" value="{{ stats.totalCandidates }}" [trend]="8"></app-card-kpi>
+    <app-card-kpi title="In Assessment" value="{{ stats.inAssessment }}" [trend]="5"></app-card-kpi>
+    <app-card-kpi title="Reviews Pending" value="{{ stats.pendingReviews }}" [trend]="-3"
         variant="warning"></app-card-kpi>
-    <app-card-kpi title="Interviews" value="{{ stats.interviewsToday }}" [trend]="2"></app-card-kpi>
-    <app-card-kpi title="Integrity Avg" value="{{ stats.avgIntegrity }}%" [trend]="4" variant="success"></app-card-kpi>
+    <app-card-kpi title="Avg. Integrity" value="{{ stats.avgIntegrity }}%" [trend]="4" variant="success"></app-card-kpi>
+    <app-card-kpi title="Completion Rate" value="{{ stats.completionRate }}%" [trend]="6"
+        variant="success"></app-card-kpi>
 </div>
 
-<!-- Main Content Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<!-- Symmetric 3-Column Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
 
-    <!-- Left Column (Charts) -->
-    <div class="lg:col-span-2 space-y-4">
+    <!-- Column 1: Capability Assessment -->
+    <div class="meribas-card h-80">
+        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4">Capability Assessment</h3>
+        <app-skill-breakdown></app-skill-breakdown>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Skill Breakdown -->
-            <div class="meribas-card h-64">
-                <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-2">Capability</h3>
-                <app-skill-breakdown></app-skill-breakdown>
+    <!-- Column 2: System Trust Score -->
+    <div class="meribas-card h-80">
+        <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+            <h3 class="text-sm font-medium">System Trust</h3>
+            <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
+        </div>
+        <app-gauge-trust></app-gauge-trust>
+    </div>
+
+    <!-- Column 3: Application Sources -->
+    <div class="meribas-card h-80">
+        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4">Application Sources</h3>
+        <div class="flex flex-col justify-center h-full space-y-4 px-2">
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-mono text-gray-600">LinkedIn</span>
+                    <span class="font-medium text-black">45%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full">
+                    <div class="bg-black h-2 rounded-full transition-all" style="width: 45%"></div>
+                </div>
             </div>
 
-            <!-- Application Sources (Replaces Radar) -->
-            <div class="meribas-card h-64">
-                <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-2">Sources</h3>
-                <div class="flex flex-col justify-center h-full space-y-3 px-2">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-mono text-gray-600">LinkedIn</span>
-                        <span class="font-bold text-black">45%</span>
-                    </div>
-                    <div class="w-full bg-gray-100 h-1 rounded-full">
-                        <div class="bg-black h-1 rounded-full" style="width: 45%"></div>
-                    </div>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-mono text-gray-600">Direct Application</span>
+                    <span class="font-medium text-black">30%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full">
+                    <div class="bg-gray-400 h-2 rounded-full transition-all" style="width: 30%"></div>
+                </div>
+            </div>
 
-                    <div class="flex justify-between items-center text-xs mt-1">
-                        <span class="font-mono text-gray-600">Direct</span>
-                        <span class="font-bold text-black">30%</span>
-                    </div>
-                    <div class="w-full bg-gray-100 h-1 rounded-full">
-                        <div class="bg-gray-400 h-1 rounded-full" style="width: 30%"></div>
-                    </div>
-
-                    <div class="flex justify-between items-center text-xs mt-1">
-                        <span class="font-mono text-gray-600">Referral</span>
-                        <span class="font-bold text-black">25%</span>
-                    </div>
-                    <div class="w-full bg-gray-100 h-1 rounded-full">
-                        <div class="bg-gray-300 h-1 rounded-full" style="width: 25%"></div>
-                    </div>
+            <div class="space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="font-mono text-gray-600">Referral</span>
+                    <span class="font-medium text-black">25%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full">
+                    <div class="bg-gray-300 h-2 rounded-full transition-all" style="width: 25%"></div>
                 </div>
             </div>
         </div>
-
-        <!-- Trust Gauge -->
-        <div class="meribas-card">
-            <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                <h3 class="text-sm font-medium">System Trust</h3>
-                <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-black">VERIFIED</span>
-            </div>
-            <app-gauge-trust></app-gauge-trust>
-        </div>
-
     </div>
 
-    <!-- Right Column (Feed/Lists) -->
-    <div class="space-y-4">
+</div>
 
-        <!-- Recent Candidates -->
-        <div class="meribas-card">
-            <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                <h3 class="text-sm font-medium">Candidates</h3>
-                <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black">VIEW
-                    ALL</a>
-            </div>
-            <div class="space-y-2">
-                <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role"
-                    [score]="c.score" [status]="c.status"></app-card-candidate-row>
-            </div>
+<!-- Two-Column Bottom Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <!-- Recent Candidates -->
+    <div class="meribas-card">
+        <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+            <h3 class="text-sm font-medium">Recent Candidates</h3>
+            <a routerLink="/candidates" class="text-xs font-mono text-gray-500 hover:text-black transition-colors">VIEW
+                ALL</a>
         </div>
+        <div class="space-y-2">
+            <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role" [score]="c.score"
+                [status]="c.status"></app-card-candidate-row>
+        </div>
+    </div>
 
-        <!-- Alert -->
+    <!-- Proctoring Alerts & Activity -->
+    <div class="space-y-4">
+        <!-- Security Alert -->
         <div class="meribas-card border-l-4 border-black">
             <div class="flex items-start gap-3">
-                <!-- Icon omitted for brutality or kept simple? Kept simple SVG -->
                 <div class="mt-0.5">
                     <svg class="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -97,12 +102,36 @@
                         </path>
                     </svg>
                 </div>
-                <div>
+                <div class="flex-1">
                     <h4 class="text-sm font-medium text-black">Security Alert</h4>
-                    <p class="text-xs text-gray-600 mt-1">2 candidates flagged for tab switching.</p>
-                    <button class="mt-2 text-xs font-bold underline decoration-1 underline-offset-2">Review</button>
+                    <p class="text-xs text-gray-600 mt-1">2 candidates flagged for suspicious activity</p>
+                    <button class="mt-2 text-xs font-medium text-black hover:underline">Review Incidents →</button>
                 </div>
-
             </div>
-
         </div>
+
+        <!-- Quick Stats -->
+        <div class="meribas-card">
+            <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-3">Today's Activity</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Tests Started</div>
+                    <div class="text-2xl font-medium font-mono text-black">{{ stats.testsStarted }}</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Completed</div>
+                    <div class="text-2xl font-medium font-mono text-black">{{ stats.testsCompleted }}</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Live Now</div>
+                    <div class="text-2xl font-medium font-mono text-green-700">{{ stats.liveNow }}</div>
+                </div>
+                <div>
+                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Avg. Duration</div>
+                    <div class="text-2xl font-medium font-mono text-black">{{ stats.avgDuration }}m</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
