@@ -90,6 +90,10 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/invite-friend/invite-friend.component').then(m => m.InviteFriendComponent)
             },
             {
+                path: 'team-upgrade',
+                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+            },
+            {
                 path: 'settings',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },

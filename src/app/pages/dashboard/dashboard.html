@@ -3,7 +3,47 @@
 <!-- Header -->
 <div class="mb-6 flex items-center justify-between">
     <h1 class="text-lg font-medium text-[var(--meribas-black)] tracking-tight">Overview</h1>
-    <div class="text-xs font-mono text-gray-500">Last updated: Just now</div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-3">
+        <!-- Add Team Members Button (with upgrade tooltip) -->
+        <div class="relative group">
+            <a routerLink="/team-upgrade"
+                class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors cursor-pointer">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                Add Team Members
+            </a>
+
+            <!-- Tooltip -->
+            <div
+                class="absolute top-full mt-2 right-0 w-80 p-4 bg-black text-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <div class="flex items-start gap-3">
+                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
+                        <span class="text-xs font-bold">PRO</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium mb-1">Upgrade to add team members</h4>
+                        <p class="text-xs text-gray-300 leading-relaxed">Collaborate with your team and access powerful
+                            platform features with a Professional plan.</p>
+                    </div>
+                </div>
+                <!-- Arrow -->
+                <div class="absolute -top-1 right-8 w-2 h-2 bg-black transform rotate-45"></div>
+            </div>
+        </div>
+
+        <!-- Add New Position Button -->
+        <a routerLink="/jobs/new"
+            class="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            New Position
+        </a>
+    </div>
 </div>
 
 <!-- KPI Grid - Expanded to 6 metrics with color accents -->
