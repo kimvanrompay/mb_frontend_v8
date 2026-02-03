@@ -224,7 +224,7 @@
                             </div>
                             
                             <!-- Event Metadata -->
-                            <div *ngIf="event.metadata && Object.keys(event.metadata).length > 0" 
+                            <div *ngIf="hasMetadata(event.metadata)" 
                                  class="mt-2 text-sm bg-gray-50 rounded p-2">
                                 <pre class="text-xs text-gray-600 overflow-x-auto">{{ event.metadata | json }}</pre>
                             </div>

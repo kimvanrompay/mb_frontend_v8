@@ -98,4 +98,8 @@ export class CandidateDetailComponent implements OnInit {
             word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
     }
+
+    hasMetadata(metadata: any): boolean {
+        return metadata && Object.keys(metadata).length > 0;
+    }
 }
