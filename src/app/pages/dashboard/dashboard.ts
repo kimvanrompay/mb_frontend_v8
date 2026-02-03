@@ -43,16 +43,16 @@ export class DashboardComponent implements OnInit {
   error: string | null = null;
 
   stats = {
-    activePositions: 1, // Start with 1 position
-    totalCandidates: 248,
-    inAssessment: 34,
-    completionRate: 87,
-    avgIntegrity: 94,
-    reviewsPending: 5,
-    testsStarted: 156,
-    testsCompleted: 142,
-    liveNow: 3,
-    avgDuration: 42
+    activePositions: 0, // From API: tenantStats.total_jobs
+    totalCandidates: 'N/A' as any, // API needed: /candidates/stats
+    inAssessment: 'N/A' as any, // API needed: /assessments/stats (in_progress)
+    completionRate: 'N/A' as any, // API available from assessmentStats.completion_rate
+    avgIntegrity: 'N/A' as any, // API needed: /proctoring/stats (avg_integrity_score)
+    reviewsPending: 'N/A' as any, // API needed: /assessments/stats (pending_review)
+    testsStarted: 'N/A' as any, // API needed: /assessments/stats (started_today)
+    testsCompleted: 'N/A' as any, // API needed: /assessments/stats (completed_today)
+    liveNow: 'N/A' as any, // API needed: /assessments/stats (live_now)
+    avgDuration: 'N/A' as any, // API available from assessmentStats.average_completion_time
   };
 
   isTrialMode = true; // Track if user is in trial mode
@@ -62,10 +62,9 @@ export class DashboardComponent implements OnInit {
     return !this.isTrialMode || this.stats.activePositions < this.maxPositionsInTrial;
   }
 
+  // API needed: /candidates/recent
   recentCandidates = [
-    { name: 'Alice Freeman', role: 'Senior Python Engineer', score: 92, status: 'Active' },
-    { name: 'Bob Smith', role: 'Product Manager', score: 88, status: 'Review' },
-    { name: 'Charlie Davis', role: 'UX Designer', score: 95, status: 'Verified' },
+    { name: 'N/A', role: 'N/A', score: 0, status: 'N/A' },
   ];
 
   constructor(
@@ -149,10 +148,17 @@ export class DashboardComponent implements OnInit {
         this.subscription = results.tenantResponse.tenant.subscription;
         this.assessmentStats = results.assessmentStats;
 
-        // Map API data to view models if needed
+        // Map API data to stats where available
         if (this.tenantStats) {
-          // this.stats.activeJobs = this.tenantStats.active_jobs || 0;
-          // Keep mock stats for now as requested unless API has them all
+          this.stats.activePositions = this.tenantStats.total_jobs || 0;
+          // totalCandidates: this.tenantStats.total_candidates (if available, currently shows N/A)
+        }
+
+        if (this.assessmentStats) {
+          this.stats.completionRate = Math.round(this.assessmentStats.completion_rate) || 'N/A';
+          if (this.assessmentStats.average_completion_time) {
+            this.stats.avgDuration = Math.round(this.assessmentStats.average_completion_time / 60) || 'N/A'; // Convert seconds to minutes
+          }
         }
       },
       error: (err) => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +25,10 @@ export class JobsComponent implements OnInit {
 
     departments: string[] = [];
 
-    constructor(private jobService: JobService) { }
+    constructor(
+        private jobService: JobService,
+        private cdr: ChangeDetectorRef
+    ) { }
 
     ngOnInit() {
         this.loadJobs();
@@ -34,6 +37,7 @@ export class JobsComponent implements OnInit {
     loadJobs() {
         this.loading = true;
         this.error = null;
+        this.cdr.detectChanges(); // Force immediate UI update
 
         const statusParam = this.statusFilter === 'all' ? undefined : this.statusFilter;
 
@@ -43,12 +47,14 @@ export class JobsComponent implements OnInit {
                 this.extractDepartments();
                 this.applyFilters();
                 this.loading = false;
+                this.cdr.detectChanges(); // Force UI update after loading
             },
             error: (err) => {
                 this.jobs = []; // Ensure jobs is always an array
                 this.filteredJobs = [];
                 this.error = 'Failed to load jobs. Please try again.';
                 this.loading = false;
+                this.cdr.detectChanges(); // Force UI update on error
                 console.error('Error loading jobs:', err);
             }
         });
