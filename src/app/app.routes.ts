@@ -50,10 +50,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
             {
-                path: 'jobs',
-                loadComponent: () => import('./pages/jobs/jobs.component').then(m => m.JobsComponent)
-            },
-            {
                 path: 'candidates',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
