@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Candidate } from '../../models/candidate.model';
 import { CandidateService } from '../../services/candidate.service';
@@ -36,7 +36,8 @@ export class CandidatesComponent implements OnInit {
 
     constructor(
         private candidateService: CandidateService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private router: Router
     ) { }
 
     ngOnInit() {
@@ -95,6 +96,10 @@ export class CandidatesComponent implements OnInit {
                     return 0;
             }
         });
+    }
+
+    onCardClick(candidate: Candidate) {
+        this.router.navigate(['/candidates', candidate.id]);
     }
 
     getStatusBadgeClass(status: string): string {
