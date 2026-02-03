@@ -49,10 +49,14 @@ export const routes: Routes = [
                 path: 'applications',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
             },
-            {
-                path: 'candidates',
-                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
-            },
+                {
+                    path: 'candidates',
+                    loadComponent: () => import('./pages/candidates/candidates.component').then(m => m.CandidatesComponent)
+                },
+                {
+                    path: 'candidates/:id',
+                    loadComponent: () => import('./pages/candidates/candidate-detail/candidate-detail.component').then(m => m.CandidateDetailComponent)
+                },
             {
                 path: 'invitations',
                 loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
