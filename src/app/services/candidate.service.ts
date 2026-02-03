@@ -55,7 +55,7 @@ export class CandidateService {
     /**
      * GET /api/v1/candidates/:id - Get candidate details
      */
-    getCandidate(id: number): Observable<CandidateDetail> {
+    getCandidate(id: string): Observable<CandidateDetail> {
         return this.http.get<CandidateResponse>(`${this.apiUrl}/${id}`).pipe(
             map(response => response.candidate)
         );
@@ -73,7 +73,7 @@ export class CandidateService {
     /**
      * PATCH /api/v1/candidates/:id - Update candidate
      */
-    updateCandidate(id: number, request: Partial<CreateCandidateRequest>): Observable<Candidate> {
+    updateCandidate(id: string, request: Partial<CreateCandidateRequest>): Observable<Candidate> {
         return this.http.patch<CandidateResponse>(`${this.apiUrl}/${id}`, request).pipe(
             map(response => response.candidate)
         );
@@ -82,7 +82,7 @@ export class CandidateService {
     /**
      * DELETE /api/v1/candidates/:id - Delete candidate
      */
-    deleteCandidate(id: number): Observable<{ message: string }> {
+    deleteCandidate(id: string): Observable<{ message: string }> {
         return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
     }
 
@@ -97,8 +97,8 @@ export class CandidateService {
     /**
      * POST /api/v1/candidates/invite - Invite candidate to apply
      */
-    inviteCandidate(request: InviteCandidateRequest): Observable<{ candidate_id: number; invitation_sent: boolean; message: string }> {
-        return this.http.post<{ candidate_id: number; invitation_sent: boolean; message: string }>(
+    inviteCandidate(request: InviteCandidateRequest): Observable<{ candidate_id: string; invitation_sent: boolean; message: string }> {
+        return this.http.post<{ candidate_id: string; invitation_sent: boolean; message: string }>(
             `${this.apiUrl}/invite`,
             request
         );
@@ -107,7 +107,7 @@ export class CandidateService {
     /**
      * POST /api/v1/candidates/:id/resend_invitation - Resend invitation
      */
-    resendInvitation(id: number): Observable<{ invitation_sent: boolean; message: string }> {
+    resendInvitation(id: string): Observable<{ invitation_sent: boolean; message: string }> {
         return this.http.post<{ invitation_sent: boolean; message: string }>(
             `${this.apiUrl}/${id}/resend_invitation`,
             {}

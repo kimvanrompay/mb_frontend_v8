@@ -24,11 +24,11 @@ export class CandidateDetailComponent implements OnInit {
     ngOnInit() {
         const id = this.route.snapshot.paramMap.get('id');
         if (id) {
-            this.loadCandidate(parseInt(id));
+            this.loadCandidate(id);
         }
     }
 
-    loadCandidate(id: number) {
+    loadCandidate(id: string) {
         this.loading = true;
         this.error = null;
 

@@ -1,5 +1,5 @@
 export interface Candidate {
-    id: number;
+    id: string;
     first_name: string;
     last_name: string;
     full_name: string;
@@ -10,17 +10,17 @@ export interface Candidate {
     preferred_language: string;
     cv_url: string | null;
     applications_count: number;
-    latest_application_id: number | null;
+    latest_application_id: string | null;
     created_at: string;
     updated_at: string;
     // Optional invitation fields (when source is 'invited')
     invitation_status?: string | null;
     invited_by?: {
-        id: number;
+        id: string;
         name: string;
     } | null;
     invited_for_job?: {
-        id: number;
+        id: string;
         title: string;
     } | null;
     invitation_sent_at?: string | null;
@@ -35,7 +35,7 @@ export interface CandidateDetail extends Candidate {
 }
 
 export interface ApplicationSummary {
-    id: number;
+    id: string;
     position_applied: string;
     status: string;
     mbti_result: string | null;
@@ -48,7 +48,7 @@ export interface CandidateEvent {
     id: number;
     event_type: string;
     triggered_by: {
-        id: number;
+        id: string;
         name: string;
     } | null;
     metadata: any;
@@ -76,7 +76,7 @@ export interface CreateCandidateRequest {
 }
 
 export interface InviteCandidateRequest {
-    job_id: number;
+    job_id: string;
     first_name: string;
     last_name: string;
     email: string;
@@ -87,7 +87,7 @@ export interface InviteCandidateRequest {
 export interface CheckEmailResponse {
     exists: boolean;
     candidate?: {
-        id: number;
+        id: string;
         full_name: string;
         status: string;
         source: string;

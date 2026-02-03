@@ -26,7 +26,7 @@ export class CandidatesComponent implements OnInit {
     // For invite modal
     isInviteModalOpen = false;
     inviteForm = {
-        job_id: 0,
+        job_id: '',
         first_name: '',
         last_name: '',
         email: '',
@@ -157,7 +157,7 @@ export class CandidatesComponent implements OnInit {
 
     resetInviteForm() {
         this.inviteForm = {
-            job_id: 0,
+            job_id: '',
             first_name: '',
             last_name: '',
             email: '',
