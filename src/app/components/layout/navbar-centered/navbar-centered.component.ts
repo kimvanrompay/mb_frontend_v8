@@ -57,7 +57,7 @@ import { filter, map } from 'rxjs/operators';
                 <div class="px-4 py-3 border-b border-gray-100">
                   <p class="text-sm font-medium text-gray-900">{{ user.full_name }}</p>
                   <p class="text-xs text-gray-500 mt-1">{{ user.email }}</p>
-                  <p class="text-[10px] text-gray-400 font-mono mt-2">Tenant: {{ user.tenant?.id || 'N/A' }}</p>
+                  <p class="text-[10px] text-gray-400 font-mono mt-2">Tenant: {{ user.tenant.id || 'N/A' }}</p>
                 </div>
                 
                 <a routerLink="/settings" (click)="closeDropdown()"
