@@ -101,77 +101,172 @@
                     Invite Candidate
                 </button>
             </div>
+            <!-- Candidates Grid -->
+            <div *ngIf="filteredCandidates.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Candidate Card -->
+                <div *ngFor="let candidate of filteredCandidates" (click)="onCardClick(candidate)"
+                    class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer flex flex-col overflow-hidden group h-full">
 
+                    <!-- Header -->
+                    <div class="p-5 border-b border-gray-100 flex items-start justify-between">
+                        <div class="flex items-center gap-3">
+                            <!-- Avatar -->
+                            <div
+                                class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                                {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
+                            </div>
+                            <!-- Info -->
+                            <div>
+                                <h3
+                                    class="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+                                    {{ candidate.full_name }}
+                                </h3>
+                                <div class="text-[11px] text-gray-500 flex flex-col leading-tight mt-0.5">
+                                    <span class="truncate max-w-[140px]">{{ candidate.email }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Status Badge -->
+                        <span
+                            [class]="'flex-shrink-0 px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-full border ' + getStatusBadgeClass(candidate.status)">
+                            {{ formatStatus(candidate.status) }}
+                        </span>
+                    </div>
+
+                    <!-- KPI Grid (Middle) -->
+                    <div class="p-4 bg-gray-50/50 flex-1 flex flex-col justify-center">
+                        <div class="grid grid-cols-2 gap-3 w-full">
+                            <!-- Expectation -->
+                            <div
+                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
+                                <div
+                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
+                                    Expectation</div>
+                                <div class="h-12 flex items-center justify-center transition-colors"
+                                    [ngStyle]="getScoreStyle(candidate.expectation_match, 'green')">
+                                    <span class="text-sm font-bold shadow-sm"
+                                        [class.text-white]="(candidate.expectation_match || 0) > 60">{{
+                                        candidate.expectation_match ? candidate.expectation_match + '%' : '-' }}</span>
+                                </div>
+                            </div>
+                            <!-- Values -->
+                            <div
+                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
+                                <div
+                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
+                                    Values</div>
+                                <div class="h-12 flex items-center justify-center transition-colors"
+                                    [ngStyle]="getScoreStyle(candidate.values_match, 'blue')">
+                                    <span class="text-sm font-bold shadow-sm"
+                                        [class.text-white]="(candidate.values_match || 0) > 60">{{
+                                        candidate.values_match ? candidate.values_match + '%' : '-' }}</span>
+                                </div>
+                            </div>
+                            <!-- Potential -->
+                            <div
+                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
+                                <div
+                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
+                                    Potential</div>
+                                <div class="h-12 flex items-center justify-center transition-colors"
+                                    [ngStyle]="getScoreStyle(candidate.potential_match, 'purple')">
+                                    <span class="text-sm font-bold shadow-sm"
+                                        [class.text-white]="(candidate.potential_match || 0) > 60">{{
+                                        candidate.potential_match ? candidate.potential_match + '%' : '-' }}</span>
+                                </div>
+                            </div>
+                            <!-- Skills -->
+                            <div
+                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
+                                <div
+                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
+                                    Skills</div>
+                                <div class="h-12 flex items-center justify-center transition-colors"
+                                    [ngStyle]="getScoreStyle(candidate.skills_match, 'orange')">
+                                    <span class="text-sm font-bold shadow-sm"
+                                        [class.text-white]="(candidate.skills_match || 0) > 60">{{
+                                        candidate.skills_match ? candidate.skills_match + '%' : '-' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 py-3 bg-white border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-[10px] text-gray-400">
+                            Added {{ getTimeAgo(candidate.created_at) }}
+                        </div>
+                        <div
+                            class="flex gap-2 text-indigo-600 text-xs font-medium group-hover:translate-x-1 transition-transform">
+                            View Profile &rarr;
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
-        </td>
-        </tr>
-        </tbody>
-        </table>
-    </div>
-</div>
-</div>
-</div>
-</div>
+        <!-- Invite Candidate Modal -->
+        <div *ngIf="isInviteModalOpen"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Invite Candidate</h2>
 
-<!-- Invite Candidate Modal -->
-<div *ngIf="isInviteModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Invite Candidate</h2>
+                <form (ngSubmit)="inviteCandidate()" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                        <input type="text" [(ngModel)]="inviteForm.first_name" name="first_name" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
 
-        <form (ngSubmit)="inviteCandidate()" class="space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                <input type="text" [(ngModel)]="inviteForm.first_name" name="first_name" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                        <input type="text" [(ngModel)]="inviteForm.last_name" name="last_name" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                        <input type="email" [(ngModel)]="inviteForm.email" name="email" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <input type="tel" [(ngModel)]="inviteForm.phone" name="phone"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Job Position *</label>
+                        <input type="number" [(ngModel)]="inviteForm.job_id" name="job_id" required
+                            placeholder="Enter Job ID"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                        <p class="text-xs text-gray-500 mt-1">Note: You'll need to select from available jobs in
+                            production</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Language</label>
+                        <select [(ngModel)]="inviteForm.preferred_language" name="language"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                            <option value="en">English</option>
+                            <option value="nl">Nederlands</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="es">Español</option>
+                        </select>
+                    </div>
+
+                    <div class="flex gap-3 pt-4">
+                        <button type="button" (click)="closeInviteModal()"
+                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                            Send Invitation
+                        </button>
+                    </div>
+                </form>
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                <input type="text" [(ngModel)]="inviteForm.last_name" name="last_name" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                <input type="email" [(ngModel)]="inviteForm.email" name="email" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input type="tel" [(ngModel)]="inviteForm.phone" name="phone"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Job Position *</label>
-                <input type="number" [(ngModel)]="inviteForm.job_id" name="job_id" required placeholder="Enter Job ID"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                <p class="text-xs text-gray-500 mt-1">Note: You'll need to select from available jobs in production</p>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Language</label>
-                <select [(ngModel)]="inviteForm.preferred_language" name="language"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
-                    <option value="en">English</option>
-                    <option value="nl">Nederlands</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                    <option value="es">Español</option>
-                </select>
-            </div>
-
-            <div class="flex gap-3 pt-4">
-                <button type="button" (click)="closeInviteModal()"
-                    class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
-                    Cancel
-                </button>
-                <button type="submit"
-                    class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
-                    Send Invitation
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
