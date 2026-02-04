@@ -128,9 +128,63 @@
                 <h2 class="text-lg font-semibold text-gray-900 mb-3">Notes</h2>
                 <p *ngIf="candidate.notes" class="text-gray-700 whitespace-pre-wrap">{{ candidate.notes }}</p>
                 <p *ngIf="!candidate.notes" class="text-gray-500 italic">No notes available</p>
-            </div>
+        </div>
 
-            <!-- Applications -->
+        <!-- Scoring Card (Placeholders) -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-900">Scoring Card</h2>
+                <span class="text-xs text-gray-500">Placeholders • Scores will be auto-calculated from personality tests</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Expectation Match -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-medium text-gray-900">Expectation Match</h3>
+                        <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pending</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Derived from role clarity and onboarding signals (to be computed).</p>
+                    <div class="h-2 bg-gray-100 rounded">
+                        <div class="h-2 bg-gray-300 rounded w-1/6"></div>
+                    </div>
+                </div>
+                <!-- Values Match -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-medium text-gray-900">Values Match</h3>
+                        <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pending</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Will come from integrity and culture fit indicators.</p>
+                    <div class="h-2 bg-gray-100 rounded">
+                        <div class="h-2 bg-gray-300 rounded w-1/6"></div>
+                    </div>
+                </div>
+                <!-- Potential Match -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-medium text-gray-900">Potential Match</h3>
+                        <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pending</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Will be estimated from learning agility signals.</p>
+                    <div class="h-2 bg-gray-100 rounded">
+                        <div class="h-2 bg-gray-300 rounded w-1/6"></div>
+                    </div>
+                </div>
+                <!-- Skills Match -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-medium text-gray-900">Skills Match</h3>
+                        <span class="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pending</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">Will be calculated from skill tests and interviews.</p>
+                    <div class="h-2 bg-gray-100 rounded">
+                        <div class="h-2 bg-gray-300 rounded w-1/6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Applications List -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                 <h2 class="text-lg font-semibold text-gray-900 mb-4">
                     Applications ({{ candidate.applications.length }})
