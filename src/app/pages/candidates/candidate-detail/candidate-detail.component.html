@@ -259,7 +259,7 @@
                         <div *ngIf="activeTab === 'summary'" class="animate-fadeIn">
                             <h3 class="text-lg font-semibold text-gray-900 mb-3">Candidate Summary</h3>
                             <p class="text-gray-700 leading-relaxed mb-4">
-                                Based on our analysis, <strong>{{ candidate?.full_name }}</strong> strongly aligns with
+                                Based on our analysis, <strong>{{ candidate.full_name }}</strong> strongly aligns with
                                 the
                                 <strong>{{ coreProfile.archetype?.name }}</strong> archetype. Their primary driver is
                                 <strong>{{ coreProfile.code[0] === 'C' ? 'Character' : coreProfile.code[0] === 'O' ?
