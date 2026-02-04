@@ -13,6 +13,11 @@ export interface Candidate {
     latest_application_id: string | null;
     created_at: string;
     updated_at: string;
+    // KPI Matches (0-100)
+    expectation_match?: number | null;
+    values_match?: number | null;
+    potential_match?: number | null;
+    skills_match?: number | null;
     // Optional invitation fields (when source is 'invited')
     invitation_status?: string | null;
     invited_by?: {

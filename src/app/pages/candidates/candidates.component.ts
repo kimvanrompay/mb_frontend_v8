@@ -21,7 +21,7 @@ export class CandidatesComponent implements OnInit {
     searchQuery = '';
     statusFilter = 'all';
     sourceFilter = 'all';
-    sortBy: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' = 'updated';
+    sortBy: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' | 'expectation' | 'values' | 'potential' | 'skills' = 'updated';
     sortDirection: 'asc' | 'desc' = 'desc';
 
     // For invite modal
@@ -108,6 +108,18 @@ export class CandidatesComponent implements OnInit {
                 case 'source':
                     comparison = a.source.localeCompare(b.source);
                     break;
+                case 'expectation':
+                    comparison = (b.expectation_match || 0) - (a.expectation_match || 0);
+                    break;
+                case 'values':
+                    comparison = (b.values_match || 0) - (a.values_match || 0);
+                    break;
+                case 'potential':
+                    comparison = (b.potential_match || 0) - (a.potential_match || 0);
+                    break;
+                case 'skills':
+                    comparison = (b.skills_match || 0) - (a.skills_match || 0);
+                    break;
                 default:
                     comparison = 0;
             }
@@ -116,7 +128,7 @@ export class CandidatesComponent implements OnInit {
         });
     }
 
-    sortByColumn(column: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email') {
+    sortByColumn(column: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' | 'expectation' | 'values' | 'potential' | 'skills') {
         if (this.sortBy === column) {
             // Toggle direction if clicking the same column
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
@@ -126,6 +138,52 @@ export class CandidatesComponent implements OnInit {
             this.sortDirection = (column === 'name' || column === 'email') ? 'asc' : 'desc';
         }
         this.applyFilters();
+    }
+
+    // Helper to generate heatmap background color based on score (0-100)
+    getScoreStyle(score: number | null | undefined, type: 'green' | 'blue' | 'purple' | 'orange'): { [key: string]: string } {
+        if (score === null || score === undefined) {
+            return { 'background-color': 'transparent' };
+        }
+
+        let r, g, b;
+        // Palettes customized for soft, premium look
+        switch (type) {
+            case 'green': // Expectation - Emerald/Teal
+                // Base: 16, 185, 129. Light: 255, 255, 255
+                r = 16 + (255 - 16) * (1 - score / 100);
+                g = 185 + (255 - 185) * (1 - score / 100);
+                b = 129 + (255 - 129) * (1 - score / 100);
+                break;
+            case 'blue': // Values - Blue/Indigo
+                // Base: 59, 130, 246
+                r = 59 + (255 - 59) * (1 - score / 100);
+                g = 130 + (255 - 130) * (1 - score / 100);
+                b = 246 + (255 - 246) * (1 - score / 100);
+                break;
+            case 'purple': // Potential - Purple/Violet
+                // Base: 139, 92, 246
+                r = 139 + (255 - 139) * (1 - score / 100);
+                g = 92 + (255 - 92) * (1 - score / 100);
+                b = 246 + (255 - 246) * (1 - score / 100);
+                break;
+            case 'orange': // Skills - Orange/Amber
+                // Base: 245, 158, 11
+                r = 245 + (255 - 245) * (1 - score / 100);
+                g = 158 + (255 - 158) * (1 - score / 100);
+                b = 11 + (255 - 11) * (1 - score / 100);
+                break;
+        }
+
+        // Return rgba with opacity that scales slightly with score for better visibility on low/high ends
+        // But the math above already blends to white (255,255,255), so we can just use RGB.
+        // To keep it "soft" like the example, we can ensure the lowest values are very light gray/white
+        // and highest values are the deep color.
+
+        return {
+            'background-color': `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`,
+            'color': score > 60 ? '#ffffff' : '#1f2937' // White text for dark backgrounds, dark text for light
+        };
     }
 
     onCardClick(candidate: Candidate) {

@@ -139,6 +139,46 @@
                                         </span>
                                     </div>
                                 </th>
+                                <th scope="col" (click)="sortByColumn('expectation')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Expectation
+                                        <span [class.opacity-0]="sortBy !== 'expectation'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('values')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Values
+                                        <span [class.opacity-0]="sortBy !== 'values'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('potential')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Potential
+                                        <span [class.opacity-0]="sortBy !== 'potential'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('skills')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Skills
+                                        <span [class.opacity-0]="sortBy !== 'skills'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
                                 <th scope="col" (click)="sortByColumn('applications')"
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
                                     <div class="flex items-center gap-2">
@@ -220,6 +260,42 @@
                                                 Sent {{ getTimeAgo(candidate.invitation_sent_at) }}
                                             </span>
                                         </div>
+                                    </div>
+                                </td>
+
+                                <!-- KPI: Expectation -->
+                                <td class="p-0 whitespace-nowrap align-middle">
+                                    <div class="w-full h-full px-6 py-4 flex items-center"
+                                        [ngStyle]="getScoreStyle(candidate.expectation_match, 'green')">
+                                        <span class="font-medium">{{ candidate.expectation_match ?
+                                            candidate.expectation_match + '%' : '-' }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- KPI: Values -->
+                                <td class="p-0 whitespace-nowrap align-middle">
+                                    <div class="w-full h-full px-6 py-4 flex items-center"
+                                        [ngStyle]="getScoreStyle(candidate.values_match, 'blue')">
+                                        <span class="font-medium">{{ candidate.values_match ? candidate.values_match +
+                                            '%' : '-' }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- KPI: Potential -->
+                                <td class="p-0 whitespace-nowrap align-middle">
+                                    <div class="w-full h-full px-6 py-4 flex items-center"
+                                        [ngStyle]="getScoreStyle(candidate.potential_match, 'purple')">
+                                        <span class="font-medium">{{ candidate.potential_match ?
+                                            candidate.potential_match + '%' : '-' }}</span>
+                                    </div>
+                                </td>
+
+                                <!-- KPI: Skills -->
+                                <td class="p-0 whitespace-nowrap align-middle">
+                                    <div class="w-full h-full px-6 py-4 flex items-center"
+                                        [ngStyle]="getScoreStyle(candidate.skills_match, 'orange')">
+                                        <span class="font-medium">{{ candidate.skills_match ? candidate.skills_match +
+                                            '%' : '-' }}</span>
                                     </div>
                                 </td>
 
