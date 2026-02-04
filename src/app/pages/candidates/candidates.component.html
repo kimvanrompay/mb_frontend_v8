@@ -6,10 +6,11 @@
                 <h1 class="text-3xl font-bold text-gray-900">Candidates</h1>
                 <p class="text-gray-600 mt-1">Manage your recruitment pipeline</p>
             </div>
-            <button (click)="openInviteModal()" 
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
+            <button (click)="openInviteModal()"
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                    <path
+                        d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                 </svg>
                 Invite Candidate
             </button>
@@ -20,18 +21,15 @@
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <!-- Search -->
                 <div class="md:col-span-2">
-                    <input type="text" 
-                           [(ngModel)]="searchQuery" 
-                           (ngModelChange)="applyFilters()"
-                           placeholder="Search candidates..."
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()"
+                        placeholder="Search candidates..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
 
                 <!-- Status Filter -->
                 <div>
-                    <select [(ngModel)]="statusFilter" 
-                            (ngModelChange)="applyFilters()"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilters()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                         <option value="all">All Statuses</option>
                         <option value="new">New</option>
                         <option value="in_process">In Process</option>
@@ -42,9 +40,8 @@
 
                 <!-- Source Filter -->
                 <div>
-                    <select [(ngModel)]="sourceFilter" 
-                            (ngModelChange)="applyFilters()"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    <select [(ngModel)]="sourceFilter" (ngModelChange)="applyFilters()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                         <option value="all">All Sources</option>
                         <option value="manual">Manual</option>
                         <option value="invited">Invited</option>
@@ -54,9 +51,8 @@
 
                 <!-- Sort By -->
                 <div>
-                    <select [(ngModel)]="sortBy" 
-                            (ngModelChange)="applyFilters()"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    <select [(ngModel)]="sortBy" (ngModelChange)="applyFilters()"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                         <option value="updated">Last Updated</option>
                         <option value="name">Name (A-Z)</option>
                         <option value="applications">Applications</option>
@@ -76,7 +72,9 @@
         <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
             <div class="flex items-center">
                 <svg class="h-5 w-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd" />
                 </svg>
                 <p class="text-red-800">{{ error }}</p>
             </div>
@@ -90,108 +88,213 @@
             </div>
 
             <!-- Empty State -->
-            <div *ngIf="filteredCandidates.length === 0" class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
+            <div *ngIf="filteredCandidates.length === 0"
+                class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
                 <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
                 <h3 class="mt-4 text-lg font-medium text-gray-900">No candidates found</h3>
                 <p class="mt-2 text-gray-500">Get started by inviting your first candidate</p>
-                <button (click)="openInviteModal()" 
-                        class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition">
+                <button (click)="openInviteModal()"
+                    class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition">
                     Invite Candidate
                 </button>
             </div>
 
-            <!-- Candidates Grid -->
-            <div class="grid gap-4">
-                <div *ngFor="let candidate of filteredCandidates" 
-                     (click)="onCardClick(candidate)"
-                     class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition cursor-pointer">
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-start gap-4 flex-1">
-                            <!-- Avatar -->
-                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-semibold text-lg">
-                                {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
-                            </div>
-
-                            <!-- Info -->
-                            <div class="flex-1">
-                                <div class="flex items-start justify-between">
-                                    <div>
-                                        <h3 class="text-lg font-semibold text-gray-900">{{ candidate.full_name }}</h3>
-                                        <p class="text-sm text-gray-600">{{ candidate.email }}</p>
-                                        <p *ngIf="candidate.phone" class="text-sm text-gray-500 mt-1">{{ candidate.phone }}</p>
-                                    </div>
-
-                                    <!-- Badges -->
-                                    <div class="flex gap-2 ml-4">
-                                        <span [class]="'px-3 py-1 text-xs font-medium rounded-full border ' + getStatusBadgeClass(candidate.status)">
-                                            {{ formatStatus(candidate.status) }}
+            <!-- Candidates Table -->
+            <div *ngIf="filteredCandidates.length > 0"
+                class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" (click)="sortByColumn('name')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Candidate
+                                        <span [class.opacity-0]="sortBy !== 'name'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
                                         </span>
-                                        <span [class]="'px-3 py-1 text-xs font-medium rounded-full border ' + getSourceBadgeClass(candidate.source)">
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('status')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Status
+                                        <span [class.opacity-0]="sortBy !== 'status'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('source')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Source & Origin
+                                        <span [class.opacity-0]="sortBy !== 'source'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col" (click)="sortByColumn('applications')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Engagement
+                                        <span [class.opacity-0]="sortBy !== 'applications'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Language
+                                </th>
+                                <th scope="col" (click)="sortByColumn('updated')"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition select-none group">
+                                    <div class="flex items-center gap-2">
+                                        Activity
+                                        <span [class.opacity-0]="sortBy !== 'updated'"
+                                            class="text-indigo-600 transition-opacity group-hover:opacity-100">
+                                            {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                                        </span>
+                                    </div>
+                                </th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr *ngFor="let candidate of filteredCandidates" (click)="onCardClick(candidate)"
+                                class="hover:bg-gray-50 cursor-pointer transition">
+                                <!-- Candidate Info -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <div
+                                                class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
+                                                {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
+                                            </div>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">{{ candidate.full_name }}
+                                            </div>
+                                            <div class="text-sm text-gray-500 flex flex-col">
+                                                <span>{{ candidate.email }}</span>
+                                                <span *ngIf="candidate.phone" class="text-xs text-gray-400">{{
+                                                    candidate.phone }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Status -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span
+                                        [class]="'px-2.5 py-1 text-xs font-medium rounded-full border ' + getStatusBadgeClass(candidate.status)">
+                                        {{ formatStatus(candidate.status) }}
+                                    </span>
+                                </td>
+
+                                <!-- Source -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex flex-col items-start gap-1">
+                                        <span
+                                            [class]="'px-2 py-0.5 text-xs font-medium rounded-full border ' + getSourceBadgeClass(candidate.source)">
                                             {{ formatSource(candidate.source) }}
                                         </span>
+                                        <!-- Invitation Details -->
+                                        <div *ngIf="candidate.source === 'invited' && candidate.invited_for_job"
+                                            class="text-xs text-gray-500">
+                                            <span class="block max-w-[150px] truncate"
+                                                title="{{ candidate.invited_for_job.title }}">
+                                                For: {{ candidate.invited_for_job.title }}
+                                            </span>
+                                            <span *ngIf="candidate.invitation_sent_at"
+                                                class="text-gray-400 text-[10px]">
+                                                Sent {{ getTimeAgo(candidate.invitation_sent_at) }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
+                                </td>
 
-                                <!-- Meta Info -->
-                                <div class="flex items-center gap-4 mt-3 text-sm text-gray-500">
-                                    <span class="flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                        </svg>
-                                        {{ candidate.applications_count }} application(s)
-                                    </span>
-                                    <span class="flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        Added {{ getTimeAgo(candidate.created_at) }}
-                                    </span>
-                                    <span class="flex items-center gap-1">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                        </svg>
-                                        Updated {{ getTimeAgo(candidate.updated_at) }}
-                                    </span>
-                                    <span *ngIf="candidate.preferred_language !== 'en'" 
-                                          class="flex items-center gap-1 text-xs bg-gray-100 px-2 py-1 rounded">
-                                        🌐 {{ candidate.preferred_language.toUpperCase() }}
-                                    </span>
-                                </div>
+                                <!-- Engagement -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-medium text-gray-900">{{
+                                                candidate.applications_count }}</span>
+                                            <span class="text-xs text-gray-500">Applications</span>
+                                        </div>
+                                        <!-- Visual Indicator bar -->
+                                        <div class="w-16 h-1 bg-gray-100 rounded-full overflow-hidden ml-2">
+                                            <div class="h-full bg-indigo-500"
+                                                [style.width.%]="(candidate.applications_count / 5) * 100"
+                                                style="max-width: 100%"></div>
+                                        </div>
+                                    </div>
+                                </td>
 
-                                <!-- Invitation Info (if invited) -->
-                                <div *ngIf="candidate.source === 'invited' && candidate.invited_for_job" 
-                                     class="mt-3 text-sm bg-blue-50 border border-blue-100 rounded p-2">
-                                    <span class="text-blue-800">
-                                        Invited for: <strong>{{ candidate.invited_for_job.title }}</strong>
+                                <!-- Language -->
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                                        {{ candidate.preferred_language | uppercase }}
                                     </span>
-                                    <span *ngIf="candidate.invitation_sent_at" class="text-blue-600 ml-2">
-                                        • Sent {{ getTimeAgo(candidate.invitation_sent_at) }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
 
-                        <!-- Actions -->
-                        <div class="flex gap-2 ml-4">
-                            <button *ngIf="candidate.source === 'invited' && !candidate.invitation_accepted_at"
-                                    (click)="resendInvitation(candidate, $event)"
-                                    class="px-3 py-1 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-50 transition"
-                                    title="Resend invitation">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/>
-                                </svg>
-                            </button>
-                            <button (click)="deleteCandidate(candidate, $event)"
-                                    class="px-3 py-1 text-sm text-red-600 border border-red-600 rounded hover:bg-red-50 transition"
-                                    title="Delete candidate">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+                                <!-- Activity -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex flex-col">
+                                        <div class="text-xs text-gray-900">
+                                            <span class="font-medium">Updated:</span> {{
+                                            getTimeAgo(candidate.updated_at) }}
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-0.5">
+                                            Created: {{ getTimeAgo(candidate.created_at) }}
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex items-center justify-end gap-2" (click)="$event.stopPropagation()">
+                                        <button
+                                            *ngIf="candidate.source === 'invited' && !candidate.invitation_accepted_at"
+                                            (click)="resendInvitation(candidate, $event)"
+                                            class="p-1 text-indigo-600 hover:bg-indigo-50 rounded transition"
+                                            title="Resend Invitation">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" />
+                                            </svg>
+                                        </button>
+                                        <button (click)="deleteCandidate(candidate, $event)"
+                                            class="p-1 text-red-600 hover:bg-red-50 rounded transition"
+                                            title="Delete Candidate">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+
+                                        <button (click)="onCardClick(candidate)"
+                                            class="p-1 text-gray-400 hover:text-gray-600 rounded hover:bg-gray-50 transition">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -202,59 +305,43 @@
 <div *ngIf="isInviteModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-4">Invite Candidate</h2>
-        
+
         <form (ngSubmit)="inviteCandidate()" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                <input type="text" 
-                       [(ngModel)]="inviteForm.first_name" 
-                       name="first_name"
-                       required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="text" [(ngModel)]="inviteForm.first_name" name="first_name" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                <input type="text" 
-                       [(ngModel)]="inviteForm.last_name" 
-                       name="last_name"
-                       required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="text" [(ngModel)]="inviteForm.last_name" name="last_name" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                <input type="email" 
-                       [(ngModel)]="inviteForm.email" 
-                       name="email"
-                       required
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="email" [(ngModel)]="inviteForm.email" name="email" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input type="tel" 
-                       [(ngModel)]="inviteForm.phone" 
-                       name="phone"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="tel" [(ngModel)]="inviteForm.phone" name="phone"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Job Position *</label>
-                <input type="number" 
-                       [(ngModel)]="inviteForm.job_id" 
-                       name="job_id"
-                       required
-                       placeholder="Enter Job ID"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <input type="number" [(ngModel)]="inviteForm.job_id" name="job_id" required placeholder="Enter Job ID"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                 <p class="text-xs text-gray-500 mt-1">Note: You'll need to select from available jobs in production</p>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Language</label>
-                <select [(ngModel)]="inviteForm.preferred_language" 
-                        name="language"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                <select [(ngModel)]="inviteForm.preferred_language" name="language"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
                     <option value="en">English</option>
                     <option value="nl">Nederlands</option>
                     <option value="fr">Français</option>
@@ -264,13 +351,12 @@
             </div>
 
             <div class="flex gap-3 pt-4">
-                <button type="button" 
-                        (click)="closeInviteModal()"
-                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
+                <button type="button" (click)="closeInviteModal()"
+                    class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition">
                     Cancel
                 </button>
                 <button type="submit"
-                        class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+                    class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
                     Send Invitation
                 </button>
             </div>

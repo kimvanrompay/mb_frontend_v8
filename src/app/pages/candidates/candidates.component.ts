@@ -21,7 +21,8 @@ export class CandidatesComponent implements OnInit {
     searchQuery = '';
     statusFilter = 'all';
     sourceFilter = 'all';
-    sortBy: 'updated' | 'name' | 'applications' | 'created' = 'updated';
+    sortBy: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' = 'updated';
+    sortDirection: 'asc' | 'desc' = 'desc';
 
     // For invite modal
     isInviteModalOpen = false;
@@ -31,7 +32,7 @@ export class CandidatesComponent implements OnInit {
         last_name: '',
         email: '',
         phone: '',
-        preferred_language: 'en'
+        preferred_language: 'nl'
     };
 
     constructor(
@@ -71,10 +72,10 @@ export class CandidatesComponent implements OnInit {
 
     applyFilters() {
         this.filteredCandidates = this.candidates.filter(candidate => {
-            const matchesSearch = 
+            const matchesSearch =
                 candidate.full_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
                 candidate.email.toLowerCase().includes(this.searchQuery.toLowerCase());
-            
+
             const matchesStatus = this.statusFilter === 'all' || candidate.status === this.statusFilter;
             const matchesSource = this.sourceFilter === 'all' || candidate.source === this.sourceFilter;
 
@@ -83,19 +84,48 @@ export class CandidatesComponent implements OnInit {
 
         // Apply sorting
         this.filteredCandidates.sort((a, b) => {
+            let comparison = 0;
+
             switch (this.sortBy) {
                 case 'updated':
-                    return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-                case 'name':
-                    return a.full_name.localeCompare(b.full_name);
-                case 'applications':
-                    return b.applications_count - a.applications_count;
+                    comparison = new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                    break;
                 case 'created':
-                    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                    comparison = new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+                    break;
+                case 'name':
+                    comparison = a.full_name.localeCompare(b.full_name);
+                    break;
+                case 'email':
+                    comparison = a.email.localeCompare(b.email);
+                    break;
+                case 'applications':
+                    comparison = b.applications_count - a.applications_count;
+                    break;
+                case 'status':
+                    comparison = a.status.localeCompare(b.status);
+                    break;
+                case 'source':
+                    comparison = a.source.localeCompare(b.source);
+                    break;
                 default:
-                    return 0;
+                    comparison = 0;
             }
+
+            return this.sortDirection === 'asc' ? comparison : -comparison;
         });
+    }
+
+    sortByColumn(column: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email') {
+        if (this.sortBy === column) {
+            // Toggle direction if clicking the same column
+            this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            // Set new column and default to descending (or ascending for name/email)
+            this.sortBy = column;
+            this.sortDirection = (column === 'name' || column === 'email') ? 'asc' : 'desc';
+        }
+        this.applyFilters();
     }
 
     onCardClick(candidate: Candidate) {
@@ -141,7 +171,7 @@ export class CandidatesComponent implements OnInit {
     }
 
     formatStatus(status: string): string {
-        return status.split('_').map(word => 
+        return status.split('_').map(word =>
             word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
     }
