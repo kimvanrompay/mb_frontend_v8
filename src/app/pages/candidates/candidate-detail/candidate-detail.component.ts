@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CandidateService } from '../../../services/candidate.service';
@@ -80,7 +80,8 @@ export class CandidateDetailComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private candidateService: CandidateService
+        private candidateService: CandidateService,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit() {
@@ -99,14 +100,31 @@ export class CandidateDetailComponent implements OnInit {
 
         this.candidateService.getCandidate(id).subscribe({
             next: (candidate) => {
+                console.log('✅ API Response received:', candidate);
+                console.log('📊 Is candidate defined?', !!candidate);
+                console.log('🔑 Fields:', candidate ? Object.keys(candidate) : 'none');
+
                 this.candidate = candidate;
                 this.deriveCoreProfile(candidate);
                 this.loading = false;
+                this.cdr.detectChanges(); // Manually trigger change detection
+
+                console.log('✅ Loading set to false, change detection triggered');
             },
             error: (err) => {
-                this.error = 'Failed to load candidate details';
-                this.loading = false;
                 console.error('Error loading candidate:', err);
+
+                if (err.status === 404) {
+                    this.error = 'Candidate not found. This candidate may have been deleted.';
+                } else if (err.status === 500) {
+                    this.error = 'Server error loading candidate details. The backend team has been notified. Please try again later or contact support.';
+                } else if (err.status === 0) {
+                    this.error = 'Unable to connect to the server. Please check your internet connection.';
+                } else {
+                    this.error = `Failed to load candidate details (Error ${err.status || 'Unknown'})`;
+                }
+
+                this.loading = false;
             }
         });
     }

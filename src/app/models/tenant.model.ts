@@ -8,8 +8,11 @@ export interface TenantStats {
 export interface SubscriptionPlan {
     id: number;
     name: string;
-    tier: 'starter' | 'professional' | 'enterprise';
+    tier: 'trial' | 'starter' | 'professional' | 'enterprise';
+    price_monthly: number | null;
     max_seats: number | null;
+    max_jobs: number | null;
+    max_invitations: number | null;
     max_responses: number | null;
 }
 
@@ -19,6 +22,7 @@ export interface Subscription {
     trial_ends_at: string | null;
     trial_days_remaining: number | null;
     on_trial: boolean;
+    has_access: boolean;
     plan: SubscriptionPlan;
 }
 

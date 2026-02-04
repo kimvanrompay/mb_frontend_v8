@@ -12,6 +12,6 @@ export class TenantService {
     constructor(private http: HttpClient) { }
 
     getTenant(): Observable<TenantResponse> {
-        return this.http.get<TenantResponse>(`${this.API_URL}/auth/tenant`);
+        return this.http.get<TenantResponse>(`${this.API_URL}/tenant`);
     }
 }
