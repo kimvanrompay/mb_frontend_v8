@@ -22,6 +22,29 @@ import { filter, map } from 'rxjs/operators';
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
              </button>
+
+             <!-- Breadcrumbs -->
+             <nav class="hidden md:flex items-center text-sm font-medium text-gray-500">
+                <a routerLink="/dashboard" class="flex items-center hover:text-gray-900 transition-colors">
+                    <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Home
+                </a>
+                
+                <ng-container *ngFor="let crumb of breadcrumbs">
+                  <svg class="h-5 w-5 text-gray-300 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                  <a [routerLink]="crumb.url" 
+                     [class.text-gray-900]="crumb.active"
+                     [class.font-semibold]="crumb.active"
+                     [class.pointer-events-none]="crumb.active"
+                     class="hover:text-gray-900 transition-colors">
+                     {{ crumb.label }}
+                  </a>
+                </ng-container>
+             </nav>
           </div>
 
           <!-- User Profile (Right) -->
@@ -103,37 +126,58 @@ export class NavbarCenteredComponent {
   authService = inject(AuthService);
   router = inject(Router);
   currentPage = '';
+  breadcrumbs: { label: string, url: string, active: boolean }[] = [];
   isDropdownOpen = false;
 
   private readonly routeNames: { [key: string]: string } = {
     'dashboard': 'Dashboard',
-    'jobs': 'Jobs',
+    'jobs': 'Positions', // Updated to match sidebar
     'candidates': 'Candidates',
+    'invitations': 'Invitations',
+    'applications': 'Applications',
     'assessments': 'Assessments',
     'integrations': 'Integrations',
-    'invite-friend': 'Invite a Friend',
-    'settings': 'Settings'
+    'invite-friend': 'Invite Friend',
+    'settings': 'Settings',
+    'billing': 'Billing',
+    'team': 'Team'
   };
 
   ngOnInit() {
-    // Update current page on route changes
+    // Update breadcrumbs on route changes
     this.router.events.subscribe(() => {
-      this.updateCurrentPage();
+      this.updateBreadcrumbs();
     });
 
-    this.updateCurrentPage();
+    this.updateBreadcrumbs();
   }
 
-  private updateCurrentPage() {
+  private updateBreadcrumbs() {
     const path = this.router.url;
-    const segments = path.split('/').filter(s => s);
+    // Remove query params if any
+    const cleanPath = path.split('?')[0];
+    const segments = cleanPath.split('/').filter(s => s);
 
-    if (segments.length > 1) {
-      const mainRoute = segments[1];
-      this.currentPage = this.routeNames[mainRoute] || mainRoute;
-    } else {
-      this.currentPage = '';
-    }
+    this.breadcrumbs = segments.map((segment, index) => {
+      const url = '/' + segments.slice(0, index + 1).join('/');
+      let label = this.routeNames[segment] || segment;
+
+      // Capitalize if it's an ID or dynamic segment (simple heuristic)
+      if (!this.routeNames[segment]) {
+        // If it's the last segment and look like an ID (long string/numbers), maybe just say "Details" or keep ID
+        if (segment.length > 20) {
+          label = 'Details';
+        } else {
+          label = segment.charAt(0).toUpperCase() + segment.slice(1);
+        }
+      }
+
+      return {
+        label: label,
+        url: url,
+        active: index === segments.length - 1
+      };
+    });
   }
 
   toggleDropdown() {

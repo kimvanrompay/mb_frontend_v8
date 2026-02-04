@@ -141,48 +141,42 @@ export class CandidatesComponent implements OnInit {
     }
 
     // Helper to generate heatmap background color based on score (0-100)
+    // Using a minimal, dark-green driven monochrome scale for all metrics
     getScoreStyle(score: number | null | undefined, type: 'green' | 'blue' | 'purple' | 'orange'): { [key: string]: string } {
         if (score === null || score === undefined) {
-            return { 'background-color': 'transparent' };
+            return { 'background-color': '#f9fafb', 'color': '#9ca3af' }; // Gray-50 background, Gray-400 text
         }
 
-        let r, g, b;
-        // Palettes customized for soft, premium look
-        switch (type) {
-            case 'green': // Expectation - Emerald/Teal
-                // Base: 16, 185, 129. Light: 255, 255, 255
-                r = 16 + (255 - 16) * (1 - score / 100);
-                g = 185 + (255 - 185) * (1 - score / 100);
-                b = 129 + (255 - 129) * (1 - score / 100);
-                break;
-            case 'blue': // Values - Blue/Indigo
-                // Base: 59, 130, 246
-                r = 59 + (255 - 59) * (1 - score / 100);
-                g = 130 + (255 - 130) * (1 - score / 100);
-                b = 246 + (255 - 246) * (1 - score / 100);
-                break;
-            case 'purple': // Potential - Purple/Violet
-                // Base: 139, 92, 246
-                r = 139 + (255 - 139) * (1 - score / 100);
-                g = 92 + (255 - 92) * (1 - score / 100);
-                b = 246 + (255 - 246) * (1 - score / 100);
-                break;
-            case 'orange': // Skills - Orange/Amber
-                // Base: 245, 158, 11
-                r = 245 + (255 - 245) * (1 - score / 100);
-                g = 158 + (255 - 158) * (1 - score / 100);
-                b = 11 + (255 - 11) * (1 - score / 100);
-                break;
-        }
+        // Base Color: Emerald-900 (6, 78, 59)
+        // We will interpolate from White (255, 255, 255) to Emerald-900
+        // But to keep it readable, we might want a lighter "full score" color or just adjust opacity.
+        // Actually, for a heatmap, usually lighter is lower, darker is higher.
 
-        // Return rgba with opacity that scales slightly with score for better visibility on low/high ends
-        // But the math above already blends to white (255,255,255), so we can just use RGB.
-        // To keep it "soft" like the example, we can ensure the lowest values are very light gray/white
-        // and highest values are the deep color.
+        // Let's use a specialized green scale for each "type" if we want subtle differentiation, 
+        // OR just one unified Dark Green scale as requested ("accents need to be dark green").
+        // I will use a unified Emerald scale for all match types to be perfectly minimal.
+
+        // RGB for Emerald-900: 6, 78, 59
+        const r_target = 6, g_target = 78, b_target = 59;
+
+        // Start from (255, 255, 255)
+        // Calculate intensity based on score. 
+        // Score 0 -> White
+        // Score 100 -> Emerald-900 
+        // We'll use a slightly lighter max for better text contrast if needed, but Emerald-900 is very dark.
+        // Let's go to Emerald-800: 6, 95, 70 usually.
+        // Let's stick to the math:
+
+        const intensity = score / 100;
+        const r = 255 - (255 - r_target) * intensity;
+        const g = 255 - (255 - g_target) * intensity;
+        const b = 255 - (255 - b_target) * intensity;
 
         return {
             'background-color': `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`,
-            'color': score > 60 ? '#ffffff' : '#1f2937' // White text for dark backgrounds, dark text for light
+            // White text if efficient contrast, else Black/Dark Gray
+            // Threshold around 50-60% usually flips contrast for dark greens
+            'color': score > 50 ? '#ffffff' : '#064e3b' // Emerald-900 text for light backgrounds
         };
     }
 
