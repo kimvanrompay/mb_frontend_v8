@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CandidateService } from '../../../services/candidate.service';
 import { CandidateDetail } from '../../../models/candidate.model';
@@ -41,7 +42,7 @@ const ARCHETYPES: { [key: string]: Archetype } = {
 @Component({
     selector: 'app-candidate-detail',
     standalone: true,
-    imports: [CommonModule, RouterModule],
+    imports: [CommonModule, RouterModule, FormsModule],
     templateUrl: './candidate-detail.component.html',
     styleUrl: './candidate-detail.component.css'
 })
@@ -58,6 +59,15 @@ export class CandidateDetailComponent implements OnInit {
     };
 
     activeTab: 'summary' | 'c' | 'o' | 'r' | 'e' = 'summary';
+
+    // Notes Panel State
+    showNotesPanel = false;
+    newNoteContent = '';
+    candidateNotes: Array<{ id: string; author: string; content: string; created_at: string }> = [
+        // Mock notes - will come from API
+        { id: '1', author: 'Kim Van Rompay', content: 'Initial screening completed. Strong technical skills.', created_at: '2024-02-01T10:30:00Z' },
+        { id: '2', author: 'Team Lead', content: 'Scheduled for technical interview on Feb 5th.', created_at: '2024-02-02T14:15:00Z' }
+    ];
 
     // Mock evidence data (in real app, this comes from backend details)
     evidenceMap: any = {
@@ -164,6 +174,64 @@ export class CandidateDetailComponent implements OnInit {
 
     setActiveTab(tab: 'summary' | 'c' | 'o' | 'r' | 'e') {
         this.activeTab = tab;
+    }
+
+    toggleNotesPanel() {
+        this.showNotesPanel = !this.showNotesPanel;
+    }
+
+    addNote(event: Event) {
+        event.preventDefault();
+        if (!this.newNoteContent.trim()) return;
+
+        // TODO: API call to POST /api/v1/candidates/:id/notes
+        const newNote = {
+            id: Date.now().toString(),
+            author: 'Current User', // Will come from auth service
+            content: this.newNoteContent,
+            created_at: new Date().toISOString()
+        };
+
+        this.candidateNotes.push(newNote);
+        this.newNoteContent = '';
+
+        console.log('📝 Adding note (placeholder):', newNote);
+    }
+
+    formatNoteDate(dateStr: string): string {
+        const date = new Date(dateStr);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        if (diffHours < 24) return `${diffHours}h ago`;
+        if (diffDays < 7) return `${diffDays}d ago`;
+        return date.toLocaleDateString();
+    }
+
+    archiveCandidate() {
+        // TODO: API call to PATCH /api/v1/candidates/:id { status: 'archived' }
+        console.log('📦 Archiving candidate (placeholder)');
+        alert('Archive candidate - API integration pending');
+    }
+
+    rejectCandidate() {
+        // TODO: API call to PATCH /api/v1/candidates/:id { status: 'rejected' }
+        console.log('✋ Rejecting candidate (placeholder)');
+        alert('Reject candidate - API integration pending');
+    }
+
+    deleteCandidate() {
+        // TODO: API call to DELETE /api/v1/candidates/:id
+        const confirmed = confirm('Are you sure you want to permanently delete this candidate? This action cannot be undone.');
+        if (confirmed) {
+            console.log('🗑️ Deleting candidate (placeholder)');
+            alert('Delete candidate - API integration pending');
+        }
     }
 
     // --- Helpers ---
