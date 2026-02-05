@@ -7,11 +7,21 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="flex flex-col w-64 h-full bg-white border-r border-gray-200">
+    <!-- M3 Standard Navigation Drawer -->
+    <div class="flex flex-col w-[280px] h-full bg-surface-container-low">
       <!-- Logo Area -->
-      <div class="h-16 flex items-center px-6 border-b border-gray-200">
+      <div class="h-16 flex items-center px-6">
         <a routerLink="/dashboard" class="flex items-center gap-2 group">
             <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png" alt="Meribas" class="h-6 w-auto">
+        </a>
+      </div>
+
+      <!-- Extended FAB (Primary Action) -->
+      <div class="px-4 pb-4">
+        <a routerLink="/candidates" 
+           class="h-14 w-full bg-primary-container text-on-primary-container rounded-m3-lg flex items-center justify-center gap-2 font-medium text-sm shadow-m3-1 hover:shadow-m3-2 transition-all">
+          <span class="material-icons text-xl">person_add</span>
+          <span>Invite Candidate</span>
         </a>
       </div>
 
