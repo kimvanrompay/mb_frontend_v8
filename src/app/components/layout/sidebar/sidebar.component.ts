@@ -22,10 +22,10 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
       <!-- COLUMN 1: NAVIGATION RAIL (80px - Permanent) -->
       <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative bg-white">
         
-        <!-- Menu Icon (Visual Only) -->
-        <div class="w-12 h-12 rounded-full flex items-center justify-center mb-6 text-[#444746]">
-          <span class="material-icons text-[24px]">menu</span>
-        </div>
+        <!-- Search Button (Top Action) -->
+        <button class="w-12 h-12 rounded-[16px] bg-[#E8DEF8] hover:bg-[#D0BCFF] flex items-center justify-center mb-6 text-[#1D192B] transition-colors focus:outline-none cursor-pointer">
+          <span class="material-icons text-[24px]">search</span>
+        </button>
         
         <!-- Rail Item: Home -->
         <button (mouseenter)="onHoverRailItem('home')" (click)="setActiveCategory('home')" 
