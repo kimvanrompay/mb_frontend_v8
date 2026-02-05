@@ -190,11 +190,6 @@ export class CandidateDetailComponent implements OnInit {
             }
         });
     }
-                    this.loadingMRI = false;
-                }, 0);
-            }
-        });
-    }
 
     toggleGodMode() {
         this.godMode = !this.godMode;
