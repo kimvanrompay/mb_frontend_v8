@@ -65,7 +65,7 @@ export class CandidateDetailComponent implements OnInit {
 
     // MRI Dashboard State
     mriData: any = null;
-    loadingMRI = false;
+    loadingMRI = true; // Start true to prevent empty state flash
     godMode = false; // Toggle between Insights and Raw Data
 
     // C.O.R.E Profile State
