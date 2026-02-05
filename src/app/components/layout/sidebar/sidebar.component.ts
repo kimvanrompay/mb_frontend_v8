@@ -28,7 +28,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         </div>
         
         <!-- Rail Item: Home -->
-        <button (click)="setActiveCategory('home')" 
+        <button (mouseenter)="onHoverRailItem('home')" (click)="setActiveCategory('home')" 
            [class.active-rail-item]="activeCategory === 'home'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
@@ -41,7 +41,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         </button>
 
         <!-- Rail Item: Hiring -->
-        <button (click)="setActiveCategory('hiring')" 
+        <button (mouseenter)="onHoverRailItem('hiring')" (click)="setActiveCategory('hiring')" 
            [class.active-rail-item]="activeCategory === 'hiring'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
@@ -54,7 +54,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         </button>
 
         <!-- Rail Item: Library -->
-        <button (click)="setActiveCategory('library')" 
+        <button (mouseenter)="onHoverRailItem('library')" (click)="setActiveCategory('library')" 
            [class.active-rail-item]="activeCategory === 'library'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
@@ -67,7 +67,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         </button>
         
         <!-- Rail Item: Admin -->
-        <button (click)="setActiveCategory('admin')" 
+        <button (mouseenter)="onHoverRailItem('admin')" (click)="setActiveCategory('admin')" 
            [class.active-rail-item]="activeCategory === 'admin'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
@@ -239,12 +239,19 @@ export class SidebarComponent implements OnInit {
 
   onMouseLeave() {
     this.isDrawerOpen = false;
+    // Reset to the actual active route category when closing
+    // This ensures when they come back, it starts fresh or shows the correct context
+    this.syncCategoryWithRoute(); 
+  }
+
+  // New method: Updates category on hover + ensures drawer is open
+  onHoverRailItem(category: NavCategory) {
+    this.activeCategory = category;
+    this.isDrawerOpen = true;
   }
 
   setActiveCategory(category: NavCategory) {
     this.activeCategory = category;
-    // Note: We do NOT force isDrawerOpen here because we rely on hover. 
-    // If the user clicks, they are likely already hovering.
   }
 
   private syncCategoryWithRoute() {
