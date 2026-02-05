@@ -1,5 +1,5 @@
-// M3 NAVIGATION RAIL - COMPACT VERTICAL NAVIGATION
-// Inspired by Material Design documentation site
+// DUAL-PANE NAVIGATION SYSTEM - M3 Architecture
+// Rail (80px) + Contextual Drawer (280px) = Google M3 Docs Style
 
 import { Component, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,117 +9,185 @@ import { RouterModule } from '@angular/router';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  host: {
-    '(keydown)': 'onKeyDown($event)'
-  },
   template: `
-    <!-- M3 Navigation Rail (Compact: 80px) -->
-    <div class="flex flex-col items-center w-[80px] h-full bg-[#F5F5F5] py-4">
+    <!-- DUAL-PANE CONTAINER -->
+    <div class="flex h-full">
       
-      <!-- Search Icon (First Position) -->
-      <button class="w-14 h-14 rounded-2xl bg-[#E1CCEC] hover:bg-[#D4BFDE] 
-                     flex items-center justify-center mb-6 transition-colors
-                     focus:outline-none focus:ring-2 focus:ring-primary/50">
-        <span class="material-icons text-[24px] text-[#4A4A4A]">search</span>
-      </button>
-
-      <!-- Navigation Rail Items -->
-      <nav class="flex-1 flex flex-col items-center gap-3 overflow-y-auto">
+      <!-- COLUMN 1: NAVIGATION RAIL (80px - The Strategy) -->
+      <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-20 shrink-0">
         
-        <!-- Home -->
+        <!-- Menu Toggle -->
+        <button class="w-12 h-12 rounded-full hover:bg-gray-100 flex items-center justify-center mb-6 text-[#444746]">
+          <span class="material-icons text-[24px]">menu</span>
+        </button>
+        
+        <!-- Rail Item: Home (Active) -->
         <a routerLink="/dashboard" 
-           routerLinkActive="bg-white"
+           routerLinkActive="active-rail"
            [routerLinkActiveOptions]="{exact: true}"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">home</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium">Home</span>
+           class="flex flex-col items-center gap-1 mb-6 group w-full">
+          <div class="w-14 h-8 rounded-[16px] bg-[#C4F5DA] flex items-center justify-center mb-1 transition-all">
+            <span class="material-icons text-[#052112] text-[24px]">dashboard</span>
+          </div>
+          <span class="text-[12px] font-bold text-[#1C1B1F]">Home</span>
         </a>
 
-        <!-- Get Started -->
+        <!-- Rail Item: Hiring -->
         <a routerLink="/jobs" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">apps</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium text-center leading-tight">Get started</span>
+           routerLinkActive="active-rail"
+           class="flex flex-col items-center gap-1 mb-6 group w-full text-[#444746] hover:text-[#1C1B1F]">
+          <div class="w-14 h-8 rounded-[16px] group-hover:bg-[#E0E2E5] flex items-center justify-center mb-1 transition-all">
+            <span class="material-icons text-[24px]">work</span>
+          </div>
+          <span class="text-[12px] font-medium">Hiring</span>
         </a>
 
-        <!-- Develop -->
+        <!-- Rail Item: Library -->
         <a routerLink="/applications" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">code</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium">Develop</span>
+           routerLinkActive="active-rail"
+           class="flex flex-col items-center gap-1 mb-6 group w-full text-[#444746] hover:text-[#1C1B1F]">
+          <div class="w-14 h-8 rounded-[16px] group-hover:bg-[#E0E2E5] flex items-center justify-center mb-1 transition-all">
+            <span class="material-icons text-[24px]">library_books</span>
+          </div>
+          <span class="text-[12px] font-medium">Library</span>
         </a>
-
-        <!-- Foundations -->
-        <a routerLink="/candidates" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">book</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium text-center leading-tight">Foundations</span>
-        </a>
-
-        <!-- Styles -->
-        <a routerLink="/invitations" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">palette</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium">Styles</span>
+        
+        <!-- Rail Item: Admin -->
+        <a routerLink="/settings" 
+           routerLinkActive="active-rail"
+           class="flex flex-col items-center gap-1 mb-6 group w-full text-[#444746] hover:text-[#1C1B1F]">
+          <div class="w-14 h-8 rounded-[16px] group-hover:bg-[#E0E2E5] flex items-center justify-center mb-1 transition-all">
+            <span class="material-icons text-[24px]">settings</span>
+          </div>
+          <span class="text-[12px] font-medium">Admin</span>
         </a>
 
       </nav>
 
-      <!-- Bottom spacer -->
-      <div class="h-4"></div>
+      <!-- COLUMN 2: CONTEXTUAL DRAWER (280px - The Tactics) -->
+      <aside class="w-[280px] h-full bg-[#F3F4F6] flex flex-col p-4 z-10 shrink-0">
+        
+        <!-- Drawer Header -->
+        <div class="h-16 flex items-center px-4 mb-2">
+          <span class="text-[22px] font-normal text-[#1C1B1F]">Overview</span>
+        </div>
+
+        <!-- FAB Action Button -->
+        <button class="h-14 w-full mb-6 rounded-[16px] bg-[#D1FAE5] hover:bg-[#A7F3D0] 
+                       text-[#064E3B] font-semibold text-[14px] 
+                       flex items-center justify-center gap-2 shadow-sm transition-all">
+          <span class="material-icons text-[20px]">add</span>
+          <span>Invite Candidate</span>
+        </button>
+
+        <!-- Navigation List -->
+        <nav class="flex-1 overflow-y-auto flex flex-col gap-1">
+          
+          <!-- Section: Primary -->
+          <div class="px-4 py-3 text-[11px] font-bold text-[#444746] uppercase tracking-wider">
+            Primary
+          </div>
+
+          <a routerLink="/dashboard"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             [routerLinkActiveOptions]="{exact: true}"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">dashboard</span>
+            <span>Overview</span>
+          </a>
+
+          <a routerLink="/jobs"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">work</span>
+            <span>Positions</span>
+          </a>
+          
+          <a routerLink="/applications"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">assignment</span>
+            <span>Assessments</span>
+          </a>
+
+          <a routerLink="/candidates"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">people</span>
+            <span>Candidates</span>
+          </a>
+
+          <a routerLink="/invitations"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">mail</span>
+            <span>Invitations</span>
+          </a>
+          
+          <!-- Divider -->
+          <div class="my-2 border-t border-[#E0E2E5] mx-4"></div>
+          
+          <!-- Section: Assessment Tools -->
+          <div class="px-4 py-3 text-[11px] font-bold text-[#444746] uppercase tracking-wider">
+            Assessment Tools
+          </div>
+          
+          <a routerLink="/environment"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">science</span>
+            <span>Test Library</span>
+          </a>
+
+          <a routerLink="/deployments"
+             routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+             class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">calendar_month</span>
+            <span>Interview Scheduler</span>
+          </a>
+
+        </nav>
+
+        <!-- Bottom Section -->
+        <div class="pt-4 border-t border-[#E0E2E5]">
+          
+          <!-- Trial Banner -->
+          <div class="mb-3 px-4 py-3 bg-[#FDECEA] rounded-[12px]">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-[10px] font-bold text-[#B3261E] uppercase tracking-wide">
+                Trial Period
+              </span>
+              <span class="px-2 py-0.5 bg-[#B3261E] text-white text-[10px] font-bold rounded-full">
+                14 days left
+              </span>
+            </div>
+            <p class="text-[11px] text-[#B3261E] leading-tight">
+              Upgrade to unlock all features
+            </p>
+          </div>
+
+          <!-- Settings -->
+          <a routerLink="/settings"
+             class="h-12 px-4 rounded-[12px] hover:bg-[#E0E2E5] 
+                    flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
+            <span class="material-icons text-[20px]">settings</span>
+            <span>Settings</span>
+          </a>
+
+        </div>
+
+      </aside>
 
     </div>
   `
 })
 export class SidebarComponent {
   constructor(private elementRef: ElementRef) {}
-
-  onKeyDown(event: KeyboardEvent): void {
-    const target = event.target as HTMLElement;
-    
-    if (!target.matches('a[tabindex="0"], button')) return;
-
-    const navItems = Array.from(
-      this.elementRef.nativeElement.querySelectorAll('a[tabindex="0"], button')
-    ) as HTMLElement[];
-    
-    const currentIndex = navItems.indexOf(target);
-    if (currentIndex === -1) return;
-
-    let nextIndex: number | null = null;
-
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault();
-        nextIndex = currentIndex < navItems.length - 1 ? currentIndex + 1 : 0;
-        break;
-      case 'ArrowUp':
-        event.preventDefault();
-        nextIndex = currentIndex > 0 ? currentIndex - 1 : navItems.length - 1;
-        break;
-    }
-
-    if (nextIndex !== null) {
-      navItems[nextIndex].focus();
-    }
-  }
 }
