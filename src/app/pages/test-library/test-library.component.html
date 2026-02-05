@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-white px-6 py-6 font-sans">
+    <div class="w-full max-w-[1600px] mx-auto">
+        
+        <!-- HEADER / TOOLBAR -->
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 mb-6">
+            
+            <!-- Left: Title & Search -->
+            <div class="flex items-center gap-4 w-full xl:w-auto">
+                <h1 class="text-2xl font-normal text-gray-900 tracking-tight hidden xl:block">Test Library</h1>
+                
+                <!-- Search Bar -->
+                <div class="relative flex-1 xl:w-[400px]">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                    <input type="text" 
+                           [(ngModel)]="searchQuery" 
+                           (ngModelChange)="applyFilters()"
+                           placeholder="Search assessments..." 
+                           class="block w-full pl-10 pr-3 py-2.5 border-none rounded-full bg-gray-100 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-700 sm:text-sm transition-shadow">
+                </div>
+            </div>
+
+            <!-- Right: Filters -->
+            <div class="flex flex-wrap items-center gap-2 w-full xl:w-auto">
+                
+                <!-- Category Filter -->
+                <div class="relative group">
+                    <button class="inline-flex items-center px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-700 transition-colors">
+                        <span class="mr-2">Category: {{ formatCategory(categoryFilter) }}</span>
+                        <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div class="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50 hidden group-hover:block">
+                        <button *ngFor="let cat of ['all', 'psychology', 'cognitive', 'skill', 'technical']"
+                                (click)="categoryFilter=cat; applyFilters()"
+                                [class.bg-emerald-50]="categoryFilter===cat"
+                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            {{ formatCategory(cat) }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sort Filter -->
+                <div class="relative group">
+                    <button class="inline-flex items-center px-3 py-1.5 rounded-lg border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-700 transition-colors">
+                        <span class="mr-2">Sort: {{ sortBy }}</span>
+                        <svg class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown -->
+                    <div class="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50 hidden group-hover:block">
+                        <button *ngFor="let sort of ['name', 'duration', 'questions']"
+                                (click)="sortBy=sort; applyFilters()"
+                                [class.bg-emerald-50]="sortBy===sort"
+                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 capitalize">
+                            {{ sort }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading / Error -->
+        <div *ngIf="loading" class="flex justify-center py-20">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-900"></div>
+        </div>
+        
+        <div *ngIf="error" class="bg-red-50 border border-red-100 rounded-lg p-4 mb-6 flex items-center gap-3 text-red-800">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            {{ error }}
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && filteredTests.length === 0" class="text-center py-24 bg-white rounded-xl border border-gray-200 border-dashed">
+            <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No assessments found</h3>
+            <p class="mt-1 text-sm text-gray-500">Try adjusting your filters.</p>
+        </div>
+
+        <!-- GRID -->
+        <div *ngIf="!loading && !error && filteredTests.length > 0">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div *ngFor="let test of filteredTests" class="group bg-white rounded-xl border border-gray-200 hover:border-emerald-500/50 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col h-full overflow-hidden">
+                    
+                    <!-- Header -->
+                    <div class="p-5 flex-1">
+                        <div class="flex items-start justify-between mb-3">
+                            <!-- Category Badge -->
+                            <span [class]="'px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide border ' + getCategoryColor(test.category)">
+                                {{ formatCategory(test.category) }}
+                            </span>
+                            
+                            <!-- Duration -->
+                            <div class="flex items-center text-xs text-gray-500 font-medium">
+                                <svg class="w-3.5 h-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ test.duration_minutes }}m
+                            </div>
+                        </div>
+
+                        <h3 class="text-base font-bold text-gray-900 mb-2 group-hover:text-emerald-800 transition-colors line-clamp-2">
+                            {{ test.name }}
+                        </h3>
+                        <p class="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                            {{ test.description }}
+                        </p>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="px-5 py-3 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                        <div class="text-[11px] font-medium text-gray-500 flex items-center">
+                            <span class="bg-gray-200 rounded px-1.5 py-0.5 mr-2 text-gray-700">{{ test.supported_locales.length }}</span>
+                            Languages
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <span class="text-[11px] font-medium text-gray-500">{{ test.question_count }} Qs</span>
+                            
+                            <!-- Price or Free -->
+                            <span *ngIf="test.is_free" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                                FREE
+                            </span>
+                            <span *ngIf="!test.is_free" class="text-[11px] font-bold text-gray-900">
+                                €{{ test.price_euros }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

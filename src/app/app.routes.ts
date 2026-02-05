@@ -83,7 +83,7 @@ export const routes: Routes = [
             },
             {
                 path: 'environment',
-                loadComponent: () => import('./pages/coming-soon/coming-soon.component').then(m => m.ComingSoonComponent)
+                loadComponent: () => import('./pages/test-library/test-library.component').then(m => m.TestLibraryComponent)
             },
             {
                 path: 'deployments',
