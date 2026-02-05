@@ -17,8 +17,8 @@ import { NavbarCenteredComponent } from '../navbar-centered/navbar-centered.comp
       <!-- M3 Navigation Drawer (Fixed Sidebar) -->
       <app-sidebar class="hidden md:block"></app-sidebar>
 
-      <!-- M3 Main Content Pane (Rounded Top-Left Corner) -->
-      <div class="flex-1 flex flex-col h-full overflow-hidden relative bg-white rounded-tl-[24px]">
+      <!-- M3 Main Content Pane (Square for seamless fit) -->
+      <div class="flex-1 flex flex-col h-full overflow-hidden relative bg-white">
          
          <!-- Page Content (Scrollable Area) -->
          <main class="flex-1 overflow-auto bg-white p-6">
