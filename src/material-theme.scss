@@ -1,0 +1,57 @@
+
+// Include theming for Angular Material with `mat.theme()`.
+// This Sass mixin will define CSS variables that are used for styling Angular Material
+// components according to the Material 3 design spec.
+// Learn more about theming and how to use it for your application's
+// custom components at https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+
+// Define custom emerald palette from brand color #0F5132
+$emerald-palette: (
+  0: #000000,
+  10: #002110,
+  20: #00391c,
+  25: #00452a,
+  30: #0F5132,
+  35: #005d39,
+  40: #006940,
+  50: #008455,
+  60: #00a06a,
+  70: #2ebc82,
+  80: #52d89a,
+  90: #75f5b3,
+  95: #c4eed0,
+  98: #e8f8ed,
+  99: #f4fcf6,
+  100: #ffffff,
+);
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (
+      primary: $emerald-palette,
+      tertiary: mat.$cyan-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  // Default the application to a light color theme. This can be changed to
+  // `dark` to enable the dark color theme, or to `light dark` to defer to the
+  // user's system settings.
+  color-scheme: light;
+
+  // Set a default background, font and text colors for the application using
+  // Angular Material's system-level CSS variables. Learn more about these
+  // variables at https://material.angular.dev/guide/system-variables
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+
+  // Reset the user agent margin.
+  margin: 0;
+  height: 100%;
+}
