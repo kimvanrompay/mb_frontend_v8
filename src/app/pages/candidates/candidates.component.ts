@@ -250,6 +250,22 @@ export class CandidatesComponent implements OnInit {
         return source.charAt(0).toUpperCase() + source.slice(1);
     }
 
+    // Premium UI Helper Methods
+    formatFilterValue(value: string): string {
+        if (value === 'all') return 'All';
+        return value.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+    }
+
+    formatSortValue(value: string): string {
+        switch (value) {
+            case 'updated': return 'Last Updated';
+            case 'name': return 'Name (A-Z)';
+            case 'applications': return 'Applications';
+            case 'created': return 'Date Added';
+            default: return value;
+        }
+    }
+
     openInviteModal() {
         this.isInviteModalOpen = true;
         this.resetInviteForm();
