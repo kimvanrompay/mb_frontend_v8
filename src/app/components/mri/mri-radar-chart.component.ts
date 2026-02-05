@@ -69,7 +69,7 @@ interface RadarData {
           text-anchor="middle"
           class="text-sm font-semibold fill-gray-700"
         >
-          {{ data?.labels[i] }}
+          {{ data?.labels?.[i] }}
         </text>
       </svg>
 

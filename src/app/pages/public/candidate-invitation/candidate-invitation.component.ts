@@ -142,7 +142,7 @@ export class CandidateInvitationComponent implements OnInit {
 
     this.accepting = true;
 
-    this.http.post<{ success: boolean; candidate_id: string; message: string }>(
+    this.http.post<{ success: boolean; candidate_id: string; message: string; next_step: string; assessment_token?: string }>(
       `${environment.apiUrl}/candidates/invitation/${this.token}/accept`,
       {
         privacy_accepted: true,
