@@ -5,12 +5,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { NavbarCenteredComponent } from '../navbar-centered/navbar-centered.component';
 
 @Component({
     selector: 'app-main-layout',
     standalone: true,
-    imports: [CommonModule, RouterModule, SidebarComponent, NavbarCenteredComponent],
+    imports: [CommonModule, RouterModule, SidebarComponent],
     template: `
     <div class="flex h-screen bg-surface-container-low">
       

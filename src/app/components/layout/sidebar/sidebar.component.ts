@@ -128,7 +128,6 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
           </div>
         </div>
       </nav>
-      </nav>
 
       <!-- COLUMN 2: CONTEXTUAL DRAWER (Absolute Overlay) -->
       <!-- Positioned absolute left-80px so it floats OVER main content instead of pushing it -->

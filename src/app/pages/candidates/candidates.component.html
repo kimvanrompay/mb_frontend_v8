@@ -33,7 +33,7 @@
                     </button>
 
                     <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                         <button *ngFor="let status of ['all', 'new', 'in_process', 'hired', 'rejected']"
+                         <button *ngFor="let status of statusOptions"
                                 (click)="statusFilter=status; applyFilters()"
                                 [class.bg-[#C4F5DA]]="statusFilter===status"
                                 [class.text-[#052112]]="statusFilter===status"
@@ -53,7 +53,7 @@
                         <span class="material-icons text-[20px] text-[#444746]">arrow_drop_down</span>
                     </button>
                      <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                         <button *ngFor="let sort of ['updated', 'name', 'applications', 'created', 'expectation', 'values', 'potential', 'skills']"
+                         <button *ngFor="let sort of sortOptions"
                                 (click)="sortBy=sort; applyFilters()"
                                 [class.bg-[#C4F5DA]]="sortBy===sort"
                                 [class.text-[#052112]]="sortBy===sort"

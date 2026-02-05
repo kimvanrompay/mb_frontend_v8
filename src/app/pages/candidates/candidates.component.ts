@@ -25,6 +25,12 @@ export class CandidatesComponent implements OnInit {
     sortBy: 'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' | 'expectation' | 'values' | 'potential' | 'skills' = 'updated';
     sortDirection: 'asc' | 'desc' = 'desc';
 
+    sortOptions: Array<'updated' | 'name' | 'applications' | 'created' | 'status' | 'source' | 'email' | 'expectation' | 'values' | 'potential' | 'skills'> = [
+        'updated', 'name', 'applications', 'created', 'expectation', 'values', 'potential', 'skills'
+    ];
+
+    statusOptions = ['all', 'new', 'in_process', 'hired', 'rejected'];
+
     // For invite modal
     isInviteModalOpen = false;
     jobs: any[] = [];
