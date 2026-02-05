@@ -18,10 +18,10 @@ import { NavbarCenteredComponent } from '../navbar-centered/navbar-centered.comp
       <app-sidebar class="hidden md:block"></app-sidebar>
 
       <!-- M3 Main Content Pane (Rounded Top-Left Corner) -->
-      <div class="flex-1 flex flex-col h-full overflow-hidden relative bg-surface rounded-tl-[24px]">
+      <div class="flex-1 flex flex-col h-full overflow-hidden relative bg-white rounded-tl-[24px]">
          
          <!-- Page Content (Scrollable Area) -->
-         <main class="flex-1 overflow-auto bg-surface p-6">
+         <main class="flex-1 overflow-auto bg-white p-6">
             <div class="mx-auto max-w-[1600px]">
                <router-outlet></router-outlet>
             </div>
