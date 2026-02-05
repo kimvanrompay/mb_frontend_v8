@@ -23,11 +23,6 @@ import { RouterModule } from '@angular/router';
         <span class="material-icons text-[24px] text-[#4A4A4A]">search</span>
       </button>
 
-      <!-- Logo -->
-      <div class="w-12 h-12 rounded-full bg-[#4A4A4A] flex items-center justify-center mb-8">
-        <span class="text-white font-bold text-[18px]">M</span>
-      </div>
-
       <!-- Navigation Rail Items -->
       <nav class="flex-1 flex flex-col items-center gap-3 overflow-y-auto">
         
@@ -85,31 +80,6 @@ import { RouterModule } from '@angular/router';
            tabindex="0">
           <span class="material-icons text-[20px] text-[#4A4A4A]">palette</span>
           <span class="text-[10px] text-[#4A4A4A] font-medium">Styles</span>
-        </a>
-
-        <!-- Divider -->
-        <div class="w-8 h-px bg-[#E0E0E0] my-2"></div>
-
-        <!-- Components (Highlighted with FAB) -->
-        <a routerLink="/environment" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl bg-[#3C3744] hover:bg-[#302B37]
-                  flex flex-col items-center justify-center gap-1 transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-white">add</span>
-          <span class="text-[10px] text-white font-medium text-center leading-tight">Components</span>
-        </a>
-
-        <!-- Blog -->
-        <a routerLink="/deployments" 
-           routerLinkActive="bg-white"
-           class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1
-                  hover:bg-[#E5E7EB] transition-colors
-                  focus:outline-none focus:ring-2 focus:ring-primary/50"
-           tabindex="0">
-          <span class="material-icons text-[20px] text-[#4A4A4A]">star</span>
-          <span class="text-[10px] text-[#4A4A4A] font-medium">Blog</span>
         </a>
 
       </nav>
