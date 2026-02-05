@@ -1,7 +1,7 @@
 // COMPLETE M3 NAVIGATION DRAWER - READY FOR IMPLEMENTATION
 // Replace the content of: src/app/components/layout/sidebar/sidebar.component.ts
 
-import { Component } from '@angular/core';
+import { Component, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -9,9 +9,12 @@ import { RouterModule } from '@angular/router';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule],
+  host: {
+    '(keydown)': 'onKeyDown($event)'
+  },
   template: `
-    <!-- M3 Standard Navigation Drawer -->
-    <div class="flex flex-col w-[280px] h-full bg-surface-container-low">
+    <!-- M3 Standard Navigation Drawer (Strict Spec: 360px) -->
+    <div class="flex flex-col w-[360px] h-full bg-surface-container-low">
       
       <!-- Logo Area -->
       <div class="h-16 flex items-center px-6">
@@ -21,13 +24,15 @@ import { RouterModule } from '@angular/router';
         </a>
       </div>
 
-      <!-- Extended FAB (Primary Action - North Star Button) -->
+      <!-- Extended FAB (Primary Action - M3 Spec) -->
       <div class="px-4 pb-6">
         <a routerLink="/candidates" 
            class="h-14 w-full bg-primary-container text-on-primary-container rounded-2xl 
-                  flex items-center justify-center gap-3 font-semibold text-[15px] tracking-wide 
-                  shadow-md hover:shadow-lg transition-all">
-          <span class="material-icons-outlined text-[20px]">add</span>
+                  flex items-center justify-center gap-3 font-semibold text-[14px] tracking-wide 
+                  shadow-md hover:shadow-lg transition-all group
+                  focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+           tabindex="0">
+          <span class="material-icons-outlined text-[24px] group-hover:scale-110 transition-transform">add</span>
           <span>Invite Candidate</span>
         </a>
       </div>
@@ -38,55 +43,65 @@ import { RouterModule } from '@angular/router';
         <!-- Primary Navigation -->
         <div class="space-y-1 mb-4">
           
-          <!-- Overview -->
+          <!-- Overview (M3 Spec: 56px height, Label Large 14px) -->
           <a routerLink="/dashboard" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              [routerLinkActiveOptions]="{exact: true}"
-             class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-full
-                    hover:bg-surface-container-high transition-all">
+             class="h-[56px] px-6 flex items-center gap-3 
+                    text-on-surface-variant font-medium text-[14px] rounded-full
+                    hover:bg-surface-container-high transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+             tabindex="0">
             <span class="material-icons text-[24px]">dashboard</span>
-            <span class="text-[15px] font-medium">Overview</span>
+            <span>Overview</span>
           </a>
 
           <!-- Positions -->
           <a routerLink="/jobs" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-             class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-full
-                    hover:bg-surface-container-high transition-all">
+             class="h-[56px] px-6 flex items-center gap-3 
+                    text-on-surface-variant font-medium text-[14px] rounded-full
+                    hover:bg-surface-container-high transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+             tabindex="0">
             <span class="material-icons-outlined text-[24px]">work_outline</span>
-            <span class="text-[15px] font-medium">Positions</span>
+            <span>Positions</span>
           </a>
 
           <!-- Assessments -->
           <a routerLink="/applications" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-             class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-full
-                    hover:bg-surface-container-high transition-all">
+             class="h-[56px] px-6 flex items-center gap-3 
+                    text-on-surface-variant font-medium text-[14px] rounded-full
+                    hover:bg-surface-container-high transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+             tabindex="0">
             <span class="material-icons-outlined text-[24px]">assignment</span>
-            <span class="text-[15px] font-medium">Assessments</span>
+            <span>Assessments</span>
           </a>
 
-          <!-- Candidates (Active Pill Example) -->
+          <!-- Candidates -->
           <a routerLink="/candidates" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-             class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-full
-                    hover:bg-surface-container-high transition-all">
+             class="h-[56px] px-6 flex items-center gap-3 
+                    text-on-surface-variant font-medium text-[14px] rounded-full
+                    hover:bg-surface-container-high transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+             tabindex="0">
             <span class="material-icons text-[24px]">people</span>
-            <span class="text-[15px] font-medium">Candidates</span>
+            <span>Candidates</span>
           </a>
 
           <!-- Invitations -->
           <a routerLink="/invitations" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-             class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-full
-                    hover:bg-surface-container-high transition-all">
+             class="h-[56px] px-6 flex items-center gap-3 
+                    text-on-surface-variant font-medium text-[14px] rounded-full
+                    hover:bg-surface-container-high transition-colors
+                    focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+             tabindex="0">
             <span class="material-icons-outlined text-[24px]">mail_outline</span>
-            <span class="text-[15px] font-medium">Invitations</span>
+            <span>Invitations</span>
           </a>
 
         </div>
@@ -107,21 +122,25 @@ import { RouterModule } from '@angular/router';
             <!-- Test Library -->
             <a routerLink="/environment" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">library_books</span>
-              <span class="text-sm">Test Library</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">library_books</span>
+              <span>Test Library</span>
             </a>
 
             <!-- Interview Scheduler -->
             <a routerLink="/deployments" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">calendar_month</span>
-              <span class="text-sm">Interview Scheduler</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">calendar_month</span>
+              <span>Interview Scheduler</span>
             </a>
           </div>
         </div>
@@ -142,21 +161,25 @@ import { RouterModule } from '@angular/router';
             <!-- Team & Permissions -->
             <a routerLink="/team" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">groups</span>
-              <span class="text-sm">Team & Permissions</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">groups</span>
+              <span>Team & Permissions</span>
             </a>
 
             <!-- Billing & Subscription -->
             <a routerLink="/billing" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">credit_card</span>
-              <span class="text-sm">Billing & Subscription</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">credit_card</span>
+              <span>Billing & Subscription</span>
             </a>
           </div>
         </div>
@@ -177,21 +200,25 @@ import { RouterModule } from '@angular/router';
             <!-- Integrations -->
             <a routerLink="/integrations" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">extension</span>
-              <span class="text-sm">Integrations</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">extension</span>
+              <span>Integrations</span>
             </a>
 
             <!-- Invite a Friend -->
             <a routerLink="/invite-friend" 
                routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-               class="h-14 px-6 flex items-center gap-4 
-                      text-on-surface-variant rounded-m3-full
-                      hover:bg-surface-container-high transition-colors">
-              <span class="material-icons">person_add_alt</span>
-              <span class="text-sm">Invite a Friend</span>
+               class="h-[56px] px-6 flex items-center gap-3 
+                      text-on-surface-variant font-medium text-[14px] rounded-full
+                      hover:bg-surface-container-high transition-colors
+                      focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+               tabindex="0">
+              <span class="material-icons-outlined text-[24px]">person_add_alt</span>
+              <span>Invite a Friend</span>
             </a>
           </div>
         </div>
@@ -219,21 +246,25 @@ import { RouterModule } from '@angular/router';
         <!-- Settings -->
         <a routerLink="/settings" 
            routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
-           class="h-12 px-4 flex items-center gap-3 
-                  text-on-surface-variant rounded-m3-md
-                  hover:bg-surface-container-high transition-colors">
-          <span class="material-icons">settings</span>
-          <span class="text-sm">Settings</span>
+           class="h-[56px] px-4 flex items-center gap-3 
+                  text-on-surface-variant font-medium text-[14px] rounded-full
+                  hover:bg-surface-container-high transition-colors
+                  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+           tabindex="0">
+          <span class="material-icons-outlined text-[24px]">settings</span>
+          <span>Settings</span>
         </a>
 
         <!-- Help & Support -->
         <a href="https://docs.meribas.app" 
            target="_blank" 
-           class="h-12 px-4 flex items-center gap-3 
-                  text-on-surface-variant rounded-m3-md
-                  hover:bg-surface-container-high transition-colors">
-          <span class="material-icons">help</span>
-          <span class="text-sm">Help & Support</span>
+           class="h-[56px] px-4 flex items-center gap-3 
+                  text-on-surface-variant font-medium text-[14px] rounded-full
+                  hover:bg-surface-container-high transition-colors
+                  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary/50"
+           tabindex="0">
+          <span class="material-icons-outlined text-[24px]">help</span>
+          <span>Help & Support</span>
         </a>
 
       </div>
@@ -241,7 +272,49 @@ import { RouterModule } from '@angular/router';
     </div>
   `
 })
-export class SidebarComponent { }
+export class SidebarComponent {
+  constructor(private elementRef: ElementRef) {}
+
+  // M3 Accessibility: Keyboard Navigation Support
+  onKeyDown(event: KeyboardEvent): void {
+    const target = event.target as HTMLElement;
+    
+    // Only handle keyboard navigation on nav items
+    if (!target.matches('a[tabindex="0"]')) return;
+
+    const navLinks = Array.from(
+      this.elementRef.nativeElement.querySelectorAll('a[tabindex="0"]')
+    ) as HTMLElement[];
+    
+    const currentIndex = navLinks.indexOf(target);
+    if (currentIndex === -1) return;
+
+    let nextIndex: number | null = null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        nextIndex = currentIndex < navLinks.length - 1 ? currentIndex + 1 : 0;
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : navLinks.length - 1;
+        break;
+      case 'Home':
+        event.preventDefault();
+        nextIndex = 0;
+        break;
+      case 'End':
+        event.preventDefault();
+        nextIndex = navLinks.length - 1;
+        break;
+    }
+
+    if (nextIndex !== null) {
+      navLinks[nextIndex].focus();
+    }
+  }
+}
 
 /*
 ═══════════════════════════════════════════════════════════════════════════════
