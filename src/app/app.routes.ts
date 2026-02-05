@@ -37,6 +37,10 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', component: DashboardComponent },
             {
+                path: 'search',
+                loadComponent: () => import('./pages/search/search.component').then(m => m.SearchComponent)
+            },
+            {
                 path: 'jobs',
                 loadComponent: () => import('./pages/jobs/jobs.component').then(m => m.JobsComponent)
             },

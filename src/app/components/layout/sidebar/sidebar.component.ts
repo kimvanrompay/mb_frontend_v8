@@ -23,7 +23,8 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
       <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative bg-white">
         
         <!-- Search Button (Top Action) -->
-        <button class="w-12 h-12 rounded-[16px] bg-[#E8DEF8] hover:bg-[#D0BCFF] flex items-center justify-center mb-6 text-[#1D192B] transition-colors focus:outline-none cursor-pointer">
+        <button routerLink="/search" 
+                class="w-12 h-12 rounded-[16px] bg-[#E8DEF8] hover:bg-[#D0BCFF] flex items-center justify-center mb-6 text-[#1D192B] transition-colors focus:outline-none cursor-pointer">
           <span class="material-icons text-[24px]">search</span>
         </button>
         
