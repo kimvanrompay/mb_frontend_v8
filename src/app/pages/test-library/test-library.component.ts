@@ -23,6 +23,9 @@ export class TestLibraryComponent implements OnInit {
     
     // Sort options
     sortBy: 'name' | 'duration' | 'questions' | 'category' = 'name';
+    
+    sortOptions: Array<'name' | 'duration' | 'questions'> = ['name', 'duration', 'questions'];
+    categoryOptions = ['all', 'psychology', 'cognitive', 'skill', 'technical'];
 
     constructor(private assessmentService: AssessmentService) { }
 

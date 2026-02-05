@@ -36,7 +36,7 @@
                     </button>
                     <!-- Dropdown -->
                     <div class="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50 hidden group-hover:block">
-                        <button *ngFor="let cat of ['all', 'psychology', 'cognitive', 'skill', 'technical']"
+                        <button *ngFor="let cat of categoryOptions"
                                 (click)="categoryFilter=cat; applyFilters()"
                                 [class.bg-emerald-50]="categoryFilter===cat"
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
@@ -55,7 +55,7 @@
                     </button>
                     <!-- Dropdown -->
                     <div class="absolute right-0 top-full mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-100 py-1 z-50 hidden group-hover:block">
-                        <button *ngFor="let sort of ['name', 'duration', 'questions']"
+                        <button *ngFor="let sort of sortOptions"
                                 (click)="sortBy=sort; applyFilters()"
                                 [class.bg-emerald-50]="sortBy===sort"
                                 class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 capitalize">
