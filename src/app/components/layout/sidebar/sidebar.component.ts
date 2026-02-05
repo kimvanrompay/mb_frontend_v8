@@ -13,22 +13,24 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <!-- DUAL-PANE CONTAINER -->
-    <div class="flex h-full transition-all duration-300 ease-in-out">
+    <!-- DUAL-PANE CONTAINER (HOVER ACTIVATED) -->
+    <!-- Usage: Flex container for Rail, but Drawer is Absolute Overlay -->
+    <div class="flex h-full relative z-50" 
+         (mouseenter)="onMouseEnter()" 
+         (mouseleave)="onMouseLeave()">
       
       <!-- COLUMN 1: NAVIGATION RAIL (80px - Permanent) -->
-      <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative">
+      <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative bg-white">
         
-        <!-- Menu Toggle (Collapses/Expands Drawer) -->
-        <button (click)="toggleDrawer()" 
-                class="w-12 h-12 rounded-full hover:bg-gray-100 flex items-center justify-center mb-6 text-[#444746] transition-colors">
-          <span class="material-icons text-[24px]">{{ isDrawerOpen ? 'menu_open' : 'menu' }}</span>
-        </button>
+        <!-- Menu Icon (Visual Only) -->
+        <div class="w-12 h-12 rounded-full flex items-center justify-center mb-6 text-[#444746]">
+          <span class="material-icons text-[24px]">menu</span>
+        </div>
         
         <!-- Rail Item: Home -->
         <button (click)="setActiveCategory('home')" 
            [class.active-rail-item]="activeCategory === 'home'"
-           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none">
+           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
                [ngClass]="activeCategory === 'home' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
             <span class="material-icons text-[24px]"
@@ -41,7 +43,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         <!-- Rail Item: Hiring -->
         <button (click)="setActiveCategory('hiring')" 
            [class.active-rail-item]="activeCategory === 'hiring'"
-           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none">
+           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
                [ngClass]="activeCategory === 'hiring' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
             <span class="material-icons text-[24px]"
@@ -54,7 +56,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         <!-- Rail Item: Library -->
         <button (click)="setActiveCategory('library')" 
            [class.active-rail-item]="activeCategory === 'library'"
-           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none">
+           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
                [ngClass]="activeCategory === 'library' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
             <span class="material-icons text-[24px]"
@@ -67,7 +69,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         <!-- Rail Item: Admin -->
         <button (click)="setActiveCategory('admin')" 
            [class.active-rail-item]="activeCategory === 'admin'"
-           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none">
+           class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
           <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
                [ngClass]="activeCategory === 'admin' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
             <span class="material-icons text-[24px]"
@@ -79,16 +81,17 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
       </nav>
 
-      <!-- COLUMN 2: CONTEXTUAL DRAWER (Collapsible) -->
-      <aside class="h-full bg-[#F3F4F6] flex flex-col z-20 overflow-hidden transition-all duration-300 ease-in-out border-r border-[#E0E2E5]"
+      <!-- COLUMN 2: CONTEXTUAL DRAWER (Absolute Overlay) -->
+      <!-- Positioned absolute left-80px so it floats OVER main content instead of pushing it -->
+      <aside class="absolute left-[80px] top-0 h-full bg-[#F3F4F6] border-r border-[#E0E2E5] shadow-2xl z-20 overflow-hidden transition-all duration-300 ease-in-out"
              [style.width.px]="isDrawerOpen ? 280 : 0"
              [style.opacity]="isDrawerOpen ? 1 : 0">
         
-        <div class="w-[280px] h-full flex flex-col p-4"> <!-- Fixed width container to prevent squash -->
+        <div class="w-[280px] h-full flex flex-col p-4"> <!-- Fixed width container -->
 
             <!-- DYNAMIC CONTENT SWITCHER -->
             <ng-container [ngSwitch]="activeCategory">
-
+                <!-- ... content remains the same ... -->
                 <!-- 1. HOME CATEGORY -->
                 <ng-container *ngSwitchCase="'home'">
                     <div class="h-16 flex items-center px-4 mb-2">
@@ -216,40 +219,39 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
   `
 })
 export class SidebarComponent implements OnInit {
-  isDrawerOpen = true;
+  isDrawerOpen = false; // Default closed
   activeCategory: NavCategory = 'home';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // Determine active category based on URL on load and navigation
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
       this.syncCategoryWithRoute();
     });
-
     this.syncCategoryWithRoute();
   }
 
-  toggleDrawer() {
-    this.isDrawerOpen = !this.isDrawerOpen;
+  onMouseEnter() {
+    this.isDrawerOpen = true;
+  }
+
+  onMouseLeave() {
+    this.isDrawerOpen = false;
   }
 
   setActiveCategory(category: NavCategory) {
     this.activeCategory = category;
-    if (!this.isDrawerOpen) {
-      this.isDrawerOpen = true; // Open drawer when category is clicked
-    }
+    // Note: We do NOT force isDrawerOpen here because we rely on hover. 
+    // If the user clicks, they are likely already hovering.
   }
 
   private syncCategoryWithRoute() {
     const url = this.router.url;
-    
     if (url.includes('/dashboard')) this.activeCategory = 'home';
     else if (url.includes('/jobs') || url.includes('/candidates') || url.includes('/invitations')) this.activeCategory = 'hiring';
     else if (url.includes('/applications') || url.includes('/environment') || url.includes('/deployments')) this.activeCategory = 'library';
     else if (url.includes('/settings') || url.includes('/team') || url.includes('/billing')) this.activeCategory = 'admin';
-    // Default fallback
   }
 }
