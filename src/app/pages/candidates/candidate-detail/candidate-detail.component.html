@@ -22,10 +22,9 @@
 
         <!-- MRI Dashboard -->
         <div *ngIf="candidate && !loading && !error">
-            <!-- Header with God Mode Toggle -->
+            <!-- Header -->
             <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-5 mb-4">
-                <div class="flex items-start justify-between">
-                    <div class="flex items-start gap-4">
+                <div class="flex items-start gap-4">
                         <!-- Avatar -->
                         <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm shadow-md">
                             {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
@@ -61,37 +60,21 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- God Mode Toggle -->
-                    <button (click)="toggleGodMode()"
-                            [class]="godMode ? 'bg-indigo-600/90 text-white' : 'bg-white/40 text-gray-700'"
-                            class="px-3 py-1.5 text-xs font-medium rounded-lg border border-white/30 backdrop-blur-sm transition flex items-center gap-1.5 hover:shadow-md">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                        {{ godMode ? 'Show Insights' : 'God Mode' }}
-                    </button>
                 </div>
             </div>
 
-            <!-- God Mode: Raw JSON -->
-            <div *ngIf="godMode" class="bg-gray-900/95 backdrop-blur-xl text-green-400 rounded-xl p-4 mb-4 font-mono text-[10px] overflow-x-auto">
-                <pre>{{ mriData | json }}</pre>
-            </div>
-
-            <!-- Insights Mode: 3-Zone Dashboard -->
-            <div *ngIf="!godMode && !loadingMRI && mriData" class="space-y-4">
+            <!-- MRI Dashboard Content -->
+            <div *ngIf="!loadingMRI && mriData" class="space-y-4">
                 
-                <!-- ZONE 1: Executive Summary -->
+                <!-- ZONE 1: 4-Pillar Radar -->
                 <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-4">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xs">
                             1
                         </div>
                         <div>
-                            <h2 class="text-sm font-bold text-gray-900">Executive Summary</h2>
-                            <p class="text-[10px] text-gray-600">30-Second Hiring Decision</p>
+                            <h2 class="text-sm font-bold text-gray-900">4-Pillar Analysis</h2>
+                            <p class="text-[10px] text-gray-600">Candidate Profile Overview</p>
                         </div>
                     </div>
 
@@ -129,15 +112,15 @@
                     </div>
                 </div>
 
-                <!-- ZONE 2: 4-Pillar Radar -->
+                <!-- ZONE 2: Executive Summary -->
                 <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-4">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xs">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs">
                             2
                         </div>
                         <div>
-                            <h2 class="text-sm font-bold text-gray-900">4-Pillar Analysis</h2>
-                            <p class="text-[10px] text-gray-600">Candidate vs. Role Ideal</p>
+                            <h2 class="text-sm font-bold text-gray-900">Hiring Decision</h2>
+                            <p class="text-[10px] text-gray-600">Match Score & Recommendation</p>
                         </div>
                     </div>
 
@@ -257,13 +240,13 @@
             </div>
 
             <!-- Loading MRI State -->
-            <div *ngIf="loadingMRI && !godMode" class="text-center py-10">
+            <div *ngIf="loadingMRI" class="text-center py-10">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
                 <p class="mt-2 text-xs text-gray-600">Loading MRI analysis...</p>
             </div>
 
             <!-- Empty State: No Assessment Data -->
-            <div *ngIf="!loadingMRI && !mriData && !godMode" class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-8 text-center">
+            <div *ngIf="!loadingMRI && !mriData" class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-8 text-center">
                 <div class="max-w-md mx-auto">
                     <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
