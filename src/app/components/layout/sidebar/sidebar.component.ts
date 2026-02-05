@@ -1,7 +1,7 @@
 // M3 NAVIGATION RAIL - COMPACT VERTICAL NAVIGATION
 // Inspired by Material Design documentation site
 
-import { Component, HostListener, ElementRef } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -114,7 +114,7 @@ import { RouterModule } from '@angular/router';
 
       </nav>
 
-      <!-- Bottom spacer for scroll -->
+      <!-- Bottom spacer -->
       <div class="h-4"></div>
 
     </div>
@@ -123,11 +123,10 @@ import { RouterModule } from '@angular/router';
 export class SidebarComponent {
   constructor(private elementRef: ElementRef) {}
 
-  // Navigation Rail: Keyboard Support
   onKeyDown(event: KeyboardEvent): void {
     const target = event.target as HTMLElement;
     
-    if (!target.matches('a[tabindex="0"], button[tabindex="0"]')) return;
+    if (!target.matches('a[tabindex="0"], button')) return;
 
     const navItems = Array.from(
       this.elementRef.nativeElement.querySelectorAll('a[tabindex="0"], button')
