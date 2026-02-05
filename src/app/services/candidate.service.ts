@@ -113,4 +113,12 @@ export class CandidateService {
             {}
         );
     }
+
+    /**
+     * GET /api/v1/candidates/:id/mri - Get Candidate MRI Dashboard data
+     * Returns 4-pillar KPIs, decision insights, radar data, behavioral MRI
+     */
+    getCandidateMRI(id: string): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/${id}/mri`);
+    }
 }

@@ -4,6 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CandidateService } from '../../../services/candidate.service';
 import { CandidateDetail } from '../../../models/candidate.model';
+import { MriGaugeComponent } from '../../../components/mri/mri-gauge.component';
+import { MriRadarChartComponent } from '../../../components/mri/mri-radar-chart.component';
+import { MriWhyCardsComponent } from '../../../components/mri/mri-why-cards.component';
+import { MriFocusTimelineComponent } from '../../../components/mri/mri-focus-timeline.component';
 
 interface Archetype {
     name: string;
@@ -42,7 +46,15 @@ const ARCHETYPES: { [key: string]: Archetype } = {
 @Component({
     selector: 'app-candidate-detail',
     standalone: true,
-    imports: [CommonModule, RouterModule, FormsModule],
+    imports: [
+        CommonModule, 
+        RouterModule, 
+        FormsModule,
+        MriGaugeComponent,
+        MriRadarChartComponent,
+        MriWhyCardsComponent,
+        MriFocusTimelineComponent
+    ],
     templateUrl: './candidate-detail.component.html',
     styleUrl: './candidate-detail.component.css'
 })
@@ -50,6 +62,11 @@ export class CandidateDetailComponent implements OnInit {
     candidate: CandidateDetail | null = null;
     loading = true;
     error: string | null = null;
+
+    // MRI Dashboard State
+    mriData: any = null;
+    loadingMRI = false;
+    godMode = false; // Toggle between Insights and Raw Data
 
     // C.O.R.E Profile State
     coreProfile = {
@@ -121,6 +138,9 @@ export class CandidateDetailComponent implements OnInit {
                 this.cdr.detectChanges(); // Manually trigger change detection
 
                 console.log('✅ Loading set to false, change detection triggered');
+
+                // Load MRI Dashboard data
+                this.loadMRIData(id);
             },
             error: (err) => {
                 console.error('Error loading candidate:', err);
@@ -138,6 +158,26 @@ export class CandidateDetailComponent implements OnInit {
                 this.loading = false;
             }
         });
+    }
+
+    loadMRIData(id: string) {
+        this.loadingMRI = true;
+        this.candidateService.getCandidateMRI(id).subscribe({
+            next: (data) => {
+                console.log('🧠 MRI Data loaded:', data);
+                this.mriData = data;
+                this.loadingMRI = false;
+            },
+            error: (err) => {
+                console.error('Error loading MRI data:', err);
+                // Non-blocking error - candidate details still show
+                this.loadingMRI = false;
+            }
+        });
+    }
+
+    toggleGodMode() {
+        this.godMode = !this.godMode;
     }
 
     deriveCoreProfile(candidate: CandidateDetail) {
@@ -276,5 +316,26 @@ export class CandidateDetailComponent implements OnInit {
 
     hasMetadata(metadata: any): boolean {
         return metadata && Object.keys(metadata).length > 0;
+    }
+
+    // MRI Dashboard Helpers
+    getRecommendationClass(verdict: string): string {
+        switch (verdict) {
+            case 'STRONG_HIRE':
+                return 'bg-emerald-50 border-emerald-500 text-emerald-900';
+            case 'HIRE':
+                return 'bg-blue-50 border-blue-500 text-blue-900';
+            case 'MAYBE':
+                return 'bg-amber-50 border-amber-500 text-amber-900';
+            case 'WEAK_FIT':
+            case 'NO_HIRE':
+                return 'bg-red-50 border-red-500 text-red-900';
+            default:
+                return 'bg-gray-50 border-gray-300 text-gray-700';
+        }
+    }
+
+    formatVerdict(verdict: string): string {
+        return verdict.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
     }
 }
