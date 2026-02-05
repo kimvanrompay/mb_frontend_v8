@@ -16,19 +16,20 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
     <!-- DUAL-PANE CONTAINER (HOVER ACTIVATED) -->
     <!-- Usage: Flex container for Rail, but Drawer is Absolute Overlay -->
     <div class="flex h-full relative z-50" 
-         (mouseenter)="onMouseEnter()" 
          (mouseleave)="onMouseLeave()">
       
       <!-- COLUMN 1: NAVIGATION RAIL (80px - Permanent) -->
       <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative bg-white">
         
-        <!-- Search Button (Top Action) -->
+        <!-- Search Button (Top Action - HOVER CLOSES DRAWER) -->
         <a routerLink="/search" 
+           (mouseenter)="onMouseLeave()"
            class="w-12 h-12 rounded-[16px] bg-[#E8DEF8] hover:bg-[#D0BCFF] flex items-center justify-center mb-6 text-[#1D192B] transition-colors focus:outline-none cursor-pointer no-underline">
           <span class="material-icons text-[24px]">search</span>
         </a>
         
-        <!-- Rail Item: Home -->
+        <!-- Rail Items Container (HOVER OPENS DRAWER) -->
+        <div class="flex flex-col items-center w-full" (mouseenter)="onMouseEnter()">
         <button (mouseenter)="onHoverRailItem('home')" (click)="setActiveCategory('home')" 
            [class.active-rail-item]="activeCategory === 'home'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
@@ -79,6 +80,8 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
           <span class="text-[12px] font-medium"
                 [ngClass]="activeCategory === 'admin' ? 'font-bold text-[#1C1B1F]' : 'text-[#444746]'">Admin</span>
         </button>
+
+        </div>
 
       </nav>
 
