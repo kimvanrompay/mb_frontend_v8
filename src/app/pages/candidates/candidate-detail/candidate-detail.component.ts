@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -109,7 +109,8 @@ export class CandidateDetailComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private candidateService: CandidateService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private ngZone: NgZone
     ) { }
 
     ngOnInit() {
@@ -162,16 +163,35 @@ export class CandidateDetailComponent implements OnInit {
 
     loadMRIData(id: string) {
         this.loadingMRI = true;
+        console.log('🔄 Starting MRI data fetch for candidate:', id);
+        
         this.candidateService.getCandidateMRI(id).subscribe({
             next: (data) => {
-                console.log('🧠 MRI Data loaded:', data);
-                this.mriData = data;
-                this.loadingMRI = false;
+                console.log('✅ MRI Data received:', data);
+                console.log('📊 Has kpis?', !!data?.kpis);
+                console.log('📊 KPIs:', data?.kpis);
+                
+                // Run inside Angular zone to ensure change detection
+                this.ngZone.run(() => {
+                    this.mriData = data;
+                    this.loadingMRI = false;
+                    console.log('✅ State updated - loadingMRI:', this.loadingMRI, ', mriData exists:', !!this.mriData);
+                });
             },
             error: (err) => {
-                console.error('Error loading MRI data:', err);
-                // Non-blocking error - candidate details still show
-                this.loadingMRI = false;
+                console.error('❌ Error loading MRI data:', err);
+                console.error('❌ Error status:', err.status);
+                console.error('❌ Error message:', err.message);
+                
+                // Run inside Angular zone
+                this.ngZone.run(() => {
+                    this.loadingMRI = false;
+                });
+            }
+        });
+    }
+                    this.loadingMRI = false;
+                }, 0);
             }
         });
     }
