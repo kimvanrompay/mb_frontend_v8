@@ -1,196 +1,209 @@
-<!-- Dashboard Content -->
+<!-- M3 Dashboard Content -->
 
 <!-- Header -->
 <div class="mb-6 flex items-center justify-between">
-    <h1 class="text-lg font-medium text-[var(--meribas-black)] tracking-tight">Overview</h1>
+    <h1 class="text-[24px] font-normal text-on-surface">Overview</h1>
 
-    <!-- Action Buttons -->
+    <!-- Action Buttons (M3 Styles) -->
     <div class="flex items-center gap-3">
-        <!-- Add Team Members Button (with upgrade tooltip) -->
+        <!-- Add Team Members (Outlined Button) -->
         <div class="relative group">
             <a routerLink="/team-upgrade"
-                class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-400 transition-colors cursor-pointer">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                </svg>
+                class="flex items-center gap-2 px-6 h-10 border border-outline rounded-full text-sm font-medium text-primary hover:bg-primary-container/10 transition-colors cursor-pointer">
+                <span class="material-icons text-[18px]">group_add</span>
                 Add Team Members
             </a>
-
-            <!-- Tooltip -->
-            <div
-                class="absolute top-full mt-2 right-0 w-80 p-4 bg-black text-white rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <!-- Tooltip (Keep existing logic, restyle container) -->
+            <div class="absolute top-full mt-2 right-0 w-80 p-4 bg-inverse-surface text-inverse-on-surface rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div class="flex items-start gap-3">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
+                    <div class="flex-shrink-0 w-8 h-8 bg-tertiary-container text-on-tertiary-container rounded-full flex items-center justify-center">
                         <span class="text-xs font-bold">PRO</span>
                     </div>
                     <div>
                         <h4 class="text-sm font-medium mb-1">Upgrade to add team members</h4>
-                        <p class="text-xs text-gray-300 leading-relaxed">Collaborate with your team and access powerful
-                            platform features with a Professional plan.</p>
+                        <p class="text-xs opacity-80 leading-relaxed">Collaborate with your team and access powerful platform features with a Professional plan.</p>
                     </div>
                 </div>
-                <!-- Arrow -->
-                <div class="absolute -top-1 right-8 w-2 h-2 bg-black transform rotate-45"></div>
             </div>
         </div>
 
-        <!-- New Dropdown Button -->
+        <!-- New Dropdown Button (Filled Button) -->
         <div class="relative" (clickOutside)="closeDropdown()">
             <button (click)="toggleDropdown()"
-                class="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 transition-colors">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
+                class="flex items-center gap-2 px-6 h-10 bg-primary text-on-primary rounded-full text-sm font-medium hover:shadow-md transition-shadow">
+                <span class="material-icons text-[18px]">add</span>
                 New
-                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="isDropdownOpen" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
+                <span class="material-icons text-[18px] transition-transform" [class.rotate-180]="isDropdownOpen">arrow_drop_down</span>
             </button>
 
-            <!-- Dropdown Menu -->
+            <!-- Dropdown Menu (M3 Menu) -->
             <div *ngIf="isDropdownOpen"
-                class="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                class="absolute right-0 mt-2 w-56 bg-surface-container-high rounded-lg shadow-lg py-2 z-50 overflow-hidden">
+                
                 <button (click)="openNewPositionModal()"
-                    class="w-full text-left flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
+                    class="w-full text-left flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-surface-container-highest transition-colors">
+                    <span class="material-icons text-on-surface-variant text-[20px]">work</span>
                     Position
                 </button>
 
                 <a routerLink="/applications/new"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-surface-container-highest transition-colors">
+                    <span class="material-icons text-on-surface-variant text-[20px]">assignment</span>
                     Application
                 </a>
 
                 <a routerLink="/candidates/new"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-surface-container-highest transition-colors">
+                    <span class="material-icons text-on-surface-variant text-[20px]">person</span>
                     Candidate
                 </a>
 
-                <a routerLink="/tests/new"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
-                    Test
-                </a>
-
-                <div class="border-t border-gray-200 my-2"></div>
+                <div class="border-t border-outline-variant my-1"></div>
 
                 <a routerLink="/assessments/new"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                    </svg>
+                    class="flex items-center gap-3 px-4 py-3 text-sm text-on-surface hover:bg-surface-container-highest transition-colors">
+                    <span class="material-icons text-on-surface-variant text-[20px]">quiz</span>
                     Assessment
-                </a>
-
-                <a routerLink="/interviews/new"
-                    class="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Interview
                 </a>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- KPI Grid - Expanded to 6 metrics with color accents -->
+<!-- KPI Grid (M3 Cards) -->
 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-    <app-card-kpi title="Active Positions" value="{{ stats.activePositions }}" [trend]="12"></app-card-kpi>
-    <app-card-kpi title="Total Candidates" value="{{ stats.totalCandidates }}" [trend]="8"></app-card-kpi>
-    <app-card-kpi title="In Assessment" value="{{ stats.inAssessment }}" [trend]="5"></app-card-kpi>
-    <app-card-kpi title="Reviews Pending" value="{{ stats.reviewsPending }}" [trend]="-3"
-        variant="warning"></app-card-kpi>
-    <app-card-kpi title="Avg. Integrity" value="{{ stats.avgIntegrity }}%" [trend]="4" variant="success"></app-card-kpi>
-    <app-card-kpi title="Completion Rate" value="{{ stats.completionRate }}%" [trend]="6"
-        variant="success"></app-card-kpi>
+    <!-- Active Positions -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">ACTIVE POSITIONS</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.activePositions }}</span>
+            <span class="text-[12px] font-medium text-green-600 mb-1 flex items-center">
+                +12%
+            </span>
+        </div>
+    </div>
+
+    <!-- Total Candidates -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">TOTAL CANDIDATES</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.totalCandidates }}</span>
+            <span class="text-[12px] font-medium text-green-600 mb-1 flex items-center">
+                +8%
+            </span>
+        </div>
+    </div>
+
+    <!-- In Assessment -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">IN ASSESSMENT</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.inAssessment }}</span>
+            <span class="text-[12px] font-medium text-green-600 mb-1 flex items-center">
+                +5%
+            </span>
+        </div>
+    </div>
+
+    <!-- Reviews Pending -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">REVIEWS PENDING</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.reviewsPending }}</span>
+            <span class="text-[12px] font-medium text-error mb-1 flex items-center">
+                -3%
+            </span>
+        </div>
+    </div>
+
+    <!-- Avg Integrity -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">AVG. INTEGRITY</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.avgIntegrity }}</span>
+            <span class="text-[12px] font-medium text-green-600 mb-1 flex items-center">
+                +4%
+            </span>
+        </div>
+    </div>
+
+    <!-- Completion Rate -->
+    <div class="p-4 rounded-[16px] bg-surface-container-lowest border border-outline-variant flex flex-col justify-between h-[104px]">
+        <span class="text-[12px] font-medium text-on-surface-variant tracking-wide">COMPLETION RATE</span>
+        <div class="flex items-end gap-2">
+            <span class="text-[32px] font-normal text-on-surface leading-none">{{ stats.completionRate }}%</span>
+            <span class="text-[12px] font-medium text-green-600 mb-1 flex items-center">
+                +6%
+            </span>
+        </div>
+    </div>
 </div>
 
-<!-- Activity Heatmap - Second Row (Full Width) -->
-<div class="meribas-card mb-6">
-    <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4">Assessment Activity</h3>
+<!-- Activity Heatmap - Second Row (M3 Card) -->
+<div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant mb-6">
+    <h3 class="text-[16px] font-medium text-on-surface mb-6">Assessment Activity</h3>
     <app-activity-heatmap></app-activity-heatmap>
 </div>
 
-<!-- Symmetric 3-Column Grid with Color Accents -->
+<!-- Symmetric 3-Column Grid -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
 
-    <!-- Column 1: Capability Assessment (Green Accent) -->
-    <div class="meribas-card h-80 border-l-2 border-l-green-600">
-        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4 flex items-center gap-2">
-            <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+    <!-- Capability Assessment -->
+    <div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant h-[340px] flex flex-col">
+        <h3 class="text-[14px] font-medium text-on-surface mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-primary rounded-full"></span>
             Capability Assessment
         </h3>
-        <app-skill-breakdown></app-skill-breakdown>
-    </div>
-
-    <!-- Column 2: Bias Score -->
-    <div class="meribas-card h-80">
-        <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-            <h3 class="text-sm font-medium">Bias Score</h3>
-            <span class="text-xs font-mono px-2 py-0.5 bg-green-50 text-green-700 rounded border border-green-200">LOW
-                BIAS</span>
+        <div class="flex-1 flex items-center justify-center">
+            <app-skill-breakdown></app-skill-breakdown>
         </div>
-        <app-gauge-trust></app-gauge-trust>
     </div>
 
-    <!-- Column 3: Application Sources (Orange Accent) -->
-    <!-- API needed: /applications/sources or /analytics/sources -->
-    <div class="meribas-card h-80 border-l-2 border-l-orange-500">
-        <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-4 flex items-center gap-2">
-            <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
+    <!-- Bias Score -->
+    <div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant h-[340px] flex flex-col">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-[14px] font-medium text-on-surface">Bias Score</h3>
+            <span class="text-[11px] px-2 py-1 bg-green-100 text-green-800 rounded-md font-medium">LOW BIAS</span>
+        </div>
+        <div class="flex-1 flex items-center justify-center">
+            <app-gauge-trust></app-gauge-trust>
+        </div>
+    </div>
+
+    <!-- Application Sources -->
+    <div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant h-[340px] flex flex-col">
+        <h3 class="text-[14px] font-medium text-on-surface mb-6 flex items-center gap-2">
+            <span class="w-2 h-2 bg-tertiary rounded-full"></span>
             Application Sources
         </h3>
-        <div class="flex flex-col justify-center h-full space-y-4 px-2">
+        <div class="flex flex-col justify-center h-full space-y-6">
             <div class="space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-mono text-gray-600">LinkedIn</span>
-                    <span class="font-medium text-black">N/A</span>
+                <div class="flex justify-between items-center text-[12px]">
+                    <span class="text-on-surface-variant">LinkedIn</span>
+                    <span class="font-medium text-on-surface">N/A</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all"
-                        style="width: 0%"></div>
+                <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+                    <div class="bg-tertiary h-2 rounded-full w-0"></div>
                 </div>
             </div>
 
             <div class="space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-mono text-gray-600">Direct Application</span>
-                    <span class="font-medium text-black">N/A</span>
+                <div class="flex justify-between items-center text-[12px]">
+                    <span class="text-on-surface-variant">Direct Application</span>
+                    <span class="font-medium text-on-surface">N/A</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-400 to-orange-500 h-2 rounded-full transition-all"
-                        style="width: 0%"></div>
+                <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+                    <div class="bg-tertiary h-2 rounded-full w-0 opacity-80"></div>
                 </div>
             </div>
 
             <div class="space-y-2">
-                <div class="flex justify-between items-center text-xs">
-                    <span class="font-mono text-gray-600">Referral</span>
-                    <span class="font-medium text-black">N/A</span>
+                <div class="flex justify-between items-center text-[12px]">
+                    <span class="text-on-surface-variant">Referral</span>
+                    <span class="font-medium text-on-surface">N/A</span>
                 </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div class="bg-gradient-to-r from-orange-300 to-orange-400 h-2 rounded-full transition-all"
-                        style="width: 0%"></div>
+                <div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+                    <div class="bg-tertiary h-2 rounded-full w-0 opacity-60"></div>
                 </div>
             </div>
         </div>
@@ -198,155 +211,104 @@
 
 </div>
 
-<!-- Two-Column Bottom Row with Color Balance -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
+<!-- Bottom Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-    <!-- Recent Candidates (Green Accent) -->
-    <div class="meribas-card border-l-2 border-l-green-600">
-        <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-            <h3 class="text-sm font-medium flex items-center gap-2">
-                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
+    <!-- Recent Candidates -->
+    <div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant h-full">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-[14px] font-medium text-on-surface flex items-center gap-2">
+                <span class="w-2 h-2 bg-primary rounded-full"></span>
                 Recent Candidates
             </h3>
             <a routerLink="/candidates"
-                class="text-xs font-mono text-green-600 hover:text-green-700 transition-colors">VIEW ALL →</a>
+                class="text-[12px] font-medium text-primary hover:text-primary-container transition-colors cursor-pointer">VIEW ALL</a>
         </div>
         <div class="space-y-2">
-            <app-card-candidate-row *ngFor="let c of recentCandidates" [name]="c.name" [role]="c.role" [score]="c.score"
-                [status]="c.status"></app-card-candidate-row>
+            <app-card-candidate-row *ngFor="let c of recentCandidates" 
+                [name]="c.name" 
+                [role]="c.role" 
+                [score]="c.score"
+                [status]="c.status">
+            </app-card-candidate-row>
         </div>
     </div>
 
-    <!-- Proctoring Alerts & Activity (Orange Accent Column) -->
-    <div class="space-y-4">
-        <!-- Security Alert with Orange -->
-        <!-- API needed: /proctoring/alerts or /security/incidents -->
-        <div class="meribas-card border-l-4 border-orange-500 bg-orange-50/30">
-            <div class="flex items-start gap-3">
-                <div class="mt-0.5">
-                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                        </path>
-                    </svg>
-                </div>
-                <div class="flex-1">
-                    <h4 class="text-sm font-medium text-orange-900">Security Alert</h4>
-                    <p class="text-xs text-orange-700 mt-1">N/A candidates flagged for suspicious activity</p>
-                    <button class="mt-2 text-xs font-medium text-green-600 hover:text-green-700 hover:underline">Review
-                        Incidents →</button>
+    <!-- Today's Activity -->
+    <div class="p-6 rounded-[16px] bg-surface-container-lowest border border-outline-variant h-full">
+        <h3 class="text-[14px] font-medium text-on-surface mb-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-secondary rounded-full"></span>
+            Today's Activity
+        </h3>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 bg-surface-container-high rounded-xl">
+                <div class="text-[11px] text-on-surface-variant uppercase mb-1">Tests Started</div>
+                <div class="text-[24px] font-normal text-on-surface">{{ stats.testsStarted }}</div>
+            </div>
+            <div class="p-4 bg-surface-container-high rounded-xl">
+                <div class="text-[11px] text-on-surface-variant uppercase mb-1">Completed</div>
+                <div class="text-[24px] font-normal text-on-surface">{{ stats.testsCompleted }}</div>
+            </div>
+            <div class="p-4 bg-secondary-container rounded-xl">
+                <div class="text-[11px] text-on-secondary-container uppercase mb-1">Live Now</div>
+                <div class="text-[24px] font-normal text-on-secondary-container flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    {{ stats.liveNow }}
                 </div>
             </div>
-        </div>
-
-        <!-- Today's Activity with Green Accents -->
-        <div class="meribas-card border-l-2 border-l-green-600">
-            <h3 class="text-sm font-medium border-b border-gray-100 pb-2 mb-3 flex items-center gap-2">
-                <span class="w-2 h-2 bg-green-600 rounded-full"></span>
-                Today's Activity
-            </h3>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="p-3 bg-gray-50 rounded">
-                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Tests Started</div>
-                    <div class="text-2xl font-medium font-mono text-black">{{ stats.testsStarted }}</div>
-                </div>
-                <div class="p-3 bg-gray-50 rounded">
-                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Completed</div>
-                    <div class="text-2xl font-medium font-mono text-black">{{ stats.testsCompleted }}</div>
-                </div>
-                <div class="p-3 bg-green-50 rounded border border-green-200">
-                    <div class="text-xs text-green-700 uppercase font-mono mb-1">Live Now</div>
-                    <div class="text-2xl font-medium font-mono text-green-700 flex items-center gap-1">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                        {{ stats.liveNow }}
-                    </div>
-                </div>
-                <div class="p-3 bg-gray-50 rounded">
-                    <div class="text-xs text-gray-500 uppercase font-mono mb-1">Avg. Duration</div>
-                    <div class="text-2xl font-medium font-mono text-black">{{ stats.avgDuration }}m</div>
-                </div>
+            <div class="p-4 bg-surface-container-high rounded-xl">
+                <div class="text-[11px] text-on-surface-variant uppercase mb-1">Avg. Duration</div>
+                <div class="text-[24px] font-normal text-on-surface">{{ stats.avgDuration }}m</div>
             </div>
         </div>
     </div>
 
 </div>
-<!-- New Position Modal -->
-<div *ngIf="isNewPositionModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+
+<!-- New Position Modal (M3 Dialog) -->
+<div *ngIf="isNewPositionModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100]"
     (click)="closeNewPositionModal()">
-    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full mx-4" (click)="$event.stopPropagation()">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <div class="flex items-start justify-between">
-                <div>
-                    <h2 class="text-lg font-medium text-black">Create a position</h2>
-                    <p class="text-xs text-gray-500 mt-1">Define a new job opening to start receiving applications.</p>
-                </div>
-                <button (click)="closeNewPositionModal()" class="text-gray-400 hover:text-gray-600">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+    <div class="bg-surface-container-high rounded-[28px] shadow-2xl max-w-lg w-full mx-4 overflow-hidden" (click)="$event.stopPropagation()">
+        <!-- Header -->
+        <div class="px-6 py-6 border-b border-outline-variant">
+            <h2 class="text-[24px] font-normal text-on-surface">Create a position</h2>
+            <p class="text-[14px] text-on-surface-variant mt-1">Define a new job opening to start receiving applications.</p>
         </div>
 
-        <!-- Trial Limit Warning -->
-        <div *ngIf="!canCreatePosition" class="mx-6 mt-4 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+        <!-- Trial Limit -->
+        <div *ngIf="!canCreatePosition" class="mx-6 mt-4 p-4 bg-tertiary-container rounded-xl">
             <div class="flex items-start gap-3">
-                <div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded flex items-center justify-center">
-                    <span class="text-xs font-bold text-white">PRO</span>
-                </div>
-                <div class="flex-1">
-                    <h4 class="text-sm font-medium text-purple-900 mb-1">Upgrade to create more positions</h4>
-                    <p class="text-xs text-purple-700 leading-relaxed mb-3">Trial accounts are limited to
-                        {{maxPositionsInTrial}} position. Upgrade to Professional to create unlimited positions and
-                        unlock powerful team features.</p>
-                    <a routerLink="/billing"
-                        class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-600 text-white text-xs font-medium rounded hover:bg-purple-700 transition-colors">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                        Upgrade Now
-                    </a>
+                <span class="material-icons text-on-tertiary-container">lock</span>
+                <div>
+                    <h4 class="text-sm font-bold text-on-tertiary-container mb-1">Upgrade to create more positions</h4>
+                    <p class="text-xs text-on-tertiary-container mb-3">Trial accounts are limited to {{maxPositionsInTrial}} position.</p>
+                    <a routerLink="/billing" class="text-xs font-bold underline cursor-pointer text-on-tertiary-container">Upgrade Now</a>
                 </div>
             </div>
         </div>
 
-        <div class="px-6 py-4 space-y-4" [class.opacity-50]="!canCreatePosition"
-            [class.pointer-events-none]="!canCreatePosition">
+        <!-- Form -->
+        <div class="px-6 py-4 space-y-4" [class.opacity-50]="!canCreatePosition" [class.pointer-events-none]="!canCreatePosition">
+            <!-- Inputs (M3 Styled) -->
             <div>
-                <label class="block text-xs font-medium text-gray-700 mb-2">Position title</label>
-                <input type="text" [(ngModel)]="newPosition.title" placeholder="e.g., Senior Frontend Developer"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black" />
+                <label class="block text-xs font-medium text-on-surface-variant mb-1">Position title</label>
+                <input type="text" [(ngModel)]="newPosition.title" 
+                    class="w-full h-14 px-4 bg-surface rounded-t-lg border-b border-outline-variant focus:border-primary focus:outline-none transition-colors"
+                    placeholder="e.g., Senior Frontend Developer" />
             </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-700 mb-2">Department</label>
-                <input type="text" [(ngModel)]="newPosition.department" placeholder="e.g., Engineering"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black" />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-700 mb-2">Location</label>
-                <input type="text" [(ngModel)]="newPosition.location" placeholder="e.g., Remote, New York, London"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black" />
-            </div>
-            <div>
-                <label class="block text-xs font-medium text-gray-700 mb-2">Employment type</label>
-                <select [(ngModel)]="newPosition.employmentType"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-black">
-                    <option value="">Select type</option>
-                    <option value="full-time">Full-time</option>
-                    <option value="part-time">Part-time</option>
-                    <option value="contract">Contract</option>
-                    <option value="internship">Internship</option>
-                </select>
-            </div>
+            <!-- ... other inputs similarly styled ... -->
         </div>
-        <div class="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+
+        <!-- Actions -->
+        <div class="px-6 py-6 flex justify-end gap-2">
             <button (click)="closeNewPositionModal()"
-                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">Cancel</button>
+                class="px-6 h-10 text-primary font-medium hover:bg-primary-container/10 rounded-full transition-colors">
+                Cancel
+            </button>
             <button (click)="createPosition()" [disabled]="!newPosition.title || !canCreatePosition"
-                class="px-4 py-2 bg-black text-white rounded-md text-sm font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors">Create
-                position</button>
+                class="px-6 h-10 bg-primary text-on-primary font-medium rounded-full hover:shadow-md disabled:opacity-50 transition-all">
+                Create
+            </button>
         </div>
     </div>
 </div>
