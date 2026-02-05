@@ -1,404 +1,258 @@
-<div class="min-h-screen bg-gray-50 px-4 py-6">
-    <div class="w-full">
-        <!-- THE FLOATING ISLAND: Premium Command Bar -->
-        <div class="mb-8">
-            <div class="bg-white/80 backdrop-blur-xl rounded-[28px] shadow-[0_4px_20px_rgba(0,0,0,0.08)] border border-white/60 p-2 transition-all duration-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
-                <div class="flex items-center gap-1">
-                    
-                    <!-- LEFT: Search Input (The Hero) -->
-                    <div class="flex-1 flex items-center gap-3 px-4 py-2">
-                        <!-- Premium Search Icon -->
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+<div class="min-h-screen bg-white px-6 py-6 font-sans">
+    <div class="w-full max-w-[1600px] mx-auto">
+        <!-- HEADER / TOOLBAR: High Density M3 -->
+        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 mb-6">
+            
+            <!-- Left: Search & Title -->
+            <div class="flex items-center gap-4 w-full xl:w-auto">
+                <h1 class="text-2xl font-normal text-gray-900 tracking-tight hidden xl:block">Candidates</h1>
+                
+                <!-- Search Bar (M3 Filled) -->
+                <div class="relative flex-1 xl:w-[400px]">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
-                        
-                        <!-- Search Input (Borderless) -->
-                        <input type="text" 
-                               [(ngModel)]="searchQuery" 
-                               (ngModelChange)="applyFilters()"
-                               placeholder="Search {{ candidates.length }} candidates..."
-                               class="flex-1 bg-transparent border-none outline-none text-gray-900 placeholder-gray-400 text-sm font-medium focus:ring-0 focus:outline-none">
                     </div>
-
-                    <!-- MIDDLE: Filter Pills -->
-                    <div class="flex items-center gap-2 px-2">
-                        <!-- Divider -->
-                        <div class="h-8 w-px bg-gray-200"></div>
-                        
-                        <!-- Status Filter Pill -->
-                        <div class="relative group">
-                            <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-full transition-all duration-200 flex items-center gap-1.5">
-                                <span>Status: <span class="text-gray-900">{{ formatFilterValue(statusFilter) }}</span></span>
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            
-                            <!-- Dropdown -->
-                            <div class="absolute top-full mt-2 left-0 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 py-2 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                <button (click)="statusFilter='all'; applyFilters()" 
-                                        [class.bg-emerald-50]="statusFilter==='all'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    All Statuses
-                                </button>
-                                <button (click)="statusFilter='new'; applyFilters()" 
-                                        [class.bg-emerald-50]="statusFilter==='new'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    New
-                                </button>
-                                <button (click)="statusFilter='in_process'; applyFilters()" 
-                                        [class.bg-emerald-50]="statusFilter==='in_process'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    In Process
-                                </button>
-                                <button (click)="statusFilter='hired'; applyFilters()" 
-                                        [class.bg-emerald-50]="statusFilter==='hired'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Hired
-                                </button>
-                                <button (click)="statusFilter='rejected'; applyFilters()" 
-                                        [class.bg-emerald-50]="statusFilter==='rejected'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Rejected
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="h-8 w-px bg-gray-200"></div>
-
-                        <!-- Source Filter Pill -->
-                        <div class="relative group">
-                            <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-full transition-all duration-200 flex items-center gap-1.5">
-                                <span>Source: <span class="text-gray-900">{{ formatFilterValue(sourceFilter) }}</span></span>
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            
-                            <!-- Dropdown -->
-                            <div class="absolute top-full mt-2 left-0 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 py-2 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                <button (click)="sourceFilter='all'; applyFilters()" 
-                                        [class.bg-emerald-50]="sourceFilter==='all'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    All Sources
-                                </button>
-                                <button (click)="sourceFilter='manual'; applyFilters()" 
-                                        [class.bg-emerald-50]="sourceFilter==='manual'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Manual
-                                </button>
-                                <button (click)="sourceFilter='invited'; applyFilters()" 
-                                        [class.bg-emerald-50]="sourceFilter==='invited'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Invited
-                                </button>
-                                <button (click)="sourceFilter='applied'; applyFilters()" 
-                                        [class.bg-emerald-50]="sourceFilter==='applied'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Applied
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="h-8 w-px bg-gray-200"></div>
-
-                        <!-- Sort Filter Pill -->
-                        <div class="relative group">
-                            <button class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-full transition-all duration-200 flex items-center gap-1.5">
-                                <span>Sort: <span class="text-gray-900">{{ formatSortValue(sortBy) }}</span></span>
-                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            
-                            <!-- Dropdown -->
-                            <div class="absolute top-full mt-2 left-0 bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-gray-100 py-2 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                <button (click)="sortBy='updated'; applyFilters()" 
-                                        [class.bg-emerald-50]="sortBy==='updated'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Last Updated
-                                </button>
-                                <button (click)="sortBy='name'; applyFilters()" 
-                                        [class.bg-emerald-50]="sortBy==='name'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Name (A-Z)
-                                </button>
-                                <button (click)="sortBy='applications'; applyFilters()" 
-                                        [class.bg-emerald-50]="sortBy==='applications'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Applications
-                                </button>
-                                <button (click)="sortBy='created'; applyFilters()" 
-                                        [class.bg-emerald-50]="sortBy==='created'"
-                                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors">
-                                    Date Added
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- RIGHT: Invite Button (Integrated Action) -->
-                    <button (click)="openInviteModal()"
-                            class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-[20px] hover:from-emerald-700 hover:to-emerald-800 transition-all duration-200 flex items-center gap-2 font-semibold text-sm shadow-lg hover:shadow-xl">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                        </svg>
-                        Invite
-                    </button>
+                    <input type="text" 
+                           [(ngModel)]="searchQuery" 
+                           (ngModelChange)="applyFilters()"
+                           placeholder="Search candidates..." 
+                           class="block w-full pl-10 pr-3 py-2.5 border-none rounded-full bg-gray-100 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-700 sm:text-sm transition-shadow">
                 </div>
             </div>
-        </div>
 
-        <!-- Loading State -->
-        <div *ngIf="loading" class="text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-900"></div>
-            <p class="mt-4 text-gray-600">Loading candidates...</p>
-        </div>
+            <!-- Right: Filters & Actions (M3 Expressive) -->
+            <div class="flex flex-wrap items-center gap-2 w-full xl:w-auto">
+                
+                <!-- Filter: Status (M3 Expressive Menu) -->
+                <div class="relative group">
+                    <button class="h-10 pl-4 pr-3 rounded-lg border border-[#79747E] flex items-center gap-2 hover:bg-[#F3F4F6] transition-colors bg-white">
+                        <span class="text-[14px] font-medium text-[#1C1B1F]">Status: {{ formatFilterValue(statusFilter) }}</span>
+                        <span class="material-icons text-[20px] text-[#444746]">arrow_drop_down</span>
+                    </button>
 
-        <!-- Error State -->
-        <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <div class="flex items-center">
-                <svg class="h-5 w-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clip-rule="evenodd" />
-                </svg>
-                <p class="text-red-800">{{ error }}</p>
-            </div>
-        </div>
+                    <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                         <button *ngFor="let status of ['all', 'new', 'in_process', 'hired', 'rejected']"
+                                (click)="statusFilter=status; applyFilters()"
+                                [class.bg-[#C4F5DA]]="statusFilter===status"
+                                [class.text-[#052112]]="statusFilter===status"
+                                [class.font-bold]="statusFilter===status"
+                                [class.hover:bg-[#F3F4F6]]="statusFilter!==status"
+                                class="w-full h-10 px-3 rounded-lg flex items-center justify-between text-[14px] font-medium transition-colors mb-1 text-left">
+                            <span>{{ formatFilterValue(status) }}</span>
+                            <span *ngIf="statusFilter===status" class="material-icons text-[18px]">check</span>
+                        </button>
+                    </div>
+                </div>
 
-        <!-- Candidates List -->
-        <div *ngIf="!loading && !error">
-            <!-- Results Count -->
-            <div class="mb-4 text-sm text-gray-600">
-                Showing {{ filteredCandidates.length }} of {{ candidates.length }} candidates
-            </div>
+                <!-- Filter: Sort (M3 Expressive Menu) -->
+                <div class="relative group">
+                    <button class="h-10 pl-4 pr-3 rounded-lg border border-[#79747E] flex items-center gap-2 hover:bg-[#F3F4F6] transition-colors bg-white">
+                        <span class="text-[14px] font-medium text-[#1C1B1F]">Sort: {{ formatSortValue(sortBy) }}</span>
+                        <span class="material-icons text-[20px] text-[#444746]">arrow_drop_down</span>
+                    </button>
+                     <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                         <button *ngFor="let sort of ['updated', 'name', 'applications', 'created', 'expectation', 'values', 'potential', 'skills']"
+                                (click)="sortBy=sort; applyFilters()"
+                                [class.bg-[#C4F5DA]]="sortBy===sort"
+                                [class.text-[#052112]]="sortBy===sort"
+                                [class.font-bold]="sortBy===sort"
+                                [class.hover:bg-[#F3F4F6]]="sortBy!==sort"
+                                class="w-full h-10 px-3 rounded-lg flex items-center justify-between text-[14px] font-medium transition-colors mb-1 text-left">
+                            <span>{{ formatSortValue(sort) }}</span>
+                            <span *ngIf="sortBy===sort" class="material-icons text-[18px]">check</span>
+                        </button>
+                    </div>
+                </div>
 
-            <!-- Empty State -->
-            <div *ngIf="filteredCandidates.length === 0"
-                class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <h3 class="mt-4 text-lg font-medium text-gray-900">No candidates found</h3>
-                <p class="mt-2 text-gray-500">Get started by inviting your first candidate</p>
+                <!-- Action: Invite -->
                 <button (click)="openInviteModal()"
-                    class="mt-6 bg-emerald-900 text-white px-6 py-3 rounded-lg hover:bg-emerald-950 transition">
-                    Invite Candidate
+                        class="ml-2 inline-flex items-center px-4 py-1.5 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-emerald-900 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900 transition-all">
+                    <svg class="-ml-1 mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
+                    </svg>
+                    Invite
                 </button>
             </div>
-            <!-- Candidates Grid -->
-            <div *ngIf="filteredCandidates.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Candidate Card -->
-                <div *ngFor="let candidate of filteredCandidates" (click)="onCardClick(candidate)"
-                    class="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all cursor-pointer flex flex-col overflow-hidden group h-full">
+        </div>
 
-                    <!-- Header -->
-                    <div class="p-5 border-b border-gray-100 flex items-start justify-between">
-                        <div class="flex items-center gap-3">
-                            <!-- Avatar -->
-                            <div
-                                class="flex-shrink-0 h-10 w-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-900 font-bold text-xs">
-                                {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
-                            </div>
-                            <!-- Info -->
-                            <div>
-                                <h3
-                                    class="text-sm font-semibold text-gray-900 group-hover:text-emerald-900 transition-colors line-clamp-1">
+        <!-- Loading / Error -->
+        <div *ngIf="loading" class="flex justify-center py-20">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-900"></div>
+        </div>
+        
+        <div *ngIf="error" class="bg-red-50 border border-red-100 rounded-lg p-4 mb-6 flex items-center gap-3 text-red-800">
+            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            {{ error }}
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!loading && !error && filteredCandidates.length === 0" class="text-center py-24 bg-white rounded-xl border border-gray-200 border-dashed">
+            <svg class="mx-auto h-12 w-12 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No candidates found</h3>
+            <p class="mt-1 text-sm text-gray-500">Adjust your filters or invite a new candidate.</p>
+        </div>
+
+        <!-- CARD GRID: High Density, Google Analytics Style -->
+        <div *ngIf="!loading && !error && filteredCandidates.length > 0">
+            <!-- Count Header -->
+            <div class="mb-3 text-xs font-medium text-gray-500 uppercase tracking-wider pl-1">
+                {{ filteredCandidates.length }} Candidates
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+                
+                <!-- Compact M3 Card -->
+                <div *ngFor="let candidate of filteredCandidates" 
+                     (click)="onCardClick(candidate)"
+                     class="group bg-white rounded-xl border border-gray-200 hover:border-emerald-500/50 hover:shadow-md transition-all duration-200 cursor-pointer flex flex-col relative overflow-hidden">
+                    
+                    <!-- Top Section: Identity -->
+                    <div class="p-4 pb-3 flex items-start gap-3">
+                        <!-- Avatar (Small) -->
+                        <div class="h-9 w-9 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-800 text-xs font-bold border border-emerald-100 flex-shrink-0">
+                            {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
+                        </div>
+                        
+                        <!-- Name & Role -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between mb-0.5">
+                                <h3 class="text-sm font-semibold text-gray-900 truncate pr-2 group-hover:text-emerald-800 transition-colors">
                                     {{ candidate.full_name }}
                                 </h3>
-                                <div class="text-[11px] text-gray-500 flex flex-col leading-tight mt-0.5">
-                                    <span class="truncate max-w-[140px]">{{ candidate.email }}</span>
-                                </div>
+                                <!-- Mini Status Dot/Chip -->
+                                <span [class]="'flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wide ' + getStatusBadgeClass(candidate.status)">
+                                    {{ formatStatus(candidate.status) }}
+                                </span>
                             </div>
+                            <p class="text-xs text-gray-500 truncate">{{ candidate.email }}</p>
                         </div>
-                        <!-- Status Badge -->
-                        <span
-                            [class]="'flex-shrink-0 px-2.5 py-1 text-[10px] uppercase font-bold tracking-wider rounded-full border ' + getStatusBadgeClass(candidate.status)">
-                            {{ formatStatus(candidate.status) }}
+                    </div>
+
+                    <!-- Middle: Data Grid (Analytics Style) -->
+                    <div class="px-4 py-3 border-t border-gray-100 grid grid-cols-4 gap-2">
+                        <!-- Metric 1: Exp -->
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-medium text-gray-400 uppercase">Exp</span>
+                            <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-600 rounded-full" [style.width.%]="candidate.expectation_match || 0"></div>
+                            </div>
+                            <span class="text-[10px] font-semibold text-gray-700">{{ candidate.expectation_match || '-' }}%</span>
+                        </div>
+                        <!-- Metric 2: Val -->
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-medium text-gray-400 uppercase">Val</span>
+                            <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-600 rounded-full" [style.width.%]="candidate.values_match || 0"></div>
+                            </div>
+                            <span class="text-[10px] font-semibold text-gray-700">{{ candidate.values_match || '-' }}%</span>
+                        </div>
+                        <!-- Metric 3: Pot -->
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-medium text-gray-400 uppercase">Pot</span>
+                            <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-600 rounded-full" [style.width.%]="candidate.potential_match || 0"></div>
+                            </div>
+                            <span class="text-[10px] font-semibold text-gray-700">{{ candidate.potential_match || '-' }}%</span>
+                        </div>
+                        <!-- Metric 4: Skl -->
+                        <div class="flex flex-col gap-1">
+                            <span class="text-[10px] font-medium text-gray-400 uppercase">Skl</span>
+                            <div class="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-orange-500 rounded-full" [style.width.%]="candidate.skills_match || 0"></div>
+                            </div>
+                            <span class="text-[10px] font-semibold text-gray-700">{{ candidate.skills_match || '-' }}%</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer: Metadata -->
+                    <div class="px-4 py-2 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-[10px] text-gray-400 font-medium">Updated {{ getTimeAgo(candidate.updated_at) }}</span>
+                        <!-- Source Icon -->
+                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-white border border-gray-200 text-gray-500">
+                           {{ formatSource(candidate.source) }}
                         </span>
                     </div>
 
-                    <!-- KPI Grid (Middle) -->
-                    <div class="p-4 bg-gray-50/50 flex-1 flex flex-col justify-center">
-                        <div class="grid grid-cols-2 gap-3 w-full">
-                            <!-- Expectation -->
-                            <div
-                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
-                                <div
-                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
-                                    Expectation</div>
-                                <div class="h-12 flex items-center justify-center transition-colors"
-                                    [ngStyle]="getScoreStyle(candidate.expectation_match, 'green')">
-                                    <span class="text-sm font-bold shadow-sm"
-                                        [class.text-white]="(candidate.expectation_match || 0) > 60">{{
-                                        candidate.expectation_match ? candidate.expectation_match + '%' : '-' }}</span>
-                                </div>
-                            </div>
-                            <!-- Values -->
-                            <div
-                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
-                                <div
-                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
-                                    Values</div>
-                                <div class="h-12 flex items-center justify-center transition-colors"
-                                    [ngStyle]="getScoreStyle(candidate.values_match, 'blue')">
-                                    <span class="text-sm font-bold shadow-sm"
-                                        [class.text-white]="(candidate.values_match || 0) > 60">{{
-                                        candidate.values_match ? candidate.values_match + '%' : '-' }}</span>
-                                </div>
-                            </div>
-                            <!-- Potential -->
-                            <div
-                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
-                                <div
-                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
-                                    Potential</div>
-                                <div class="h-12 flex items-center justify-center transition-colors"
-                                    [ngStyle]="getScoreStyle(candidate.potential_match, 'purple')">
-                                    <span class="text-sm font-bold shadow-sm"
-                                        [class.text-white]="(candidate.potential_match || 0) > 60">{{
-                                        candidate.potential_match ? candidate.potential_match + '%' : '-' }}</span>
-                                </div>
-                            </div>
-                            <!-- Skills -->
-                            <div
-                                class="rounded-lg border border-gray-200 overflow-hidden flex flex-col bg-white shadow-sm">
-                                <div
-                                    class="text-[10px] font-medium text-gray-500 text-center py-1.5 border-b border-gray-100">
-                                    Skills</div>
-                                <div class="h-12 flex items-center justify-center transition-colors"
-                                    [ngStyle]="getScoreStyle(candidate.skills_match, 'orange')">
-                                    <span class="text-sm font-bold shadow-sm"
-                                        [class.text-white]="(candidate.skills_match || 0) > 60">{{
-                                        candidate.skills_match ? candidate.skills_match + '%' : '-' }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Footer -->
-                    <div class="px-5 py-3 bg-white border-t border-gray-100 flex items-center justify-between">
-                        <div class="text-[10px] text-gray-400">
-                            Added {{ getTimeAgo(candidate.created_at) }}
-                        </div>
-                        <div
-                            class="flex gap-2 text-emerald-900 text-xs font-medium group-hover:translate-x-1 transition-transform">
-                            View Profile &rarr;
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
-        <!-- Invite Candidate Modal -->
-        <div *ngIf="isInviteModalOpen"
-            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Invite Candidate</h2>
 
-                <form (ngSubmit)="inviteCandidate()" class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                        <input type="text" [(ngModel)]="inviteForm.first_name" name="first_name" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                        <input type="text" [(ngModel)]="inviteForm.last_name" name="last_name" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                        <input type="email" [(ngModel)]="inviteForm.email" name="email" required
-                            (blur)="checkCandidateEmail()"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                        
-                        <!-- Email Check Status -->
-                        <div *ngIf="checkingEmail" class="mt-2 text-xs text-gray-500 flex items-center gap-1">
-                            <svg class="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Checking email...
-                        </div>
-                        
-                        <div *ngIf="emailCheckResult && !checkingEmail" class="mt-2 text-xs">
-                            <div *ngIf="!emailCheckResult.exists" class="text-green-600 flex items-center gap-1">
-                                <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                </svg>
-                                Email available - new candidate
+        <!-- Invite Modal (Functional Overlay) -->
+        <div *ngIf="isInviteModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" (click)="closeInviteModal()"></div>
+            
+            <!-- Modal Card -->
+            <div class="relative bg-white rounded-[20px] shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+                <!-- Modal Header -->
+                <div class="px-6 py-4 border-b border-gray-100 bg-white flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900">Invite Candidate</h2>
+                    <button (click)="closeInviteModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Modal Body -->
+                <div class="p-6 overflow-y-auto">
+                   <form (ngSubmit)="inviteCandidate()" class="space-y-5">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">First Name</label>
+                                <input type="text" [(ngModel)]="inviteForm.first_name" name="first_name" required
+                                    class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all">
                             </div>
-                            <div *ngIf="emailCheckResult.exists" class="">
-                                <div *ngIf="emailCheckResult.candidate.can_be_invited" class="text-blue-600 flex items-center gap-1">
-                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Existing candidate ({{ emailCheckResult.candidate.status }}) - can be invited
-                                </div>
-                                <div *ngIf="!emailCheckResult.candidate.can_be_invited" class="text-red-600 flex items-center gap-1">
-                                    <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Cannot invite - candidate status: {{ emailCheckResult.candidate.status }}
-                                </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Last Name</label>
+                                <input type="text" [(ngModel)]="inviteForm.last_name" name="last_name" required
+                                    class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all">
                             </div>
                         </div>
-                    </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                        <input type="tel" [(ngModel)]="inviteForm.phone" name="phone"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                    </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Email Address</label>
+                            <input type="email" [(ngModel)]="inviteForm.email" name="email" required (blur)="checkCandidateEmail()"
+                                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all">
+                            
+                            <!-- Email Status Feedback -->
+                            <div *ngIf="checkingEmail" class="mt-2 text-xs text-gray-500 flex items-center gap-1.5">
+                                <svg class="animate-spin h-3 w-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                Verifying availability...
+                            </div>
+                            <div *ngIf="emailCheckResult && !checkingEmail" class="mt-2 text-xs">
+                                <span *ngIf="!emailCheckResult.exists" class="text-green-600 flex items-center gap-1">
+                                    <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                                    Available for invitation
+                                </span>
+                                <span *ngIf="emailCheckResult.exists" [class.text-blue-600]="emailCheckResult.candidate.can_be_invited" [class.text-red-600]="!emailCheckResult.candidate.can_be_invited">
+                                    {{ emailCheckResult.candidate.can_be_invited ? 'Candidate exists (Re-invite available)' : 'Cannot invite: ' + emailCheckResult.candidate.status }}
+                                </span>
+                            </div>
+                        </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Job Position *</label>
-                        <select [(ngModel)]="inviteForm.job_id" name="job_id" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                            <option value="">Select a job...</option>
-                            <option *ngFor="let job of jobs" [value]="job.id">
-                                {{ job.title }} ({{ job.status }})
-                            </option>
-                        </select>
-                        <p *ngIf="jobs.length === 0" class="text-xs text-orange-600 mt-1 flex items-center gap-1">
-                            <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                            </svg>
-                            No open jobs available. Create a job first before inviting candidates.
-                        </p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Preferred Language</label>
-                        <select [(ngModel)]="inviteForm.preferred_language" name="language"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-900">
-                            <option value="en">English</option>
-                            <option value="nl">Nederlands</option>
-                            <option value="fr">Français</option>
-                            <option value="de">Deutsch</option>
-                            <option value="es">Español</option>
-                        </select>
-                    </div>
-
-                    <div class="flex gap-3 pt-4">
-                        <button type="button" (click)="closeInviteModal()"
-                            class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-emerald-50 transition">
-                            Cancel
-                        </button>
-                        <button type="submit"
-                            class="flex-1 px-4 py-2 bg-emerald-900 text-white rounded-lg hover:bg-emerald-950 transition">
-                            Send Invitation
-                        </button>
-                    </div>
-                </form>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5 uppercase tracking-wide">Assign Job</label>
+                            <select [(ngModel)]="inviteForm.job_id" name="job_id" required
+                                class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:border-transparent transition-all">
+                                <option value="">Select a job position...</option>
+                                <option *ngFor="let job of jobs" [value]="job.id">{{ job.title }}</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Modal Footer -->
+                        <div class="pt-2 flex items-center justify-end gap-3 mt-6">
+                            <button type="button" (click)="closeInviteModal()" class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors">Cancel</button>
+                            <button type="submit" class="px-5 py-2 text-sm font-medium text-white bg-emerald-900 rounded-lg hover:bg-emerald-800 focus:ring-4 focus:ring-emerald-100 transition-all shadow-sm">Send Invitation</button>
+                        </div>
+                   </form>
+                </div>
             </div>
         </div>
+
     </div>
 </div>

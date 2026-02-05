@@ -83,6 +83,51 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
         </div>
 
+        <!-- USER ANCHOR (The "CEO" Position) -->
+        <div class="mt-auto mb-4 w-full flex justify-center relative group">
+          <button class="w-12 h-12 rounded-full overflow-hidden border-2 border-transparent hover:border-[#D1FAE5] transition-all focus:outline-none cursor-pointer" id="user-menu-trigger">
+            <img src="https://i.pravatar.cc/150?u=alice" alt="Profile" class="w-full h-full object-cover">
+          </button>
+
+          <!-- THE M3 PANEL (Explodes on Hover) -->
+          <div class="absolute left-[70px] bottom-0 w-[280px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] flex flex-col overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 origin-bottom-left">
+            
+            <!-- Header with Metadata -->
+            <div class="px-4 py-4 bg-[#F3F4F6] border-b border-[#E0E2E5]">
+              <div class="text-[14px] font-bold text-[#1C1B1F]">Alice Anderson</div>
+              <div class="text-[11px] text-[#444746] mt-1">alice@meribas.com</div>
+              
+              <div class="mt-3 flex flex-col gap-1">
+                 <div class="flex justify-between text-[10px] uppercase tracking-wider text-[#444746] font-bold">
+                   <span>User ID:</span> <span class="font-mono">USR-998</span>
+                 </div>
+                 <div class="flex justify-between text-[10px] uppercase tracking-wider text-[#444746] font-bold">
+                   <span>Tenant:</span> <span class="font-mono">TNT-EU1</span>
+                 </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="p-2 flex flex-col gap-1">
+              <a href="javascript:void(0)" class="h-10 px-4 rounded-lg hover:bg-[#E0E2E5] flex items-center gap-3 text-[#1C1B1F] text-[14px] font-medium transition-colors no-underline">
+                <span class="material-icons text-[20px]">account_circle</span>
+                Profile Settings
+              </a>
+              <a href="javascript:void(0)" class="h-10 px-4 rounded-lg hover:bg-[#E0E2E5] flex items-center gap-3 text-[#1C1B1F] text-[14px] font-medium transition-colors no-underline">
+                <span class="material-icons text-[20px]">group_add</span>
+                Tenant Switcher
+              </a>
+              
+              <div class="my-1 border-t border-[#E0E2E5]"></div>
+              
+              <a href="javascript:void(0)" class="h-10 px-4 rounded-lg hover:bg-[#FFDAD6] text-[#410002] flex items-center gap-3 font-medium text-[14px] transition-colors no-underline">
+                <span class="material-icons text-[20px]">logout</span>
+                Log Out
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
       </nav>
 
       <!-- COLUMN 2: CONTEXTUAL DRAWER (Absolute Overlay) -->

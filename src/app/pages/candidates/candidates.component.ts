@@ -158,45 +158,6 @@ export class CandidatesComponent implements OnInit {
         this.applyFilters();
     }
 
-    // Helper to generate heatmap background color based on score (0-100)
-    // Using a minimal, dark-green driven monochrome scale for all metrics
-    getScoreStyle(score: number | null | undefined, type: 'green' | 'blue' | 'purple' | 'orange'): { [key: string]: string } {
-        if (score === null || score === undefined) {
-            return { 'background-color': '#f9fafb', 'color': '#9ca3af' }; // Gray-50 background, Gray-400 text
-        }
-
-        // Base Color: Emerald-900 (6, 78, 59)
-        // We will interpolate from White (255, 255, 255) to Emerald-900
-        // But to keep it readable, we might want a lighter "full score" color or just adjust opacity.
-        // Actually, for a heatmap, usually lighter is lower, darker is higher.
-
-        // Let's use a specialized green scale for each "type" if we want subtle differentiation, 
-        // OR just one unified Dark Green scale as requested ("accents need to be dark green").
-        // I will use a unified Emerald scale for all match types to be perfectly minimal.
-
-        // RGB for Emerald-900: 6, 78, 59
-        const r_target = 6, g_target = 78, b_target = 59;
-
-        // Start from (255, 255, 255)
-        // Calculate intensity based on score. 
-        // Score 0 -> White
-        // Score 100 -> Emerald-900 
-        // We'll use a slightly lighter max for better text contrast if needed, but Emerald-900 is very dark.
-        // Let's go to Emerald-800: 6, 95, 70 usually.
-        // Let's stick to the math:
-
-        const intensity = score / 100;
-        const r = 255 - (255 - r_target) * intensity;
-        const g = 255 - (255 - g_target) * intensity;
-        const b = 255 - (255 - b_target) * intensity;
-
-        return {
-            'background-color': `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`,
-            // White text if efficient contrast, else Black/Dark Gray
-            // Threshold around 50-60% usually flips contrast for dark greens
-            'color': score > 50 ? '#ffffff' : '#064e3b' // Emerald-900 text for light backgrounds
-        };
-    }
 
     onCardClick(candidate: Candidate) {
         this.router.navigate(['/candidates', candidate.id]);
@@ -205,28 +166,15 @@ export class CandidatesComponent implements OnInit {
     getStatusBadgeClass(status: string): string {
         switch (status) {
             case 'new':
-                return 'bg-blue-100 text-blue-800 border-blue-200';
+                return 'bg-blue-50 text-blue-700 border border-blue-100';
             case 'in_process':
-                return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                return 'bg-amber-50 text-amber-700 border border-amber-100';
             case 'hired':
-                return 'bg-green-100 text-green-800 border-green-200';
+                return 'bg-emerald-50 text-emerald-700 border border-emerald-100';
             case 'rejected':
-                return 'bg-red-100 text-red-800 border-red-200';
+                return 'bg-red-50 text-red-700 border border-red-100';
             default:
-                return 'bg-gray-100 text-gray-800 border-gray-200';
-        }
-    }
-
-    getSourceBadgeClass(source: string): string {
-        switch (source) {
-            case 'manual':
-                return 'bg-purple-100 text-purple-800 border-purple-200';
-            case 'invited':
-                return 'bg-blue-100 text-blue-800 border-blue-200';
-            case 'applied':
-                return 'bg-green-100 text-green-800 border-green-200';
-            default:
-                return 'bg-gray-100 text-gray-800 border-gray-200';
+                return 'bg-gray-50 text-gray-700 border border-gray-100';
         }
     }
 
