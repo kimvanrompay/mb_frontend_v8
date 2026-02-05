@@ -20,9 +20,6 @@ import { NavbarCenteredComponent } from '../navbar-centered/navbar-centered.comp
       <!-- M3 Main Content Pane (Rounded Top-Left Corner) -->
       <div class="flex-1 flex flex-col h-full overflow-hidden relative bg-surface rounded-tl-[24px]">
          
-         <!-- Context Nav (Top Bar) -->
-         <app-navbar-centered></app-navbar-centered>
-
          <!-- Page Content (Scrollable Area) -->
          <main class="flex-1 overflow-auto bg-surface p-6">
             <div class="mx-auto max-w-[1600px]">
