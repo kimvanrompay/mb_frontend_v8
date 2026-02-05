@@ -21,13 +21,13 @@ import { RouterModule } from '@angular/router';
         </a>
       </div>
 
-      <!-- Extended FAB (Primary Action) -->
-      <div class="px-4 pb-4">
+      <!-- Extended FAB (Primary Action - North Star Button) -->
+      <div class="px-4 pb-6">
         <a routerLink="/candidates" 
-           class="h-14 w-full bg-primary-container text-on-primary-container rounded-m3-lg 
-                  flex items-center justify-center gap-2 font-medium text-sm 
-                  shadow-m3-1 hover:shadow-m3-2 transition-all">
-          <span class="material-icons text-xl">person_add</span>
+           class="h-14 w-full bg-primary-container text-on-primary-container rounded-2xl 
+                  flex items-center justify-center gap-3 font-semibold text-[15px] tracking-wide 
+                  shadow-md hover:shadow-lg transition-all">
+          <span class="material-icons-outlined text-[20px]">add</span>
           <span>Invite Candidate</span>
         </a>
       </div>
@@ -43,50 +43,50 @@ import { RouterModule } from '@angular/router';
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              [routerLinkActiveOptions]="{exact: true}"
              class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-m3-full
-                    hover:bg-surface-container-high transition-colors">
-            <span class="material-icons">dashboard</span>
-            <span class="text-sm">Overview</span>
+                    text-on-surface-variant rounded-full
+                    hover:bg-surface-container-high transition-all">
+            <span class="material-icons text-[24px]">dashboard</span>
+            <span class="text-[15px] font-medium">Overview</span>
           </a>
 
           <!-- Positions -->
           <a routerLink="/jobs" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-m3-full
-                    hover:bg-surface-container-high transition-colors">
-            <span class="material-icons">work</span>
-            <span class="text-sm">Positions</span>
+                    text-on-surface-variant rounded-full
+                    hover:bg-surface-container-high transition-all">
+            <span class="material-icons-outlined text-[24px]">work_outline</span>
+            <span class="text-[15px] font-medium">Positions</span>
           </a>
 
           <!-- Assessments -->
           <a routerLink="/applications" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-m3-full
-                    hover:bg-surface-container-high transition-colors">
-            <span class="material-icons">assignment</span>
-            <span class="text-sm">Assessments</span>
+                    text-on-surface-variant rounded-full
+                    hover:bg-surface-container-high transition-all">
+            <span class="material-icons-outlined text-[24px]">assignment</span>
+            <span class="text-[15px] font-medium">Assessments</span>
           </a>
 
           <!-- Candidates (Active Pill Example) -->
           <a routerLink="/candidates" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-m3-full
-                    hover:bg-surface-container-high transition-colors">
-            <span class="material-icons">people</span>
-            <span class="text-sm">Candidates</span>
+                    text-on-surface-variant rounded-full
+                    hover:bg-surface-container-high transition-all">
+            <span class="material-icons text-[24px]">people</span>
+            <span class="text-[15px] font-medium">Candidates</span>
           </a>
 
           <!-- Invitations -->
           <a routerLink="/invitations" 
              routerLinkActive="bg-secondary-container text-on-secondary-container font-bold"
              class="h-14 px-6 flex items-center gap-4 
-                    text-on-surface-variant rounded-m3-full
-                    hover:bg-surface-container-high transition-colors">
-            <span class="material-icons">mail</span>
-            <span class="text-sm">Invitations</span>
+                    text-on-surface-variant rounded-full
+                    hover:bg-surface-container-high transition-all">
+            <span class="material-icons-outlined text-[24px]">mail_outline</span>
+            <span class="text-[15px] font-medium">Invitations</span>
           </a>
 
         </div>
