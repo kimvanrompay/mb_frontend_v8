@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Candidate } from '../../models/candidate.model';
 import { CandidateService } from '../../services/candidate.service';
+import { JobService } from '../../services/job.service';
 
 @Component({
     selector: 'app-candidates',
@@ -26,23 +27,40 @@ export class CandidatesComponent implements OnInit {
 
     // For invite modal
     isInviteModalOpen = false;
+    jobs: any[] = [];
+    emailCheckResult: any = null;
+    checkingEmail = false;
     inviteForm = {
         job_id: '',
         first_name: '',
         last_name: '',
         email: '',
         phone: '',
-        preferred_language: 'nl'
+        preferred_language: 'en'
     };
 
     constructor(
         private candidateService: CandidateService,
-        private cdr: ChangeDetectorRef,
-        private router: Router
+        private jobService: JobService,
+        private router: Router,
+        private cdr: ChangeDetectorRef
     ) { }
 
     ngOnInit() {
         this.loadCandidates();
+        this.loadJobs();
+    }
+
+    loadJobs() {
+        this.jobService.getJobs('open').subscribe({
+            next: (jobs) => {
+                this.jobs = jobs;
+            },
+            error: (err) => {
+                console.error('Error loading jobs:', err);
+                // Silently fail - jobs will just show empty dropdown
+            }
+        });
     }
 
     loadCandidates() {
@@ -251,6 +269,36 @@ export class CandidatesComponent implements OnInit {
             phone: '',
             preferred_language: 'en'
         };
+        this.emailCheckResult = null;
+        this.checkingEmail = false;
+    }
+
+    checkCandidateEmail() {
+        const email = this.inviteForm.email.trim();
+        if (!email || !email.includes('@')) {
+            this.emailCheckResult = null;
+            return;
+        }
+
+        this.checkingEmail = true;
+        this.candidateService.checkEmail(email).subscribe({
+            next: (result) => {
+                this.emailCheckResult = result;
+                this.checkingEmail = false;
+                
+                // Pre-fill name if candidate exists
+                if (result.exists && result.candidate) {
+                    const parts = result.candidate.full_name.split(' ');
+                    this.inviteForm.first_name = parts[0] || '';
+                    this.inviteForm.last_name = parts.slice(1).join(' ') || '';
+                }
+            },
+            error: (err) => {
+                console.error('Error checking email:', err);
+                this.emailCheckResult = null;
+                this.checkingEmail = false;
+            }
+        });
     }
 
     inviteCandidate() {
@@ -259,15 +307,22 @@ export class CandidatesComponent implements OnInit {
             return;
         }
 
+        // Check if candidate exists and cannot be invited
+        if (this.emailCheckResult?.exists && !this.emailCheckResult.candidate.can_be_invited) {
+            alert(`Cannot invite: Candidate already exists with status "${this.emailCheckResult.candidate.status}". Only candidates with status "new" or "rejected" can be invited.`);
+            return;
+        }
+
         this.candidateService.inviteCandidate(this.inviteForm).subscribe({
             next: (response) => {
-                alert(response.message);
+                alert(`✅ ${response.message}\n\nThe candidate will receive an email with an invitation link.`);
                 this.closeInviteModal();
                 this.loadCandidates();
             },
             error: (err) => {
                 console.error('Error inviting candidate:', err);
-                alert('Failed to invite candidate. Please try again.');
+                const errorMessage = err.error?.error || 'Failed to invite candidate. Please try again.';
+                alert(`❌ ${errorMessage}`);
             }
         });
     }

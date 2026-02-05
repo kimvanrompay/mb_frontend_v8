@@ -15,6 +15,14 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'verify-email', component: VerifyEmailComponent },
     {
+        path: 'candidates/invitation/:token',
+        loadComponent: () => import('./pages/public/candidate-invitation/candidate-invitation.component').then(m => m.CandidateInvitationComponent)
+    },
+    {
+        path: 'assessment/:token',
+        loadComponent: () => import('./pages/public/test-runner/test-runner.component').then(m => m.TestRunnerComponent)
+    },
+    {
         path: 'onboarding',
         children: [
             { path: '', redirectTo: 'welcome', pathMatch: 'full' },

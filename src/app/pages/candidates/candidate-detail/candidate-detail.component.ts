@@ -60,7 +60,8 @@ export class CandidateDetailComponent implements OnInit {
 
     activeTab: 'summary' | 'c' | 'o' | 'r' | 'e' = 'summary';
 
-    // Notes Panel State
+    // Notes Panel State (Drawer)
+    isDrawerOpen = false;
     showNotesPanel = false;
     newNoteContent = '';
     candidateNotes: Array<{ id: string; author: string; content: string; created_at: string }> = [
@@ -178,6 +179,14 @@ export class CandidateDetailComponent implements OnInit {
 
     toggleNotesPanel() {
         this.showNotesPanel = !this.showNotesPanel;
+    }
+
+    openDrawer() {
+        this.isDrawerOpen = true;
+    }
+
+    closeDrawer() {
+        this.isDrawerOpen = false;
     }
 
     addNote(event: Event) {
