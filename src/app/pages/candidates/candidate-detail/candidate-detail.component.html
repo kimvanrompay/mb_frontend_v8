@@ -1,271 +1,49 @@
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 p-4">
-    <div class="max-w-[2200px] mx-auto">
+<div class="min-h-screen bg-gray-50 p-8">
+    <div class="max-w-6xl mx-auto">
         <!-- Back Button -->
         <button routerLink="/dashboard/candidates"
-            class="flex items-center text-xs text-gray-500 hover:text-gray-900 mb-3 transition">
-            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-6 transition">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Candidates
         </button>
 
         <!-- Loading State -->
-        <div *ngIf="loading" class="text-center py-10">
-            <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-            <p class="mt-3 text-xs text-gray-600">Loading candidate MRI...</p>
+        <div *ngIf="loading" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-gray-600">Loading candidate data...</p>
         </div>
 
         <!-- Error State -->
-        <div *ngIf="error" class="bg-red-500/10 backdrop-blur-sm border border-red-200/50 rounded-lg p-3 mb-3">
-            <p class="text-xs text-red-800">{{ error }}</p>
+        <div *ngIf="error" class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <p class="text-red-800">{{ error }}</p>
         </div>
 
-        <!-- MRI Dashboard -->
+        <!-- Candidate Data -->
         <div *ngIf="candidate && !loading && !error">
-            <!-- Header -->
-            <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-5 mb-4">
-                <div class="flex items-start gap-4">
-                        <!-- Avatar -->
-                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-semibold text-sm shadow-md">
-                            {{ candidate.first_name[0] }}{{ candidate.last_name[0] }}
-                        </div>
-
-                        <!-- Info -->
-                        <div>
-                            <h1 class="text-lg font-bold text-gray-900">{{ candidate.full_name }}</h1>
-                            <p class="text-xs text-gray-500 mt-0.5">{{ candidate.email }}</p>
-                            
-                            <!-- Badges -->
-                            <div class="flex gap-1.5 mt-2">
-                                <span [class]="'px-2 py-0.5 text-[10px] font-medium rounded border backdrop-blur-sm ' + getStatusBadgeClass(candidate.status)">
-                                    {{ formatStatus(candidate.status) }}
-                                </span>
-                                
-                                <!-- High Potential Badge -->
-                                <span *ngIf="mriData?.kpis?.potential >= 85" 
-                                      class="px-2 py-0.5 text-[10px] font-medium rounded bg-orange-500/10 text-orange-700 border border-orange-200/50 backdrop-blur-sm">
-                                    High Potential
-                                </span>
-
-                                <!-- Elite Skills Badge -->
-                                <span *ngIf="mriData?.kpis?.skills >= 90" 
-                                      class="px-2 py-0.5 text-[10px] font-medium rounded bg-amber-500/10 text-amber-700 border border-amber-200/50 backdrop-blur-sm">
-                                    Elite Skills
-                                </span>
-
-                                <!-- Perfect Match Badge -->
-                                <span *ngIf="mriData?.kpis?.overall >= 90" 
-                                      class="px-2 py-0.5 text-[10px] font-medium rounded bg-emerald-500/10 text-emerald-700 border border-emerald-200/50 backdrop-blur-sm">
-                                    Perfect Match
-                                </span>
-                            </div>
-                        </div>
-                </div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-6">Candidate Details</h1>
+            
+            <!-- Raw JSON Display -->
+            <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Candidate JSON</h2>
+                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-auto text-sm">{{ candidate | json }}</pre>
             </div>
 
-            <!-- MRI Dashboard Content -->
-            <div *ngIf="!loadingMRI && mriData" class="space-y-4">
-                
-                <!-- ZONE 1: 4-Pillar Radar -->
-                <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-4">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xs">
-                            1
-                        </div>
-                        <div>
-                            <h2 class="text-sm font-bold text-gray-900">4-Pillar Analysis</h2>
-                            <p class="text-[10px] text-gray-600">Candidate Profile Overview</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-[420px,1fr] gap-6">
-                        <!-- Radar Chart -->
-                        <div class="flex justify-center">
-                            <app-mri-radar-chart 
-                                [data]="mriData.radar_data"
-                                [width]="400"
-                                [height]="400">
-                            </app-mri-radar-chart>
-                        </div>
-
-                        <!-- KPI Breakdown -->
-                        <div class="space-y-3">
-                            <!-- Values -->
-                            <div class="bg-white/40 backdrop-blur-sm border border-white/30 rounded-lg p-3">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <h3 class="font-bold text-xs text-gray-900">Values (The Heart)</h3>
-                                    <span class="text-lg font-bold text-emerald-600">{{ mriData.kpis.values || '—' }}%</span>
-                                </div>
-                                <p class="text-[10px] text-gray-600">{{ mriData.context.business_labels.values }}</p>
-                                <div class="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-emerald-500 rounded-full transition-all" [style.width.%]="mriData.kpis.values || 0"></div>
-                                </div>
-                            </div>
-
-                            <!-- Potential -->
-                            <div class="bg-white/40 backdrop-blur-sm border border-white/30 rounded-lg p-3">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <h3 class="font-bold text-xs text-gray-900">Potential (The Brain)</h3>
-                                    <span class="text-lg font-bold text-blue-600">{{ mriData.kpis.potential || '—' }}%</span>
-                                </div>
-                                <p class="text-[10px] text-gray-600">{{ mriData.context.business_labels.potential }}</p>
-                                <div class="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-blue-500 rounded-full transition-all" [style.width.%]="mriData.kpis.potential || 0"></div>
-                                </div>
-                            </div>
-
-                            <!-- Skills -->
-                            <div class="bg-white/40 backdrop-blur-sm border border-white/30 rounded-lg p-3">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <h3 class="font-bold text-xs text-gray-900">Skills (The Hands)</h3>
-                                    <span class="text-lg font-bold text-purple-600">{{ mriData.kpis.skills || '—' }}%</span>
-                                </div>
-                                <p class="text-[10px] text-gray-600">{{ mriData.context.business_labels.skills }}</p>
-                                <div class="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-purple-500 rounded-full transition-all" [style.width.%]="mriData.kpis.skills || 0"></div>
-                                </div>
-                            </div>
-
-                            <!-- Expectation -->
-                            <div class="bg-white/40 backdrop-blur-sm border border-white/30 rounded-lg p-3">
-                                <div class="flex items-center justify-between mb-1.5">
-                                    <h3 class="font-bold text-xs text-gray-900">Expectation (The Reality)</h3>
-                                    <span class="text-lg font-bold text-amber-600">{{ mriData.kpis.expectation || '—' }}%</span>
-                                </div>
-                                <p class="text-[10px] text-gray-600">{{ mriData.context.business_labels.expectation }}</p>
-                                <div class="mt-1.5 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                    <div class="h-full bg-amber-500 rounded-full transition-all" [style.width.%]="mriData.kpis.expectation || 0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ZONE 2: Executive Summary -->
-                <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-4">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs">
-                            2
-                        </div>
-                        <div>
-                            <h2 class="text-sm font-bold text-gray-900">Hiring Decision</h2>
-                            <p class="text-[10px] text-gray-600">Match Score & Recommendation</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-[280px,1fr] gap-6">
-                        <!-- Overall Match Gauge -->
-                        <div class="flex flex-col items-center">
-                            <app-mri-gauge 
-                                [score]="mriData.kpis.overall" 
-                                [label]="'Overall Match'"
-                                [size]="220">
-                            </app-mri-gauge>
-                            
-                            <!-- Business Label -->
-                            <div class="mt-3 text-center">
-                                <p class="text-sm font-bold text-gray-900">{{ mriData.context.business_labels.overall }}</p>
-                                <p class="text-[10px] text-gray-500 mt-0.5">vs. Database Average</p>
-                            </div>
-
-                            <!-- Recommendation -->
-                            <div *ngIf="mriData.decision.recommendation" class="mt-4 w-full">
-                                <div [class]="'p-3 rounded-lg border backdrop-blur-sm ' + getRecommendationClass(mriData.decision.recommendation.verdict)">
-                                    <p class="font-bold text-xs mb-0.5">{{ formatVerdict(mriData.decision.recommendation.verdict) }}</p>
-                                    <p class="text-[10px] opacity-80">{{ mriData.decision.recommendation.action }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Why Hire / Why Not Cards -->
-                        <div>
-                            <app-mri-why-cards 
-                                [whyHire]="mriData.decision.why_hire" 
-                                [whyNot]="mriData.decision.why_not">
-                            </app-mri-why-cards>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ZONE 3: Behavioral MRI -->
-                <div class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-4">
-                    <div class="flex items-center gap-2 mb-4">
-                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-xs">
-                            3
-                        </div>
-                        <div>
-                            <h2 class="text-sm font-bold text-gray-900">Behavioral MRI</h2>
-                            <p class="text-[10px] text-gray-600">Shadow Data & Focus Patterns</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <!-- Focus Timeline -->
-                        <app-mri-focus-timeline 
-                            [timeline]="mriData.behavioral_mri.focus_timeline"
-                            [overall_focus_score]="mriData.behavioral_mri.overall_focus_score">
-                        </app-mri-focus-timeline>
-
-                        <!-- Context Badges & Percentiles -->
-                        <div class="space-y-4">
-                            <div>
-                                <h4 class="text-xs font-semibold text-gray-900 mb-2">Achievement Badges</h4>
-                                <div class="flex flex-wrap gap-1.5">
-                                    <div *ngFor="let badge of mriData.context.badges" 
-                                         class="px-2.5 py-1.5 rounded-lg border backdrop-blur-sm flex items-center gap-1.5"
-                                         [style.border-color]="badge.color"
-                                         [style.background-color]="badge.color + '15'">
-                                        <span class="text-sm">{{ badge.icon }}</span>
-                                        <span class="text-[10px] font-semibold" [style.color]="badge.color">{{ badge.label }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <h4 class="text-xs font-semibold text-gray-900 mb-2">Percentile Rankings</h4>
-                                <div class="space-y-1.5">
-                                    <div *ngFor="let pillar of ['values', 'potential', 'skills', 'expectation']" 
-                                         class="flex items-center justify-between">
-                                        <span class="text-[10px] text-gray-600 capitalize">{{ pillar }}</span>
-                                        <span class="text-xs font-bold text-gray-900">
-                                            Top {{ mriData.context.percentiles[pillar] }}%
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- MRI Data -->
+            <div *ngIf="mriData" class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">MRI Data JSON</h2>
+                <pre class="bg-gray-900 text-green-400 p-4 rounded overflow-auto text-sm">{{ mriData | json }}</pre>
             </div>
 
             <!-- Loading MRI State -->
-            <div *ngIf="loadingMRI" class="text-center py-10">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-                <p class="mt-2 text-xs text-gray-600">Loading MRI analysis...</p>
+            <div *ngIf="loadingMRI" class="bg-white rounded-lg shadow-lg p-6">
+                <p class="text-gray-600">Loading MRI data...</p>
             </div>
 
-            <!-- Empty State: No Assessment Data -->
-            <div *ngIf="!loadingMRI && !mriData" class="bg-white/60 backdrop-blur-xl rounded-xl shadow-lg border border-white/20 p-8 text-center">
-                <div class="max-w-md mx-auto">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center">
-                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-sm font-bold text-gray-900 mb-1.5">No Assessment Data Available</h3>
-                    <p class="text-xs text-gray-600 mb-4">
-                        This candidate hasn't completed any assessments yet. The MRI Dashboard requires completed assessments to generate insights.
-                    </p>
-                    <div class="bg-blue-500/10 backdrop-blur-sm border border-blue-200/50 rounded-lg p-3 text-left">
-                        <p class="text-xs font-semibold text-blue-900 mb-1.5">Next Steps:</p>
-                        <ul class="text-[10px] text-blue-800 space-y-0.5">
-                            <li>• Invite the candidate to complete assessments</li>
-                            <li>• Wait for assessment completion</li>
-                            <li>• Return here to view the MRI Dashboard</li>
-                        </ul>
-                    </div>
-                </div>
+            <!-- No MRI Data -->
+            <div *ngIf="!loadingMRI && !mriData" class="bg-white rounded-lg shadow-lg p-6">
+                <p class="text-gray-600">No MRI data available for this candidate.</p>
             </div>
         </div>
     </div>
