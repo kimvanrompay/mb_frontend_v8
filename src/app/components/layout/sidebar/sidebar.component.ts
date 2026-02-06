@@ -145,17 +145,15 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
-                        <a routerLink="/dashboard" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold" [routerLinkActiveOptions]="{exact: true}"
+                        <a routerLink="/dashboard" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold" [routerLinkActiveOptions]="{exact: true}"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Dashboard</span>
                         </a>
-                         <a routerLink="/notifications" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                         <a routerLink="/notifications" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Notifications</span>
                         </a>
                     </nav>
-                </ng-container>
-
                 <!-- 2. HIRING CATEGORY -->
                 <ng-container *ngSwitchCase="'hiring'">
                     <div class="h-12 flex items-center px-3 mb-1">
@@ -170,17 +168,17 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
                     <nav class="flex-1 flex flex-col gap-1">
                         <div class="px-4 py-2 text-[10px] font-bold text-[#444746] uppercase tracking-wider">Management</div>
                         
-                        <a routerLink="/jobs" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                        <a routerLink="/jobs" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Positions</span>
                         </a>
                         
-                        <a routerLink="/candidates" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                        <a routerLink="/candidates" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Candidates</span>
                         </a>
 
-                        <a routerLink="/invitations" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                        <a routerLink="/invitations" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Invitations</span>
                         </a>
@@ -194,17 +192,17 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
-                        <a routerLink="/applications" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                        <a routerLink="/applications" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Assessments</span>
                         </a>
                         
-                        <a routerLink="/environment" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                        <a routerLink="/environment" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Test Library</span>
                         </a>
 
-                         <a routerLink="/deployments" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                         <a routerLink="/deployments" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Interview Scheduler</span>
                         </a>
@@ -218,15 +216,15 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
-                         <a routerLink="/settings" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                         <a routerLink="/settings" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Settings</span>
                         </a>
-                         <a routerLink="/team" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                         <a routerLink="/team" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Team & Users</span>
                         </a>
-                         <a routerLink="/billing" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
+                         <a routerLink="/billing" routerLinkActive="bg-[#D1FAE5] text-[#064E3B] font-bold"
                            class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Billing</span>
                         </a>

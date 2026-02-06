@@ -1,81 +1,69 @@
-<div class="min-h-screen bg-white px-6 py-6 font-sans">
-    <div class="w-full max-w-[1600px] mx-auto">
-        <!-- HEADER / TOOLBAR: High Density M3 -->
-        <div class="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-4 mb-6">
-            
-            <!-- Left: Search & Title -->
-            <div class="flex items-center gap-4 w-full xl:w-auto">
-                <h1 class="text-2xl font-normal text-gray-900 tracking-tight hidden xl:block">Candidates</h1>
-                
-                <!-- Search Bar (M3 Filled) -->
-                <div class="relative flex-1 xl:w-[400px]">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                        </svg>
-                    </div>
-                    <input type="text" 
-                           [(ngModel)]="searchQuery" 
-                           (ngModelChange)="applyFilters()"
-                           placeholder="Search candidates..." 
-                           class="block w-full pl-10 pr-3 py-2.5 border-none rounded-full bg-gray-100 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-700 sm:text-sm transition-shadow">
+<div class="max-w-[1600px] mx-auto px-6 py-6">
+    
+    <!-- Header -->
+    <div class="mb-6 flex items-center justify-between">
+        <div>
+            <h1 class="text-[24px] font-normal text-on-surface">Candidates</h1>
+            <p class="text-[14px] text-on-surface-variant mt-1">Manage and track your candidate pipeline</p>
+        </div>
+        <button (click)="openInviteModal()"
+                class="flex items-center gap-2 px-6 h-10 bg-primary text-on-primary rounded-full text-sm font-medium hover:shadow-md transition-all">
+            <span class="material-icons text-[18px]">person_add</span>
+            Invite Candidate
+        </button>
+    </div>
+
+    <!-- Filters Bar (M3 Chips/Inputs) -->
+    <div class="mb-6 flex flex-col md:flex-row gap-4">
+        <!-- Search -->
+        <div class="relative flex-1 max-w-md">
+            <span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+            <input type="text" 
+                   [(ngModel)]="searchQuery" 
+                   (ngModelChange)="applyFilters()"
+                   placeholder="Search candidates..." 
+                   class="w-full h-10 pl-10 pr-4 bg-surface-container-high border-none rounded-full text-sm text-on-surface placeholder:text-on-surface-variant focus:ring-2 focus:ring-primary focus:outline-none transition-all" />
+        </div>
+
+        <!-- Filter Chips -->
+        <div class="flex gap-2 overflow-x-auto pb-2">
+            <!-- Status Filter -->
+            <div class="relative group">
+                <button class="h-8 px-4 bg-surface border border-outline rounded-[8px] text-xs font-medium text-on-surface hover:bg-surface-container-high focus:outline-none cursor-pointer flex items-center gap-2">
+                    <span>Status: {{ formatFilterValue(statusFilter) }}</span>
+                    <span class="material-icons text-[16px]">arrow_drop_down</span>
+                </button>
+                <div class="absolute left-0 top-full mt-1 w-[200px] bg-surface-container-high rounded-[12px] shadow-lg border border-outline-variant p-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                     <button *ngFor="let status of statusOptions"
+                            (click)="statusFilter=status; applyFilters()"
+                            [class.bg-secondary-container]="statusFilter===status"
+                            [class.text-on-secondary-container]="statusFilter===status"
+                            class="w-full h-9 px-3 rounded-[8px] flex items-center justify-between text-[13px] font-medium transition-colors mb-1 text-left text-on-surface hover:bg-surface-container-highest">
+                        <span>{{ formatFilterValue(status) }}</span>
+                        <span *ngIf="statusFilter===status" class="material-icons text-[16px]">check</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Right: Filters & Actions (M3 Expressive) -->
-            <div class="flex flex-wrap items-center gap-2 w-full xl:w-auto">
-                
-                <!-- Filter: Status (M3 Expressive Menu) -->
-                <div class="relative group">
-                    <button class="h-10 pl-4 pr-3 rounded-lg border border-[#79747E] flex items-center gap-2 hover:bg-[#F3F4F6] transition-colors bg-white">
-                        <span class="text-[14px] font-medium text-[#1C1B1F]">Status: {{ formatFilterValue(statusFilter) }}</span>
-                        <span class="material-icons text-[20px] text-[#444746]">arrow_drop_down</span>
-                    </button>
-
-                    <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                         <button *ngFor="let status of statusOptions"
-                                (click)="statusFilter=status; applyFilters()"
-                                [class.bg-[#C4F5DA]]="statusFilter===status"
-                                [class.text-[#052112]]="statusFilter===status"
-                                [class.font-bold]="statusFilter===status"
-                                [class.hover:bg-[#F3F4F6]]="statusFilter!==status"
-                                class="w-full h-10 px-3 rounded-lg flex items-center justify-between text-[14px] font-medium transition-colors mb-1 text-left">
-                            <span>{{ formatFilterValue(status) }}</span>
-                            <span *ngIf="statusFilter===status" class="material-icons text-[18px]">check</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Filter: Sort (M3 Expressive Menu) -->
-                <div class="relative group">
-                    <button class="h-10 pl-4 pr-3 rounded-lg border border-[#79747E] flex items-center gap-2 hover:bg-[#F3F4F6] transition-colors bg-white">
-                        <span class="text-[14px] font-medium text-[#1C1B1F]">Sort: {{ formatSortValue(sortBy) }}</span>
-                        <span class="material-icons text-[20px] text-[#444746]">arrow_drop_down</span>
-                    </button>
-                     <div class="absolute right-0 top-12 w-[220px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
-                         <button *ngFor="let sort of sortOptions"
-                                (click)="sortBy=sort; applyFilters()"
-                                [class.bg-[#C4F5DA]]="sortBy===sort"
-                                [class.text-[#052112]]="sortBy===sort"
-                                [class.font-bold]="sortBy===sort"
-                                [class.hover:bg-[#F3F4F6]]="sortBy!==sort"
-                                class="w-full h-10 px-3 rounded-lg flex items-center justify-between text-[14px] font-medium transition-colors mb-1 text-left">
-                            <span>{{ formatSortValue(sort) }}</span>
-                            <span *ngIf="sortBy===sort" class="material-icons text-[18px]">check</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Action: Invite -->
-                <button (click)="openInviteModal()"
-                        class="ml-2 inline-flex items-center px-4 py-1.5 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-emerald-900 hover:bg-emerald-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-900 transition-all">
-                    <svg class="-ml-1 mr-2 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                    </svg>
-                    Invite
+            <!-- Sort Filter -->
+            <div class="relative group">
+                <button class="h-8 px-4 bg-surface border border-outline rounded-[8px] text-xs font-medium text-on-surface hover:bg-surface-container-high focus:outline-none cursor-pointer flex items-center gap-2">
+                    <span>Sort: {{ formatSortValue(sortBy) }}</span>
+                    <span class="material-icons text-[16px]">arrow_drop_down</span>
                 </button>
+                 <div class="absolute left-0 top-full mt-1 w-[200px] bg-surface-container-high rounded-[12px] shadow-lg border border-outline-variant p-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-20">
+                     <button *ngFor="let sort of sortOptions"
+                            (click)="sortBy=sort; applyFilters()"
+                            [class.bg-secondary-container]="sortBy===sort"
+                            [class.text-on-secondary-container]="sortBy===sort"
+                            class="w-full h-9 px-3 rounded-[8px] flex items-center justify-between text-[13px] font-medium transition-colors mb-1 text-left text-on-surface hover:bg-surface-container-highest">
+                        <span>{{ formatSortValue(sort) }}</span>
+                        <span *ngIf="sortBy===sort" class="material-icons text-[16px]">check</span>
+                    </button>
+                </div>
             </div>
         </div>
+    </div>
 
         <!-- Loading / Error -->
         <div *ngIf="loading" class="flex justify-center py-20">
