@@ -105,33 +105,52 @@
 .login-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  max-width: 1000px;
+  min-height: 100vh;
   width: 100%;
-  align-items: center;
   position: relative;
   z-index: 1;
 }
 
-/* Header section (Logo side - right) */
+/* Left Panel: Form & Actions */
+.login-left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  width: 100%;
+}
+
+/* Right Panel: Branding */
+.login-right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Center horizontally */
+  padding: 48px;
+  width: 100%;
+}
+
+/* Header section (Branding) */
 .header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  order: 2;
+  align-items: center; /* Center items */
+  text-align: center;
+  max-width: 480px;
 }
 
 .logo {
-  height: 40px;
+  height: 48px; /* Slightly larger */
   width: auto;
-  margin-bottom: 48px;
-  opacity: 0.9;
+  margin-bottom: 32px;
+  opacity: 1;
 }
 
 .title {
-  font: var(--mat-sys-display-medium);
+  font: var(--mat-sys-display-small);
   color: var(--mat-sys-on-surface);
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
   font-weight: 400;
   line-height: 1.2;
 }
@@ -144,16 +163,22 @@
 
 /* Form section (left side) */
 .form-container {
-  order: 1;
-  max-width: 420px;
+  max-width: 400px;
   width: 100%;
 }
 
+.form-title {
+  font: var(--mat-sys-headline-medium);
+  color: var(--mat-sys-on-surface);
+  margin: 0 0 32px 0;
+  font-weight: 400;
+}
+
 .error-container {
-  order: 1;
-  max-width: 420px;
+  max-width: 400px;
+  width: 100%;
   margin-bottom: 24px;
-  padding: 16px 20px;
+  padding: 16px;
   background-color: var(--mat-sys-error-container);
   color: var(--mat-sys-on-error-container);
   border-radius: 12px;
@@ -230,9 +255,9 @@
 
 /* Register section */
 .register-section {
-  order: 1;
-  max-width: 420px;
-  margin-top: 32px;
+  max-width: 400px;
+  width: 100%;
+  margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
@@ -247,9 +272,9 @@
 
 /* Footer */
 .footer {
-  order: 1;
-  max-width: 420px;
-  margin-top: 40px;
+  max-width: 400px;
+  width: 100%;
+  margin-top: 32px;
 }
 
 .footer-text {
@@ -264,24 +289,15 @@
 @media (max-width: 900px) {
   .login-content {
     grid-template-columns: 1fr;
-    gap: 48px;
-    max-width: 420px;
   }
 
-  .header {
-    order: 1;
-    align-items: center;
-    text-align: center;
+  .login-left-panel,
+  .login-right-panel {
+    padding: 24px;
   }
 
-  .form-container,
-  .error-container,
-  .register-section,
-  .footer {
-    order: 2;
-  }
-
-  .logo {
-    margin-bottom: 24px;
+  .login-right-panel {
+    order: -1; /* Header on top for mobile */
+    padding-bottom: 0;
   }
 }

@@ -101,37 +101,56 @@
   }
 }
 
-/* Content layout - Form left, Header right */
+/* Content layout - Form left, Logo right */
 .register-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  max-width: 1100px;
+  min-height: 100vh;
   width: 100%;
-  align-items: center;
   position: relative;
   z-index: 1;
 }
 
-/* Header section (right side) */
+/* Left Panel: Form & Actions */
+.register-left-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  width: 100%;
+}
+
+/* Right Panel: Branding */
+.register-right-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+  width: 100%;
+}
+
+/* Header section (Branding) */
 .header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  order: 2;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
 }
 
 .logo {
-  height: 40px;
+  height: 48px;
   width: auto;
-  margin-bottom: 48px;
-  opacity: 0.9;
+  margin-bottom: 32px;
+  opacity: 1;
 }
 
 .title {
-  font: var(--mat-sys-display-medium);
+  font: var(--mat-sys-display-small);
   color: var(--mat-sys-on-surface);
-  margin: 0 0 12px 0;
+  margin: 0 0 16px 0;
   font-weight: 300;
   line-height: 1.2;
 }
@@ -147,15 +166,16 @@
 }
 
 /* Form section (left side) */
-.form-section {
-  order: 1;
-  max-width: 520px;
+.form-container {
+  max-width: 500px;
   width: 100%;
 }
 
 .error-container {
+  max-width: 500px;
+  width: 100%;
   margin-bottom: 24px;
-  padding: 16px 20px;
+  padding: 16px;
   background-color: var(--mat-sys-error-container);
   color: var(--mat-sys-on-error-container);
   border-radius: 12px;
@@ -253,6 +273,8 @@
 
 /* Sign in section */
 .signin-section {
+  max-width: 500px;
+  width: 100%;
   margin-top: 32px;
   padding-top: 24px;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
@@ -270,22 +292,16 @@
 @media (max-width: 1100px) {
   .register-content {
     grid-template-columns: 1fr;
-    gap: 48px;
-    max-width: 520px;
   }
 
-  .header {
-    order: 1;
-    align-items: center;
-    text-align: center;
+  .register-left-panel,
+  .register-right-panel {
+    padding: 24px;
   }
 
-  .form-section {
-    order: 2;
-  }
-
-  .logo {
-    margin-bottom: 24px;
+  .register-right-panel {
+    order: -1; /* Header on top for mobile */
+    padding-bottom: 0;
   }
 }
 

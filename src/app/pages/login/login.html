@@ -6,103 +6,109 @@
     <div class="glass-shape glass-shape-4"></div>
 
     <div class="login-content">
-        <!-- Logo & Header -->
-        <div class="header">
-            <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                alt="Meribas" class="logo" />
-
-            <h1 class="title">
-                {{ 'auth.login.title' | t }}
-            </h1>
-
-            <p class="subtitle">
-                {{ 'auth.login.subtitle' | t }}
-            </p>
-        </div>
-
+        <!-- Left Panel: Form & Actions -->
+        <div class="login-left-panel">
             <!-- Error Message -->
-        <div *ngIf="errorMessage" class="error-container">
-            <p class="error-title">{{ errorMessage }}</p>
-            <ul *ngIf="errors.length > 0" class="error-list">
-                <li *ngFor="let error of errors">{{ error }}</li>
-            </ul>
-        </div>
+            <div *ngIf="errorMessage" class="error-container">
+                <p class="error-title">{{ errorMessage }}</p>
+                <ul *ngIf="errors.length > 0" class="error-list">
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                </ul>
+            </div>
 
             <!-- Form -->
-        <div class="form-container">
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-                <!-- Email -->
-                <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>{{ 'auth.login.email' | t }}</mat-label>
-                    <input matInput
-                           type="email"
-                           formControlName="email"
-                           autocomplete="email"
-                           [placeholder]="'auth.login.emailPlaceholder' | t" />
-                    <mat-error *ngIf="email?.errors?.['required']">
-                        {{ 'auth.login.emailRequired' | t }}
-                    </mat-error>
-                    <mat-error *ngIf="email?.errors?.['email']">
-                        {{ 'auth.login.emailInvalid' | t }}
-                    </mat-error>
-                </mat-form-field>
+            <div class="form-container">
+                <h2 class="form-title">{{ 'auth.login.signIn' | t }}</h2>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+                    <!-- Email -->
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>{{ 'auth.login.email' | t }}</mat-label>
+                        <input matInput
+                               type="email"
+                               formControlName="email"
+                               autocomplete="email"
+                               [placeholder]="'auth.login.emailPlaceholder' | t" />
+                        <mat-error *ngIf="email?.errors?.['required']">
+                            {{ 'auth.login.emailRequired' | t }}
+                        </mat-error>
+                        <mat-error *ngIf="email?.errors?.['email']">
+                            {{ 'auth.login.emailInvalid' | t }}
+                        </mat-error>
+                    </mat-form-field>
 
-                <!-- Password -->
-                <mat-form-field appearance="fill" class="full-width">
-                    <mat-label>{{ 'auth.login.password' | t }}</mat-label>
-                    <input matInput
-                           type="password"
-                           formControlName="password"
-                           autocomplete="current-password"
-                           [placeholder]="'auth.login.passwordPlaceholder' | t" />
-                    <mat-error *ngIf="password?.errors?.['required']">
-                        {{ 'auth.login.passwordRequired' | t }}
-                    </mat-error>
-                    <mat-error *ngIf="password?.errors?.['minlength']">
-                        {{ 'auth.login.passwordMinLength' | t }}
-                    </mat-error>
-                </mat-form-field>
+                    <!-- Password -->
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>{{ 'auth.login.password' | t }}</mat-label>
+                        <input matInput
+                               type="password"
+                               formControlName="password"
+                               autocomplete="current-password"
+                               [placeholder]="'auth.login.passwordPlaceholder' | t" />
+                        <mat-error *ngIf="password?.errors?.['required']">
+                            {{ 'auth.login.passwordRequired' | t }}
+                        </mat-error>
+                        <mat-error *ngIf="password?.errors?.['minlength']">
+                            {{ 'auth.login.passwordMinLength' | t }}
+                        </mat-error>
+                    </mat-form-field>
 
-                <!-- Forgot Password Link -->
-                <div class="forgot-password">
-                    <a href="#" class="link">
-                        {{ 'auth.login.forgotPassword' | t }}
+                    <!-- Forgot Password Link -->
+                    <div class="forgot-password">
+                        <a href="#" class="link">
+                            {{ 'auth.login.forgotPassword' | t }}
+                        </a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button mat-flat-button
+                            color="primary"
+                            type="submit"
+                            class="submit-button"
+                            [disabled]="isLoading || loginForm.invalid">
+                        <span *ngIf="!isLoading">
+                            {{ 'auth.login.signIn' | t }}
+                        </span>
+                        <span *ngIf="isLoading" class="loading-content">
+                            <mat-spinner diameter="20"></mat-spinner>
+                            <span>{{ 'auth.login.signingIn' | t }}</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Link -->
+            <div class="register-section">
+                <p class="register-text">
+                    {{ 'auth.login.noAccount' | t }}
+                    <a routerLink="/register" class="link">
+                        {{ 'auth.login.startTrial' | t }}
                     </a>
-                </div>
+                </p>
+            </div>
 
-                <!-- Submit Button -->
-                <button mat-flat-button
-                        color="primary"
-                        type="submit"
-                        class="submit-button"
-                        [disabled]="isLoading || loginForm.invalid">
-                    <span *ngIf="!isLoading">
-                        {{ 'auth.login.signIn' | t }}
-                    </span>
-                    <span *ngIf="isLoading" class="loading-content">
-                        <mat-spinner diameter="20"></mat-spinner>
-                        <span>{{ 'auth.login.signingIn' | t }}</span>
-                    </span>
-                </button>
-            </form>
+            <!-- Footer -->
+            <div class="footer">
+                <p class="footer-text">
+                    {{ 'footer.needHelp' | t }}
+                    <a href="#" class="link">{{ 'footer.contactSupport' | t }}</a>
+                </p>
+            </div>
         </div>
 
-        <!-- Register Link -->
-        <div class="register-section">
-            <p class="register-text">
-                {{ 'auth.login.noAccount' | t }}
-                <a routerLink="/register" class="link">
-                    {{ 'auth.login.startTrial' | t }}
-                </a>
-            </p>
-        </div>
+        <!-- Right Panel: Branding -->
+        <div class="login-right-panel">
+            <div class="header">
+                <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
+                    alt="Meribas" class="logo" />
 
-        <!-- Footer -->
-        <div class="footer">
-            <p class="footer-text">
-                {{ 'footer.needHelp' | t }}
-                <a href="#" class="link">{{ 'footer.contactSupport' | t }}</a>
-            </p>
+                <h1 class="title">
+                    {{ 'auth.login.title' | t }}
+                </h1>
+
+                <p class="subtitle">
+                    {{ 'auth.login.subtitle' | t }}
+                </p>
+            </div>
         </div>
     </div>
 </div>

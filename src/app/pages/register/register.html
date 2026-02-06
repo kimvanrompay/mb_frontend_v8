@@ -6,24 +6,8 @@
     <div class="glass-shape glass-shape-4"></div>
 
     <div class="register-content">
-
-        <!-- Header section (right side) -->
-        <div class="header">
-            <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                alt="Meribas" class="logo" />
-
-            <h1 class="title">
-                Start your <strong>free trial</strong>
-            </h1>
-
-            <p class="subtitle">
-                No credit card required
-            </p>
-        </div>
-
-        <!-- Form section (left side) -->
-        <div class="form-section">
-
+        <!-- Left Panel: Form & Actions -->
+        <div class="register-left-panel">
             <!-- Error Message -->
             <div *ngIf="errorMessage" class="error-container">
                 <p class="error-title">{{ errorMessage }}</p>
@@ -166,6 +150,22 @@
                 <p class="signin-text">
                     Already have an account?
                     <a routerLink="/login" class="link">Sign in</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Panel: Branding -->
+        <div class="register-right-panel">
+            <div class="header">
+                <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
+                    alt="Meribas" class="logo" />
+
+                <h1 class="title">
+                    Start your <strong>free trial</strong>
+                </h1>
+
+                <p class="subtitle">
+                    No credit card required
                 </p>
             </div>
         </div>
