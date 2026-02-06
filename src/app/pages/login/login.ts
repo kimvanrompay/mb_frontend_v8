@@ -10,6 +10,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../services/auth';
 import { NotificationService } from '../../services/notification';
 import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LanguageSwitcherComponent } from '../../components/language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LanguageSwitcherComponent
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',

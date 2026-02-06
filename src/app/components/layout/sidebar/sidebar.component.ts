@@ -5,6 +5,7 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../../../services/auth';
 
 type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
@@ -120,7 +121,7 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
               
               <div class="my-1 border-t border-[#E0E2E5]"></div>
               
-              <a href="javascript:void(0)" class="h-10 px-4 rounded-lg hover:bg-[#FFDAD6] text-[#410002] flex items-center gap-3 font-medium text-[14px] transition-colors no-underline">
+              <a href="javascript:void(0)" (click)="logout()" class="h-10 px-4 rounded-lg hover:bg-[#FFDAD6] text-[#410002] flex items-center gap-3 font-medium text-[14px] transition-colors no-underline">
                 <span class="material-icons text-[20px]">logout</span>
                 Log Out
               </a>
@@ -270,7 +271,10 @@ export class SidebarComponent implements OnInit {
   isDrawerOpen = false; // Default closed
   activeCategory: NavCategory = 'home';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.router.events.pipe(
@@ -279,6 +283,10 @@ export class SidebarComponent implements OnInit {
       this.syncCategoryWithRoute();
     });
     this.syncCategoryWithRoute();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   onMouseEnter() {

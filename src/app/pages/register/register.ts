@@ -11,6 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../services/auth';
 import { NotificationService } from '../../services/notification';
+import { LanguageSwitcherComponent } from '../../components/language-switcher/language-switcher.component';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,8 @@ import { NotificationService } from '../../services/notification';
     MatButtonModule,
     MatStepperModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LanguageSwitcherComponent
   ],
   templateUrl: './register.html',
   styleUrl: './register.css',
