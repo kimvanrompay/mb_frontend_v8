@@ -5,7 +5,8 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AuthService } from '../../../services/auth';
+import { Observable } from 'rxjs';
+import { AuthService, User } from '../../../services/auth';
 
 type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
@@ -20,13 +21,13 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
          (mouseleave)="onMouseLeave()">
       
       <!-- COLUMN 1: NAVIGATION RAIL (80px - Permanent) -->
-      <nav class="w-[80px] h-full flex flex-col items-center py-4 bg-[#FDFDFD] border-r border-[#E0E2E5] z-30 shrink-0 relative bg-white">
+      <nav class="w-[72px] h-full flex flex-col items-center py-4 bg-[#0F5132] border-r border-[#0B3D26] z-30 shrink-0 relative">
         
         <!-- Search Button (Top Action - HOVER CLOSES DRAWER) -->
         <a routerLink="/search" 
            (mouseenter)="onMouseLeave()"
-           class="w-12 h-12 rounded-[16px] bg-[#E8DEF8] hover:bg-[#D0BCFF] flex items-center justify-center mb-6 text-[#1D192B] transition-colors focus:outline-none cursor-pointer no-underline">
-          <span class="material-icons text-[24px]">search</span>
+           class="w-10 h-10 rounded-[12px] bg-white/10 hover:bg-white/20 flex items-center justify-center mb-6 text-white transition-colors focus:outline-none cursor-pointer no-underline">
+          <span class="material-icons text-[20px]">search</span>
         </a>
         
         <!-- Rail Items Container (HOVER OPENS DRAWER) -->
@@ -34,59 +35,55 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
         <button (mouseenter)="onHoverRailItem('home')" (click)="setActiveCategory('home')" 
            [class.active-rail-item]="activeCategory === 'home'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
-          <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
-               [ngClass]="activeCategory === 'home' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
-            <span class="material-icons text-[24px]"
-                  [ngClass]="activeCategory === 'home' ? 'text-[#052112]' : 'text-[#444746]'">dashboard</span>
+          <div class="w-12 h-7 rounded-[12px] flex items-center justify-center mb-1 transition-all"
+               [ngClass]="activeCategory === 'home' ? 'bg-white text-[#0F5132]' : 'group-hover:bg-white/10 text-white/70'">
+            <span class="material-icons text-[20px]">dashboard</span>
           </div>
-          <span class="text-[12px] font-medium"
-                [ngClass]="activeCategory === 'home' ? 'font-bold text-[#1C1B1F]' : 'text-[#444746]'">Home</span>
+          <span class="text-[10px] font-medium transition-colors"
+                [ngClass]="activeCategory === 'home' ? 'font-bold text-white' : 'text-white/70'">Home</span>
         </button>
 
         <!-- Rail Item: Hiring -->
         <button (mouseenter)="onHoverRailItem('hiring')" (click)="setActiveCategory('hiring')" 
            [class.active-rail-item]="activeCategory === 'hiring'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
-          <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
-               [ngClass]="activeCategory === 'hiring' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
-            <span class="material-icons text-[24px]"
-                  [ngClass]="activeCategory === 'hiring' ? 'text-[#052112]' : 'text-[#444746]'">work</span>
+          <div class="w-12 h-7 rounded-[12px] flex items-center justify-center mb-1 transition-all"
+               [ngClass]="activeCategory === 'hiring' ? 'bg-white text-[#0F5132]' : 'group-hover:bg-white/10 text-white/70'">
+            <span class="material-icons text-[20px]">work</span>
           </div>
-          <span class="text-[12px] font-medium"
-                [ngClass]="activeCategory === 'hiring' ? 'font-bold text-[#1C1B1F]' : 'text-[#444746]'">Hiring</span>
+          <span class="text-[10px] font-medium transition-colors"
+                [ngClass]="activeCategory === 'hiring' ? 'font-bold text-white' : 'text-white/70'">Hiring</span>
         </button>
 
         <!-- Rail Item: Library -->
         <button (mouseenter)="onHoverRailItem('library')" (click)="setActiveCategory('library')" 
            [class.active-rail-item]="activeCategory === 'library'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
-          <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
-               [ngClass]="activeCategory === 'library' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
-            <span class="material-icons text-[24px]"
-                  [ngClass]="activeCategory === 'library' ? 'text-[#052112]' : 'text-[#444746]'">library_books</span>
+          <div class="w-12 h-7 rounded-[12px] flex items-center justify-center mb-1 transition-all"
+               [ngClass]="activeCategory === 'library' ? 'bg-white text-[#0F5132]' : 'group-hover:bg-white/10 text-white/70'">
+            <span class="material-icons text-[20px]">library_books</span>
           </div>
-          <span class="text-[12px] font-medium"
-                [ngClass]="activeCategory === 'library' ? 'font-bold text-[#1C1B1F]' : 'text-[#444746]'">Library</span>
+          <span class="text-[10px] font-medium transition-colors"
+                [ngClass]="activeCategory === 'library' ? 'font-bold text-white' : 'text-white/70'">Library</span>
         </button>
         
         <!-- Rail Item: Admin -->
         <button (mouseenter)="onHoverRailItem('admin')" (click)="setActiveCategory('admin')" 
            [class.active-rail-item]="activeCategory === 'admin'"
            class="flex flex-col items-center gap-1 mb-6 group w-full focus:outline-none cursor-pointer">
-          <div class="w-14 h-8 rounded-[16px] flex items-center justify-center mb-1 transition-all"
-               [ngClass]="activeCategory === 'admin' ? 'bg-[#C4F5DA]' : 'group-hover:bg-[#E0E2E5]'">
-            <span class="material-icons text-[24px]"
-                  [ngClass]="activeCategory === 'admin' ? 'text-[#052112]' : 'text-[#444746]'">settings</span>
+          <div class="w-12 h-7 rounded-[12px] flex items-center justify-center mb-1 transition-all"
+               [ngClass]="activeCategory === 'admin' ? 'bg-white text-[#0F5132]' : 'group-hover:bg-white/10 text-white/70'">
+            <span class="material-icons text-[20px]">settings</span>
           </div>
-          <span class="text-[12px] font-medium"
-                [ngClass]="activeCategory === 'admin' ? 'font-bold text-[#1C1B1F]' : 'text-[#444746]'">Admin</span>
+          <span class="text-[10px] font-medium transition-colors"
+                [ngClass]="activeCategory === 'admin' ? 'font-bold text-white' : 'text-white/70'">Admin</span>
         </button>
 
         </div>
 
         <!-- USER ANCHOR (The "CEO" Position) -->
         <div class="mt-auto mb-4 w-full flex justify-center relative group">
-          <button class="w-12 h-12 rounded-full overflow-hidden border-2 border-transparent hover:border-[#D1FAE5] transition-all focus:outline-none cursor-pointer" id="user-menu-trigger">
+          <button class="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20 hover:border-white transition-all focus:outline-none cursor-pointer" id="user-menu-trigger">
             <img src="https://i.pravatar.cc/150?u=alice" alt="Profile" class="w-full h-full object-cover">
           </button>
 
@@ -94,16 +91,16 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
           <div class="absolute left-[70px] bottom-0 w-[280px] bg-[#FDFDFD] rounded-[16px] shadow-lg border border-[#E0E2E5] flex flex-col overflow-hidden opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 origin-bottom-left">
             
             <!-- Header with Metadata -->
-            <div class="px-4 py-4 bg-[#F3F4F6] border-b border-[#E0E2E5]">
-              <div class="text-[14px] font-bold text-[#1C1B1F]">Alice Anderson</div>
-              <div class="text-[11px] text-[#444746] mt-1">alice@meribas.com</div>
+            <div class="px-4 py-4 bg-[#F3F4F6] border-b border-[#E0E2E5]" *ngIf="user$ | async as user">
+              <div class="text-[14px] font-bold text-[#1C1B1F]">{{ user.full_name || user.first_name + ' ' + user.last_name }}</div>
+              <div class="text-[11px] text-[#444746] mt-1">{{ user.email }}</div>
               
               <div class="mt-3 flex flex-col gap-1">
                  <div class="flex justify-between text-[10px] uppercase tracking-wider text-[#444746] font-bold">
-                   <span>User ID:</span> <span class="font-mono">USR-998</span>
+                   <span>User ID:</span> <span class="font-mono">{{ user.id }}</span>
                  </div>
                  <div class="flex justify-between text-[10px] uppercase tracking-wider text-[#444746] font-bold">
-                   <span>Tenant:</span> <span class="font-mono">TNT-EU1</span>
+                   <span>Tenant:</span> <span class="font-mono">{{ user.tenant.name }}</span>
                  </div>
               </div>
             </div>
@@ -131,31 +128,29 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
       </nav>
 
       <!-- COLUMN 2: CONTEXTUAL DRAWER (Absolute Overlay) -->
-      <!-- Positioned absolute left-80px so it floats OVER main content instead of pushing it -->
-      <aside class="absolute left-[80px] top-0 h-full bg-[#F3F4F6] border-r border-[#E0E2E5] shadow-2xl z-20 overflow-hidden transition-all duration-300 ease-in-out"
-             [style.width.px]="isDrawerOpen ? 280 : 0"
+      <!-- Positioned absolute left-72px so it floats OVER main content instead of pushing it -->
+      <aside class="absolute left-[72px] top-0 h-full bg-white border-r border-[#E0E2E5] shadow-2xl z-20 overflow-hidden transition-all duration-300 ease-in-out"
+             [style.width.px]="isDrawerOpen ? 240 : 0"
              [style.opacity]="isDrawerOpen ? 1 : 0">
         
-        <div class="w-[280px] h-full flex flex-col p-4"> <!-- Fixed width container -->
+        <div class="w-[240px] h-full flex flex-col p-3"> <!-- Fixed width container -->
 
             <!-- DYNAMIC CONTENT SWITCHER -->
             <ng-container [ngSwitch]="activeCategory">
                 <!-- ... content remains the same ... -->
                 <!-- 1. HOME CATEGORY -->
                 <ng-container *ngSwitchCase="'home'">
-                    <div class="h-16 flex items-center px-4 mb-2">
-                        <span class="text-[22px] font-normal text-[#1C1B1F]">Home</span>
+                    <div class="h-12 flex items-center px-3 mb-1">
+                        <span class="text-[18px] font-medium text-[#1C1B1F]">Home</span>
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
                         <a routerLink="/dashboard" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold" [routerLinkActiveOptions]="{exact: true}"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">dashboard</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Dashboard</span>
                         </a>
                          <a routerLink="/notifications" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">notifications</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Notifications</span>
                         </a>
                     </nav>
@@ -163,33 +158,30 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
                 <!-- 2. HIRING CATEGORY -->
                 <ng-container *ngSwitchCase="'hiring'">
-                    <div class="h-16 flex items-center px-4 mb-2">
-                        <span class="text-[22px] font-normal text-[#1C1B1F]">Hiring</span>
+                    <div class="h-12 flex items-center px-3 mb-1">
+                        <span class="text-[18px] font-medium text-[#1C1B1F]">Hiring</span>
                     </div>
 
-                    <button class="h-14 w-full mb-6 rounded-[16px] bg-[#D1FAE5] hover:bg-[#A7F3D0] text-[#064E3B] font-semibold text-[14px] flex items-center justify-center gap-2 shadow-sm transition-all">
-                        <span class="material-icons text-[20px]">add</span>
+                    <button class="h-10 w-full mb-4 rounded-[12px] bg-[#D1FAE5] hover:bg-[#A7F3D0] text-[#064E3B] font-semibold text-[13px] flex items-center justify-center gap-2 shadow-sm transition-all">
+                        <span class="material-icons text-[18px]">add</span>
                         <span>New Position</span>
                     </button>
 
                     <nav class="flex-1 flex flex-col gap-1">
-                        <div class="px-4 py-3 text-[11px] font-bold text-[#444746] uppercase tracking-wider">Management</div>
+                        <div class="px-4 py-2 text-[10px] font-bold text-[#444746] uppercase tracking-wider">Management</div>
                         
                         <a routerLink="/jobs" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">work</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Positions</span>
                         </a>
                         
                         <a routerLink="/candidates" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">people</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Candidates</span>
                         </a>
 
                         <a routerLink="/invitations" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">mail</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Invitations</span>
                         </a>
                     </nav>
@@ -197,26 +189,23 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
                 <!-- 3. LIBRARY CATEGORY -->
                 <ng-container *ngSwitchCase="'library'">
-                     <div class="h-16 flex items-center px-4 mb-2">
-                        <span class="text-[22px] font-normal text-[#1C1B1F]">Library</span>
+                     <div class="h-12 flex items-center px-3 mb-1">
+                        <span class="text-[18px] font-medium text-[#1C1B1F]">Library</span>
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
                         <a routerLink="/applications" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">assignment</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Assessments</span>
                         </a>
                         
                         <a routerLink="/environment" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">science</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Test Library</span>
                         </a>
 
                          <a routerLink="/deployments" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">calendar_month</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Interview Scheduler</span>
                         </a>
                     </nav>
@@ -224,24 +213,21 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 
                 <!-- 4. ADMIN CATEGORY -->
                 <ng-container *ngSwitchCase="'admin'">
-                     <div class="h-16 flex items-center px-4 mb-2">
-                        <span class="text-[22px] font-normal text-[#1C1B1F]">Admin</span>
+                     <div class="h-12 flex items-center px-3 mb-1">
+                        <span class="text-[18px] font-medium text-[#1C1B1F]">Admin</span>
                     </div>
 
                     <nav class="flex-1 flex flex-col gap-1">
                          <a routerLink="/settings" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">settings</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Settings</span>
                         </a>
                          <a routerLink="/team" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">groups</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Team & Users</span>
                         </a>
                          <a routerLink="/billing" routerLinkActive="bg-[#E8DEF8] text-[#1D192B] font-bold"
-                           class="h-[56px] px-6 rounded-full hover:bg-[#E0E2E5] flex items-center gap-3 text-[#444746] font-medium text-[14px] transition-colors">
-                            <span class="material-icons text-[20px]">credit_card</span>
+                           class="h-[40px] px-4 rounded-full hover:bg-[#F3F4F6] flex items-center gap-3 text-[#444746] font-medium text-[13px] transition-colors">
                             <span>Billing</span>
                         </a>
                     </nav>
@@ -270,11 +256,14 @@ type NavCategory = 'home' | 'hiring' | 'library' | 'admin';
 export class SidebarComponent implements OnInit {
   isDrawerOpen = false; // Default closed
   activeCategory: NavCategory = 'home';
+  user$: Observable<User | null>;
 
   constructor(
     private router: Router,
     private authService: AuthService
-  ) {}
+  ) {
+    this.user$ = this.authService.currentUser$;
+  }
 
   ngOnInit() {
     this.router.events.pipe(
