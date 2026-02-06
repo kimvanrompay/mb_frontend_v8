@@ -4,6 +4,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { AuthService } from './services/auth';
 import { I18nService } from './services/i18n.service';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { languageInterceptor } from './interceptors/language.interceptor';
 
 import { routes } from './app.routes';
 
@@ -36,7 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptor])
+      withInterceptors([authInterceptor, languageInterceptor])
     ),
     {
       provide: APP_INITIALIZER,

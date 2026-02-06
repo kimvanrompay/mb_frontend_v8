@@ -5,7 +5,6 @@ import { I18nService } from '../../services/i18n.service';
 interface Language {
   code: string;
   name: string;
-  flag: string;
 }
 
 @Component({
@@ -14,62 +13,67 @@ interface Language {
   imports: [CommonModule],
   template: `
     <div class="language-switcher">
-      <button
-        *ngFor="let lang of languages"
-        (click)="switchLanguage(lang.code)"
-        [class.active]="currentLanguage === lang.code"
-        class="lang-button"
-        [attr.aria-label]="'Switch to ' + lang.name">
-        {{ lang.flag }} {{ lang.name }}
-      </button>
+      <select 
+        [value]="currentLanguage" 
+        (change)="onLanguageChange($event)"
+        class="lang-select"
+        aria-label="Select language">
+        <option *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.name }}
+        </option>
+      </select>
+      <span class="material-icons arrow-icon">expand_more</span>
     </div>
   `,
   styles: [`
     .language-switcher {
-      display: flex;
-      gap: 8px;
+      position: relative;
+      display: inline-flex;
       align-items: center;
-      flex-wrap: wrap;
     }
 
-    .lang-button {
-      background: none;
-      border: none;
-      padding: 4px 8px;
-      font-size: 12px;
+    .lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      padding: 6px 28px 6px 12px;
+      font-size: 13px;
       color: var(--mat-sys-on-surface-variant);
       cursor: pointer;
-      border-radius: 4px;
-      transition: all 0.2s ease;
       font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      outline: none;
+      transition: all 0.2s ease;
+      min-width: 80px;
     }
 
-    .lang-button:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+    .lang-select:hover {
+      border-color: var(--mat-sys-primary);
       color: var(--mat-sys-on-surface);
     }
 
-    .lang-button.active {
-      color: var(--mat-sys-primary);
-      font-weight: 500;
+    .lang-select:focus {
+      border-color: var(--mat-sys-primary);
+      box-shadow: 0 0 0 2px rgba(15, 81, 50, 0.1);
     }
 
-    .lang-button:focus {
-      outline: 2px solid var(--mat-sys-primary);
-      outline-offset: 2px;
+    .arrow-icon {
+      position: absolute;
+      right: 8px;
+      pointer-events: none;
+      font-size: 18px;
+      color: var(--mat-sys-on-surface-variant);
     }
   `]
 })
 export class LanguageSwitcherComponent {
   languages: Language[] = [
-    { code: 'en', name: 'EN', flag: '🇬🇧' },
-    { code: 'nl', name: 'NL', flag: '🇳🇱' },
-    { code: 'fr', name: 'FR', flag: '🇫🇷' },
-    { code: 'de', name: 'DE', flag: '🇩🇪' },
-    { code: 'es', name: 'ES', flag: '🇪🇸' }
+    { code: 'en', name: 'English' },
+    { code: 'nl', name: 'Nederlands' },
+    { code: 'fr', name: 'Français' },
+    { code: 'de', name: 'Deutsch' },
+    { code: 'es', name: 'Español' }
   ];
 
   currentLanguage: string;
@@ -78,7 +82,9 @@ export class LanguageSwitcherComponent {
     this.currentLanguage = this.i18nService.getCurrentLanguage();
   }
 
-  switchLanguage(langCode: string) {
+  onLanguageChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const langCode = select.value;
     this.i18nService.setLanguage(langCode);
     this.currentLanguage = langCode;
   }
