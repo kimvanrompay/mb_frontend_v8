@@ -143,17 +143,20 @@
 }
 
 /* Form section (left side) */
-.form-card {
+.form-container {
   order: 1;
-  max-width: 450px;
+  max-width: 420px;
+  width: 100%;
 }
 
-.error-card {
+.error-container {
   order: 1;
-  max-width: 450px;
-  margin-bottom: 16px;
+  max-width: 420px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
   background-color: var(--mat-sys-error-container);
   color: var(--mat-sys-on-error-container);
+  border-radius: 12px;
 }
 
 .error-title {
@@ -177,17 +180,21 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
 }
 
 .full-width {
   width: 100%;
 }
 
+.full-width .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 4px;
+}
+
 .forgot-password {
   display: flex;
   justify-content: flex-end;
-  margin-top: -12px;
+  margin: 8px 0 16px 0;
 }
 
 .link {
@@ -195,6 +202,7 @@
   text-decoration: none;
   font: var(--mat-sys-label-large);
   transition: color 0.2s ease;
+  font-size: 14px;
 }
 
 .link:hover {
@@ -204,9 +212,13 @@
 
 .submit-button {
   width: 100%;
-  height: 48px;
+  height: 52px;
   margin-top: 8px;
   font: var(--mat-sys-label-large);
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
 }
 
 .loading-content {
@@ -219,10 +231,10 @@
 /* Register section */
 .register-section {
   order: 1;
-  max-width: 450px;
-  margin-top: 24px;
+  max-width: 420px;
+  margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid var(--mat-sys-outline-variant);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .register-text {
@@ -230,13 +242,14 @@
   color: var(--mat-sys-on-surface-variant);
   margin: 0;
   text-align: center;
+  font-size: 14px;
 }
 
 /* Footer */
 .footer {
   order: 1;
-  max-width: 450px;
-  margin-top: 32px;
+  max-width: 420px;
+  margin-top: 40px;
 }
 
 .footer-text {
@@ -244,6 +257,7 @@
   color: var(--mat-sys-on-surface-variant);
   margin: 0;
   text-align: center;
+  font-size: 13px;
 }
 
 /* Responsive design */
@@ -251,7 +265,7 @@
   .login-content {
     grid-template-columns: 1fr;
     gap: 48px;
-    max-width: 450px;
+    max-width: 420px;
   }
 
   .header {
@@ -260,8 +274,8 @@
     text-align: center;
   }
 
-  .form-card,
-  .error-card,
+  .form-container,
+  .error-container,
   .register-section,
   .footer {
     order: 2;
