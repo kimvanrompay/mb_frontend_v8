@@ -1,109 +1,111 @@
-<div class="fixed inset-0 bg-white flex items-center justify-center px-6 overflow-hidden">
+<div class="login-container">
     <!-- Glassmorphic Animated Shapes -->
     <div class="glass-shape glass-shape-1"></div>
     <div class="glass-shape glass-shape-2"></div>
     <div class="glass-shape glass-shape-3"></div>
     <div class="glass-shape glass-shape-4"></div>
 
-    <div class="w-full max-w-md relative z-10">
-
+    <div class="login-content">
         <!-- Logo & Header -->
-        <div class="text-center mb-12">
+        <div class="header">
             <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                alt="Meribas" class="mx-auto h-8 w-auto mb-12 opacity-90" />
+                alt="Meribas" class="logo" />
 
-            <h1 class="text-5xl font-light text-black mb-3 leading-tight">
+            <h1 class="title">
                 {{ 'auth.login.title' | t }}
             </h1>
 
-            <p class="text-lg text-gray-500 font-light">
+            <p class="subtitle">
                 {{ 'auth.login.subtitle' | t }}
             </p>
         </div>
 
         <!-- Error Message -->
-        <div *ngIf="errorMessage" class="mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-            <p class="text-sm font-medium text-red-900">{{ errorMessage }}</p>
-            <ul *ngIf="errors.length > 0" class="mt-2 text-sm text-red-700 space-y-1">
-                <li *ngFor="let error of errors">{{ error }}</li>
-            </ul>
-        </div>
+        <mat-card *ngIf="errorMessage" class="error-card">
+            <mat-card-content>
+                <p class="error-title">{{ errorMessage }}</p>
+                <ul *ngIf="errors.length > 0" class="error-list">
+                    <li *ngFor="let error of errors">{{ error }}</li>
+                </ul>
+            </mat-card-content>
+        </mat-card>
 
-        <!-- Form -->
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Form Card -->
+        <mat-card class="form-card">
+            <mat-card-content>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+                    <!-- Email -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>{{ 'auth.login.email' | t }}</mat-label>
+                        <input matInput
+                               type="email"
+                               formControlName="email"
+                               autocomplete="email"
+                               [placeholder]="'auth.login.emailPlaceholder' | t" />
+                        <mat-error *ngIf="email?.errors?.['required']">
+                            {{ 'auth.login.emailRequired' | t }}
+                        </mat-error>
+                        <mat-error *ngIf="email?.errors?.['email']">
+                            {{ 'auth.login.emailInvalid' | t }}
+                        </mat-error>
+                    </mat-form-field>
 
-            <!-- Email -->
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-900 mb-2">
-                    {{ 'auth.login.email' | t }}
-                </label>
-                <input id="email" type="email" formControlName="email" required autocomplete="email"
-                    [placeholder]="'auth.login.emailPlaceholder' | t" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
-                        focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
-                        placeholder:text-gray-400 transition-all"
-                    [class.border-red-500]="email?.invalid && email?.touched" />
-                <p *ngIf="email?.invalid && email?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="email?.errors?.['required']">{{ 'auth.login.emailRequired' | t }}</span>
-                    <span *ngIf="email?.errors?.['email']">{{ 'auth.login.emailInvalid' | t }}</span>
-                </p>
-            </div>
+                    <!-- Password -->
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>{{ 'auth.login.password' | t }}</mat-label>
+                        <input matInput
+                               type="password"
+                               formControlName="password"
+                               autocomplete="current-password"
+                               [placeholder]="'auth.login.passwordPlaceholder' | t" />
+                        <mat-error *ngIf="password?.errors?.['required']">
+                            {{ 'auth.login.passwordRequired' | t }}
+                        </mat-error>
+                        <mat-error *ngIf="password?.errors?.['minlength']">
+                            {{ 'auth.login.passwordMinLength' | t }}
+                        </mat-error>
+                    </mat-form-field>
 
-            <!-- Password -->
-            <div>
-                <div class="flex items-center justify-between mb-2">
-                    <label for="password" class="block text-sm font-medium text-gray-900">
-                        {{ 'auth.login.password' | t }}
-                    </label>
-                    <a href="#" class="text-sm text-gray-600 hover:text-black transition-colors">
-                        {{ 'auth.login.forgotPassword' | t }}
-                    </a>
-                </div>
-                <input id="password" type="password" formControlName="password" required autocomplete="current-password"
-                    [placeholder]="'auth.login.passwordPlaceholder' | t" class="block w-full px-4 py-3 text-base text-black bg-white border border-gray-300 rounded-lg 
-                        focus:outline-none focus:border-black focus:ring-1 focus:ring-black 
-                        placeholder:text-gray-400 transition-all"
-                    [class.border-red-500]="password?.invalid && password?.touched" />
-                <p *ngIf="password?.invalid && password?.touched" class="mt-2 text-sm text-red-600">
-                    <span *ngIf="password?.errors?.['required']">{{ 'auth.login.passwordRequired' | t }}</span>
-                    <span *ngIf="password?.errors?.['minlength']">{{ 'auth.login.passwordMinLength' | t }}</span>
-                </p>
-            </div>
+                    <!-- Forgot Password Link -->
+                    <div class="forgot-password">
+                        <a href="#" class="link">
+                            {{ 'auth.login.forgotPassword' | t }}
+                        </a>
+                    </div>
 
-            <!-- Submit Button -->
-            <div class="pt-4">
-                <button type="submit" [disabled]="isLoading || loginForm.invalid" class="w-full px-6 py-3 text-base font-medium text-white bg-black rounded-lg 
-                        hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 
-                        disabled:bg-gray-300 disabled:cursor-not-allowed transition-all">
-                    <span *ngIf="!isLoading">{{ 'auth.login.signIn' | t }} →</span>
-                    <span *ngIf="isLoading" class="flex items-center justify-center space-x-2">
-                        <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
-                        <span>{{ 'auth.login.signingIn' | t }}</span>
-                    </span>
-                </button>
-            </div>
-        </form>
+                    <!-- Submit Button -->
+                    <button mat-raised-button
+                            color="primary"
+                            type="submit"
+                            class="submit-button"
+                            [disabled]="isLoading || loginForm.invalid">
+                        <span *ngIf="!isLoading">
+                            {{ 'auth.login.signIn' | t }}
+                        </span>
+                        <span *ngIf="isLoading" class="loading-content">
+                            <mat-spinner diameter="20"></mat-spinner>
+                            <span>{{ 'auth.login.signingIn' | t }}</span>
+                        </span>
+                    </button>
+                </form>
+            </mat-card-content>
+        </mat-card>
 
         <!-- Register Link -->
-        <div class="mt-8 pt-8 border-t border-gray-200 text-center">
-            <p class="text-sm text-gray-600">
+        <div class="register-section">
+            <p class="register-text">
                 {{ 'auth.login.noAccount' | t }}
-                <a routerLink="/register" class="text-black font-medium hover:underline transition-colors">
+                <a routerLink="/register" class="link">
                     {{ 'auth.login.startTrial' | t }}
                 </a>
             </p>
         </div>
 
         <!-- Footer -->
-        <div class="mt-12 text-center">
-            <p class="text-xs text-gray-500">
+        <div class="footer">
+            <p class="footer-text">
                 {{ 'footer.needHelp' | t }}
-                <a href="#" class="text-black hover:underline transition-colors">{{ 'footer.contactSupport' | t }}</a>
+                <a href="#" class="link">{{ 'footer.contactSupport' | t }}</a>
             </p>
         </div>
     </div>

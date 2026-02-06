@@ -2,21 +2,40 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../services/auth';
 import { NotificationService } from '../../services/notification';
 
 @Component({
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatStepperModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule
+  ],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class RegisterComponent {
-  registerForm: FormGroup;
+  // Separate form groups for stepper
+  companyForm: FormGroup;
+  personalForm: FormGroup;
   isLoading = false;
   errorMessage = '';
   errors: string[] = [];
-  currentStep = 1; // Track current step (1 or 2)
 
   constructor(
     private fb: FormBuilder,
@@ -25,14 +44,19 @@ export class RegisterComponent {
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef
   ) {
-    this.registerForm = this.fb.group({
+    // Step 1: Company information
+    this.companyForm = this.fb.group({
       tenant_name: ['', [Validators.required]],
       tenant_subdomain: ['', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30),
         Validators.pattern(/^[a-z0-9-]+$/)
-      ]],
+      ]]
+    });
+
+    // Step 2: Personal information
+    this.personalForm = this.fb.group({
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -59,12 +83,13 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.errors = [];
 
-    // Validate form
-    if (this.registerForm.invalid) {
-      this.markFormGroupTouched(this.registerForm);
+    // Validate both forms
+    if (this.companyForm.invalid || this.personalForm.invalid) {
+      this.markFormGroupTouched(this.companyForm);
+      this.markFormGroupTouched(this.personalForm);
 
       // Check for password mismatch specifically
-      if (this.registerForm.errors?.['passwordMismatch']) {
+      if (this.personalForm.errors?.['passwordMismatch']) {
         this.errorMessage = 'Password Mismatch';
         this.errors = ['The passwords you entered do not match. Please make sure both password fields are identical.'];
         this.notificationService.error(
@@ -85,7 +110,13 @@ export class RegisterComponent {
     this.isLoading = true;
     this.cdr.detectChanges(); // Force update loading state
 
-    this.authService.register(this.registerForm.value).subscribe({
+    // Combine both form values
+    const registerData = {
+      ...this.companyForm.value,
+      ...this.personalForm.value
+    };
+
+    this.authService.register(registerData).subscribe({
       next: (response) => {
         this.errorMessage = '';
         this.errors = [];
@@ -134,55 +165,6 @@ export class RegisterComponent {
         console.error('Registration error:', error, authError);
       }
     });
-  }
-
-  /**
-   * Move to next step
-   */
-  nextStep(): void {
-    // Clear errors
-    this.errorMessage = '';
-    this.errors = [];
-    this.notificationService.clear();
-
-    // Validate step 1 fields
-    if (this.currentStep === 1) {
-      const step1Fields = ['tenant_name', 'tenant_subdomain'];
-      let isValid = true;
-
-      step1Fields.forEach(field => {
-        const control = this.registerForm.get(field);
-        control?.markAsTouched();
-        if (control?.invalid) {
-          isValid = false;
-        }
-      });
-
-      if (!isValid) {
-        this.errorMessage = 'Please complete all fields';
-        this.errors = ['Please fill in your company name and choose a workspace URL.'];
-        this.notificationService.error(
-          'Please fill in your company name and choose a workspace URL.',
-          'Please complete all fields'
-        );
-        return;
-      }
-
-      this.currentStep = 2;
-    }
-  }
-
-  /**
-   * Move to previous step
-   */
-  previousStep(): void {
-    this.errorMessage = '';
-    this.errors = [];
-    this.notificationService.clear();
-
-    if (this.currentStep > 1) {
-      this.currentStep = 1;
-    }
   }
 
   /**
@@ -239,34 +221,34 @@ export class RegisterComponent {
   }
 
   get tenant_name() {
-    return this.registerForm.get('tenant_name');
+    return this.companyForm.get('tenant_name');
   }
 
   get tenant_subdomain() {
-    return this.registerForm.get('tenant_subdomain');
+    return this.companyForm.get('tenant_subdomain');
   }
 
   get first_name() {
-    return this.registerForm.get('first_name');
+    return this.personalForm.get('first_name');
   }
 
   get last_name() {
-    return this.registerForm.get('last_name');
+    return this.personalForm.get('last_name');
   }
 
   get email() {
-    return this.registerForm.get('email');
+    return this.personalForm.get('email');
   }
 
   get password() {
-    return this.registerForm.get('password');
+    return this.personalForm.get('password');
   }
 
   get password_confirmation() {
-    return this.registerForm.get('password_confirmation');
+    return this.personalForm.get('password_confirmation');
   }
 
   get termsAgreed() {
-    return this.registerForm.get('termsAgreed');
+    return this.personalForm.get('termsAgreed');
   }
 }

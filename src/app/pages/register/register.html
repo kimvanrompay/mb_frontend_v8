@@ -1,175 +1,175 @@
-<div class="fixed inset-0 bg-white overflow-y-auto overflow-x-hidden">
+<div class="register-container">
     <!-- Glassmorphic Animated Shapes -->
     <div class="glass-shape glass-shape-1"></div>
     <div class="glass-shape glass-shape-2"></div>
     <div class="glass-shape glass-shape-3"></div>
     <div class="glass-shape glass-shape-4"></div>
 
-    <div class="min-h-full flex items-center justify-center px-6 py-12 relative z-10">
-        <div class="w-full max-w-md">
+    <div class="register-content">
 
-            <!-- Logo & Header -->
-            <div class="text-center mb-12">
-                <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
-                    alt="Meribas" class="mx-auto h-8 w-auto mb-12 opacity-90" />
+        <!-- Header section (right side) -->
+        <div class="header">
+            <img src="https://res.cloudinary.com/dg0qxqj4a/image/upload/v1768848576/Boat_Logo_Black_na90ec.png"
+                alt="Meribas" class="logo" />
 
-                <h1 class="text-4xl font-light text-black mb-3">
-                    Start your <span class="font-medium">free trial</span>
-                </h1>
+            <h1 class="title">
+                Start your <strong>free trial</strong>
+            </h1>
 
-                <p class="text-sm text-gray-500">
-                    No credit card required
-                </p>
-            </div>
+            <p class="subtitle">
+                No credit card required
+            </p>
+        </div>
 
-            <!-- Minimal Step Indicator -->
-            <div class="flex items-center justify-center mb-8 space-x-2">
-                <div [class]="currentStep === 1 ? 'w-8 h-1 bg-black rounded-full' : 'w-8 h-1 bg-gray-300 rounded-full'">
-                </div>
-                <div [class]="currentStep === 2 ? 'w-8 h-1 bg-black rounded-full' : 'w-8 h-1 bg-gray-300 rounded-full'">
-                </div>
-            </div>
+        <!-- Form section (left side) -->
+        <div class="form-section">
 
             <!-- Error Message -->
-            <div *ngIf="errorMessage" class="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg">
-                <p class="text-sm text-red-900">{{ errorMessage }}</p>
-                <ul *ngIf="errors.length > 0" class="mt-1 text-xs text-red-700 space-y-1">
-                    <li *ngFor="let error of errors">{{ error }}</li>
-                </ul>
-            </div>
+            <mat-card *ngIf="errorMessage" class="error-card">
+                <mat-card-content>
+                    <p class="error-title">{{ errorMessage }}</p>
+                    <ul *ngIf="errors.length > 0" class="error-list">
+                        <li *ngFor="let error of errors">{{ error }}</li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
 
-            <!-- Form -->
-            <form [formGroup]="registerForm" class="space-y-5">
+            <!-- Stepper Form -->
+            <mat-card class="form-card">
+                <mat-card-content>
+                    <mat-stepper linear #stepper>
+                        <!-- Step 1: Company Information -->
+                        <mat-step [stepControl]="companyForm">
+                            <form [formGroup]="companyForm">
+                                <ng-template matStepLabel>Company</ng-template>
 
-                <!-- STEP 1 -->
-                <div *ngIf="currentStep === 1" class="space-y-5">
-                    <!-- Company Name -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-2">
-                            Company name
-                        </label>
-                        <input type="text" formControlName="tenant_name" placeholder="Acme Corporation"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                            [class.border-red-500]="tenant_name?.invalid && tenant_name?.touched" />
-                        <p *ngIf="tenant_name?.invalid && tenant_name?.touched" class="mt-1 text-xs text-red-600">
-                            Required
-                        </p>
-                    </div>
+                                <div class="step-content">
+                                    <!-- Company Name -->
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Company name</mat-label>
+                                        <input matInput formControlName="tenant_name" placeholder="Acme Corporation" />
+                                        <mat-error *ngIf="tenant_name?.errors?.['required']">
+                                            Required
+                                        </mat-error>
+                                    </mat-form-field>
 
-                    <!-- Subdomain -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-2">
-                            Workspace URL
-                        </label>
-                        <div class="flex">
-                            <input type="text" formControlName="tenant_subdomain" placeholder="acme"
-                                class="flex-1 px-3 py-2.5 text-sm border border-gray-300 rounded-l-lg focus:outline-none focus:border-black transition-colors"
-                                [class.border-red-500]="tenant_subdomain?.invalid && tenant_subdomain?.touched" />
-                            <span
-                                class="inline-flex items-center px-3 text-sm text-gray-600 bg-gray-50 border border-l-0 border-gray-300 rounded-r-lg">
-                                .meribas.app
-                            </span>
-                        </div>
-                        <p *ngIf="tenant_subdomain?.invalid && tenant_subdomain?.touched"
-                            class="mt-1 text-xs text-red-600">
-                            <span *ngIf="tenant_subdomain?.errors?.['required']">Required</span>
-                            <span *ngIf="tenant_subdomain?.errors?.['pattern']">Letters, numbers, hyphens only</span>
-                            <span
-                                *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">3-30
-                                characters</span>
-                        </p>
-                    </div>
+                                    <!-- Subdomain -->
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Workspace URL</mat-label>
+                                        <input matInput formControlName="tenant_subdomain" placeholder="acme" />
+                                        <span matTextSuffix>.meribas.app</span>
+                                        <mat-error *ngIf="tenant_subdomain?.errors?.['required']">
+                                            Required
+                                        </mat-error>
+                                        <mat-error *ngIf="tenant_subdomain?.errors?.['pattern']">
+                                            Letters, numbers, hyphens only
+                                        </mat-error>
+                                        <mat-error *ngIf="tenant_subdomain?.errors?.['minlength'] || tenant_subdomain?.errors?.['maxlength']">
+                                            3-30 characters required
+                                        </mat-error>
+                                    </mat-form-field>
 
-                    <!-- Next Button -->
-                    <button type="button" (click)="nextStep()"
-                        class="w-full px-6 py-2.5 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 transition-colors mt-6">
-                        Continue
-                    </button>
-                </div>
+                                    <!-- Next Button -->
+                                    <div class="button-group">
+                                        <button mat-raised-button color="primary" matStepperNext class="next-button">
+                                            Continue
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-step>
 
-                <!-- STEP 2 -->
-                <div *ngIf="currentStep === 2" class="space-y-5">
-                    <!-- Name Fields -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-2">First name</label>
-                            <input type="text" formControlName="first_name" placeholder="John"
-                                class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                                [class.border-red-500]="first_name?.invalid && first_name?.touched" />
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-2">Last name</label>
-                            <input type="text" formControlName="last_name" placeholder="Doe"
-                                class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                                [class.border-red-500]="last_name?.invalid && last_name?.touched" />
-                        </div>
-                    </div>
+                        <!-- Step 2: Personal Information -->
+                        <mat-step [stepControl]="personalForm">
+                            <form [formGroup]="personalForm">
+                                <ng-template matStepLabel>Personal</ng-template>
+                                <div class="step-content">
+                                    <!-- Name Fields -->
+                                    <div class="name-fields">
+                                        <mat-form-field appearance="outline" class="half-width">
+                                            <mat-label>First name</mat-label>
+                                            <input matInput formControlName="first_name" placeholder="John" />
+                                            <mat-error *ngIf="first_name?.errors?.['required']">
+                                                Required
+                                            </mat-error>
+                                        </mat-form-field>
 
-                    <!-- Email -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" formControlName="email" placeholder="you@example.com"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                            [class.border-red-500]="email?.invalid && email?.touched" />
-                        <p *ngIf="email?.invalid && email?.touched" class="mt-1 text-xs text-red-600">
-                            <span *ngIf="email?.errors?.['required']">Required</span>
-                            <span *ngIf="email?.errors?.['email']">Invalid email</span>
-                        </p>
-                    </div>
+                                        <mat-form-field appearance="outline" class="half-width">
+                                            <mat-label>Last name</mat-label>
+                                            <input matInput formControlName="last_name" placeholder="Doe" />
+                                            <mat-error *ngIf="last_name?.errors?.['required']">
+                                                Required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
 
-                    <!-- Password -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" formControlName="password" placeholder="At least 6 characters"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                            [class.border-red-500]="password?.invalid && password?.touched" />
-                        <p *ngIf="password?.invalid && password?.touched" class="mt-1 text-xs text-red-600">
-                            <span *ngIf="password?.errors?.['minlength']">Min 6 characters</span>
-                        </p>
-                    </div>
+                                    <!-- Email -->
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput type="email" formControlName="email" placeholder="you@example.com" />
+                                        <mat-error *ngIf="email?.errors?.['required']">
+                                            Required
+                                        </mat-error>
+                                        <mat-error *ngIf="email?.errors?.['email']">
+                                            Invalid email
+                                        </mat-error>
+                                    </mat-form-field>
 
-                    <!-- Confirm Password -->
-                    <div>
-                        <label class="block text-xs font-medium text-gray-700 mb-2">Confirm password</label>
-                        <input type="password" formControlName="password_confirmation" placeholder="Type it again"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-black transition-colors"
-                            [class.border-red-500]="(password_confirmation?.invalid && password_confirmation?.touched) || (registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched)" />
-                        <p *ngIf="registerForm.errors?.['passwordMismatch'] && password_confirmation?.touched"
-                            class="mt-1 text-xs text-red-600">
-                            Passwords do not match
-                        </p>
-                    </div>
+                                    <!-- Password -->
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Password</mat-label>
+                                        <input matInput type="password" formControlName="password" placeholder="At least 6 characters" />
+                                        <mat-error *ngIf="password?.errors?.['minlength']">
+                                            Min 6 characters
+                                        </mat-error>
+                                    </mat-form-field>
 
-                    <!-- Terms -->
-                    <label class="flex items-start cursor-pointer">
-                        <input type="checkbox" formControlName="termsAgreed"
-                            class="mt-0.5 h-4 w-4 rounded border-gray-300 text-black focus:ring-black cursor-pointer" />
-                        <span class="ml-2 text-xs text-gray-700">
-                            I agree to the <a href="#" class="underline hover:no-underline">Terms</a> and <a href="#"
-                                class="underline hover:no-underline">Privacy Policy</a>
-                        </span>
-                    </label>
+                                    <!-- Confirm Password -->
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Confirm password</mat-label>
+                                        <input matInput type="password" formControlName="password_confirmation" placeholder="Type it again" />
+                                        <mat-error *ngIf="personalForm.errors?.['passwordMismatch']">
+                                            Passwords do not match
+                                        </mat-error>
+                                    </mat-form-field>
 
-                    <!-- Buttons -->
-                    <div class="flex gap-3 mt-6">
-                        <button type="button" (click)="previousStep()"
-                            class="flex-1 px-6 py-2.5 text-sm font-medium text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                            Back
-                        </button>
-                        <button type="submit" (click)="onSubmit()" [disabled]="isLoading || registerForm.invalid"
-                            class="flex-1 px-6 py-2.5 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors">
-                            <span *ngIf="!isLoading">Create account</span>
-                            <span *ngIf="isLoading">Creating...</span>
-                        </button>
-                    </div>
-                </div>
-            </form>
+                                    <!-- Terms -->
+                                    <mat-checkbox formControlName="termsAgreed" class="terms-checkbox">
+                                        I agree to the
+                                        <a href="#" class="link">Terms</a>
+                                        and
+                                        <a href="#" class="link">Privacy Policy</a>
+                                    </mat-checkbox>
+
+                                    <!-- Buttons -->
+                                    <div class="button-group">
+                                        <button mat-button matStepperPrevious class="back-button">
+                                            Back
+                                        </button>
+                                        <button mat-raised-button
+                                                color="primary"
+                                                (click)="onSubmit()"
+                                                [disabled]="isLoading || companyForm.invalid || personalForm.invalid"
+                                                class="submit-button">
+                                            <span *ngIf="!isLoading">Create account</span>
+                                            <span *ngIf="isLoading" class="loading-content">
+                                                <mat-spinner diameter="20"></mat-spinner>
+                                                <span>Creating...</span>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </mat-step>
+                    </mat-stepper>
+                </mat-card-content>
+            </mat-card>
 
             <!-- Sign In Link -->
-            <div class="mt-8 pt-6 border-t border-gray-200 text-center">
-                <p class="text-xs text-gray-600">
+            <div class="signin-section">
+                <p class="signin-text">
                     Already have an account?
-                    <a routerLink="/login" class="text-black font-medium hover:underline">Sign in</a>
+                    <a routerLink="/login" class="link">Sign in</a>
                 </p>
             </div>
         </div>
